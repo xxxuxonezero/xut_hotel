@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xut.dao.RoomMapper">
+
+    <insert id="create" parameterType="com.xut.bean.Room" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO xut_room(xut_room_number, xut_type_id, xut_floor_num)
+        VALUES (#{roomNumber}, #{typeId}, #{floorNum})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM xut_room WHERE xut_id IN
+        <foreach collection="list" index="index" item="item" open = "(" separator = "," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="com.xut.bean.Room">
+        UPDATE xut_room
+        SET xut_room_number = #{roomNumber}, xut_type_id = #{typeId}, xut_floor_num = #{floorNum}
+        WHERE xut_id = #{id}
+    </update>
+
+    <select id="search" resultMap="roomData">
+        SELECT r.xut_id AS xut_id, xut_room_number, xut_floor_num, xut_type, xut_bed, rt.xut_id AS type_id FROM xut_room r
+        INNER JOIN xut_room_type rt ON rt.xut_id = r.xut_type_id
+        WHERE #{typeIds} IS NULL
+        <if test="typeIds != null">
+            OR r.xut_type_id IN
+            <foreach collection="typeIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        LIMIT ${(offset - 1) * pageSize}, #{pageSize}
+    </select>
+
+    <resultMap id="roomData" type="com.xut.bean.RoomData">
+        <id column="xut_id" property="id"></id>
+        <result column="xut_room_number" property="roomNumber"></result>
+        <!--<result column="xut_tpe_id" property="typeId"></result>-->
+        <result column="xut_floor_num" property="floorNum"></result>
+        <result column="xut_type" property="type"></result>
+        <result column="xut_bed" property="bed"></result>
+        <result column="type_id" property="typeId"></result>
+    </resultMap>
+
+</mapper>

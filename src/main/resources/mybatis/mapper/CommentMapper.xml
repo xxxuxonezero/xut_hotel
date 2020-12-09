@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xut.dao.CommentMapper">
+    <insert id="create" parameterType="com.xut.bean.Comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO xut_comment(xut_description, xut_user_id, xut_type_id)
+        VALUES(#{description}, #{userId}, #{typeId})
+    </insert>
+
+    <select id="getByTypeId" resultMap="comment">
+        SELECT * FROM xut_comment WHERE xut_type_id = #{typeId}
+        LIMIT ${(offset - 1) * pageSize}, #{pageSize};
+    </select>
+
+    <select id="getByTypeIdCount" resultType="int">
+        SELECT COUNT(1) FROM xut_comment WHERE xut_type_id = #{typeId};
+    </select>
+
+
+    <delete id="delete">
+        DELETE FROM xut_comment WHERE xut_id = #{id}
+    </delete>
+
+    <resultMap id="comment" type="com.xut.bean.Comment">
+        <id property="id" column="xut_id"></id>
+        <result property="typeId" column="xut_type_id"></result>
+        <result property="userId" column="xut_user_id"></result>
+        <result property="description" column="xut_description"></result>
+        <result property="createdTime" column="xut_created_time"></result>
+    </resultMap>
+
+
+
+</mapper>

@@ -1,0 +1,18 @@
+.price {
+    font-size: 30px;
+    font-weight: 600;
+    color: orange;
+}
+.info {
+    font-size: 16px;
+    margin-left: 32px;
+}
+.cover {
+    max-height: 400px;
+    max-width: 600px;
+    border-radius: 4px;
+}
+.detail {
+    font-size: 12px;
+    color: #7F7F7F;
+}

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xut.dao.RoomTypeMapper">
+    <insert id="create" parameterType="com.xut.bean.RoomType" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO xut_room_type(xut_type, xut_imgs, xut_price, xut_max_people, xut_size,
+        xut_hasFood, xut_bed, xut_floor, xut_hasWindow, xut_smoke)
+        VALUES(#{type},#{imgs},#{price},#{maxPeople},#{size},#{hasFood},#{bed},#{floor},#{hasWindow},#{smoke})
+    </insert>
+
+    <select id="getById" parameterType="int" resultMap="roomType">
+        select * from xut_room_type where xut_id = #{id}
+    </select>
+
+    <select id="get" resultMap="roomType">
+        select * from xut_room_type
+        <if test="type != null">
+            WHERE xut_type = #{type}
+        </if>
+        limit ${(offset-1)*pageSize}, #{pageSize}
+    </select>
+
+    <delete id="delete">
+      DELETE FROM xut_room_type WHERE xut_id IN
+      <foreach collection="list" index="index" item="item" open = "(" separator = "," close=")">
+          #{item}
+      </foreach>
+    </delete>
+
+    <update id="update" parameterType="com.xut.bean.RoomType">
+        UPDATE xut_room_type
+        SET xut_type = #{type}, xut_imgs = #{imgs}, xut_price = #{price}, xut_max_people = #{maxPeople},
+        xut_size = #{size},
+        xut_hasFood = #{hasFood}, xut_bed = #{bed}, xut_floor =#{floor}, xut_hasWindow = #{hasWindow},
+        xut_smoke = #{smoke}
+        WHERE xut_id = #{id}
+    </update>
+
+    <resultMap id="roomType" type="com.xut.bean.RoomType">
+        <id column="xut_id" property="id"></id>
+        <result column="xut_type" property="type"></result>
+        <result column="xut_imgs" property="imgs"></result>
+        <result column="xut_price" property="price"></result>
+        <result column="xut_max_people" property="maxPeople"></result>
+        <result column="xut_size" property="size"></result>
+        <result column="xut_hasFood" property="hasFood"></result>
+        <result column="xut_bed" property="bed"></result>
+        <result column="xut_floor" property="floor"></result>
+        <result column="xut_hasWindow" property="hasWindow"></result>
+        <result column="xut_smoke" property="smoke"></result>
+    </resultMap>
+</mapper>

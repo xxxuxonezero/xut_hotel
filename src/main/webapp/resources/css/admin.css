@@ -1,0 +1,12 @@
+.admin-menu {
+    width: 120px;
+}
+.admin-menu li {
+    height: 35px;
+}
+.left-menu {
+    flex: 0 0 25%;
+}
+.right-menu {
+    flex: 0 0 60%;
+}

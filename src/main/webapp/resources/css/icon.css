@@ -1,0 +1,23 @@
+.icon16 {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-size: 16px 16px;
+    background-position: center;
+    margin: 16px;
+}
+.wifi-icon {
+    background-image: url("../images/icon/wifi.png");
+}
+.spot-icon{
+    background-image: url("../images/icon/jingdian.png");
+}
+.air-conditioner-icon {
+    background-image: url("../images/icon/kongtiao.png");
+}
+.food-icon {
+    background-image: url("../images/icon/meishi.png");
+}
+.facilities-icon {
+    background-image: url("../images/icon/facilities.png");
+}
