@@ -19,6 +19,8 @@ public class RoomTypeService {
     private static final Logger logger = LoggerFactory.getLogger(RoomTypeService.class);
     @Autowired
     RoomTypeMapper roomTypeMapper;
+    @Autowired
+    RoomSettingService roomSettingService;
 
     public Result<Integer> create(RoomType roomType) {
         Result<Integer> result = new Result<>();
@@ -92,6 +94,7 @@ public class RoomTypeService {
         NoneDataResult result = new NoneDataResult();
         try {
             roomTypeMapper.delete(ids);
+            roomSettingService.delete(ids);
         } catch (Exception e) {
             logger.error("RoomTypeService delete error ", e);
             result.setCode(Code.DATABASE_UPDATE_ERROR);

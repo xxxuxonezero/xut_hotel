@@ -26,15 +26,15 @@ public class RoomTypeController {
         return "admin/roomTypeMgr";
     }
 
-//    @ResponseBody
-//    @GetMapping("/roomTypeList")
-//    public Result<List<RoomType>> getRoomTypeList(@RequestParam(value = "offset", required = false)Integer offset,
-//                                          @RequestParam(value = "pageSize", required = false)Integer pageSize) {
-//
-//        offset = offset == null || offset < 1 ? 1 : offset;
-//        pageSize = pageSize == null ? DEFAULT_PAGE_SIZE : pageSize;
-//        return roomTypeService.get(offset, pageSize);
-//    }
+    @ResponseBody
+    @GetMapping("/roomTypeList")
+    public Result<List<RoomType>> getRoomTypeList(@RequestParam(value = "offset", required = false)Integer offset,
+                                          @RequestParam(value = "pageSize", required = false)Integer pageSize) {
+
+        offset = offset == null || offset < 1 ? 1 : offset;
+        pageSize = pageSize == null ? DEFAULT_PAGE_SIZE : pageSize;
+        return roomTypeService.get(offset, pageSize);
+    }
 
     @ResponseBody
     @PostMapping("/addRoomType")
@@ -63,6 +63,7 @@ public class RoomTypeController {
     }
 
 
+    @ResponseBody
     @PostMapping("/deleteRoomType")
     public NoneDataResult delete(@RequestParam("ids") List<Integer> ids) {
         return roomTypeService.delete(ids);

@@ -7,7 +7,6 @@
 <style>
     .main-container{
         width: 900px;
-        height: 100%;
         margin: 0 auto;
     }
     #roomTypeList .item {
@@ -32,7 +31,7 @@
     }
     .cover {
         max-height: 240px;
-        max-width: 240px;
+        max-width: 200px;
         border-radius: 4px;
     }
     .detail {
@@ -48,23 +47,13 @@
         <span class="information-title">房型选择</span>
     </div>
     <div id="roomTypeList">
-        <div class="item">
-            <img src="<c:url value="/resources/images/index1.jpeg"/>" class="cover">
-            <div class="info">
-                <span class="type">精品大床房</span>
-                <br>
-                <span class="detail">有床 不禁烟 有窗 有参食</span>
-                <br>
-                <span class="price">299.99</span>
-            </div>
-        </div>
     </div>
 
 </div>
 <jsp:include page="../footer.jsp"></jsp:include>
 </body>
 <script id="roomTypeItemTmpl" type="text/x-jquery-tmpl">
-    {%each %}
+    {%each data%}
         <div class="item" onclick="window.location.href='roomTypeDetail?id=\${id}'">
             <img src="{%if cover%}\${cover}{%else%}<c:url value='/resources/images/index1.jpeg'/>{%/if%}" class="cover">
             <div class="info">

@@ -3,6 +3,8 @@ package com.xut.dao;
 import com.xut.bean.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserMapper {
     User getUserByIdAndPwd(@Param("identificationId") String identification, @Param("password") String password);
 
@@ -10,6 +12,6 @@ public interface UserMapper {
 
     void update(User user);
 
-    void getById(Integer id);
+    List<User> getByIds(List<Integer> ids);
 
 }

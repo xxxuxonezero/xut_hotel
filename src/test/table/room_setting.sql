@@ -1,4 +1,4 @@
-DROP TABLE IN EXISTS `xut_room_setting`;
+DROP TABLE IF EXISTS `xut_room_setting`;
 CREATE TABLE `xut_room_setting`(
   xut_id INT AUTO_INCREMENT PRIMARY KEY,
   xut_type_id INT NOT NULL,

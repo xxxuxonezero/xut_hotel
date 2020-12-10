@@ -155,7 +155,8 @@
         EDIT: 2
     };
     function clearModal() {
-        $("#roomTypeModal").find("input").val("");
+        $("#roomTypeModal").find("input[type != 'radio']").val("");
+        $("#roomTypeModal").find("input[type = 'radio']:checked").prop("checked", false);
         $("#roomTypeModal").find("label.error").remove();
         $("#imageTable").empty();
         uploader.splice(0, uploader.files.length);
@@ -301,8 +302,18 @@
     }
 
     function fillInput(name, value) {
-        if (value) {
-            $("#roomTypeForm").find("input[name=" + name + "]").val(value);
+        if (value != undefined && value != null) {
+            var el =  $("#roomTypeForm").find("input[name=" + name + "]");
+            if (el.prop("type") == "radio") {
+                for (var i = 0; i < el.length; i++){
+                    if ($(el[i]).prop("value") == value) {
+                        $(el[i]).prop("checked", true);
+                        return;
+                    }
+                }
+            }
+
+            el.val(value);
         }
     }
 
@@ -323,26 +334,26 @@
     function batchDelete() {
         var els = $("#roomTypeTable tbody").find("input[type='checkbox']");
         var ids = [];
-        els.forEach(function (e) {
-            if ($(e).prop("checked")) {
-                var id = $(e).parent("tr").prop("id");
+        for (var i = 0; i < els.length; i++) {
+            if ($(els[i]).prop("checked")) {
+                var id = $(els[i]).parents("tr").prop("id");
                 ids.push(id);
             }
-        });
+        }
         if (ids.length > 0) {
             deleteAjax(ids);
         }
     }
 
     function deleteAjax(ids) {
+        var data = {ids: ids};
         $.ajax({
             url: "deleteRoomType",
             type: "post",
             contentType: "application/json",
             dataType: "json",
-            data: {
-                ids: ids
-            },
+            data:{ids:ids} ,
+            traditional: true,
             success: function (r) {
                 if (r.code == 0) {
                     alert("删除成功");
@@ -350,6 +361,9 @@
                     alert("删除失败");
                 }
                 location.reload();
+            },
+            error: function (err) {
+                alert("删除失败");
             }
         })
     }

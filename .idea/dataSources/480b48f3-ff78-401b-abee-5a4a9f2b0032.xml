@@ -1141,79 +1141,80 @@
     <table id="289" parent="17" name="xut_order"/>
     <table id="290" parent="17" name="xut_reply"/>
     <table id="291" parent="17" name="xut_room"/>
-    <table id="292" parent="17" name="xut_room_type"/>
-    <table id="293" parent="17" name="xut_user"/>
-    <routine id="294" parent="17" name="comment_get_by_type_id">
+    <table id="292" parent="17" name="xut_room_setting"/>
+    <table id="293" parent="17" name="xut_room_type"/>
+    <table id="294" parent="17" name="xut_user"/>
+    <routine id="295" parent="17" name="comment_get_by_type_id">
       <RoutineKind>procedure</RoutineKind>
     </routine>
-    <column id="295" parent="288" name="xut_id">
+    <column id="296" parent="288" name="xut_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="296" parent="288" name="xut_description">
+    <column id="297" parent="288" name="xut_description">
       <Position>2</Position>
       <DataType>mediumtext|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="297" parent="288" name="xut_user_id">
+    <column id="298" parent="288" name="xut_user_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="298" parent="288" name="xut_created_time">
+    <column id="299" parent="288" name="xut_created_time">
       <Position>4</Position>
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="299" parent="288" name="xut_updated_time">
+    <column id="300" parent="288" name="xut_updated_time">
       <Position>5</Position>
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="300" parent="288" name="xut_type_id">
+    <column id="301" parent="288" name="xut_type_id">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="301" parent="288" name="PRIMARY">
+    <key id="302" parent="288" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>xut_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="302" parent="289" name="xut_id">
+    <column id="303" parent="289" name="xut_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="303" parent="289" name="xut_uuid">
+    <column id="304" parent="289" name="xut_uuid">
       <Position>2</Position>
       <DataType>varchar(64)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="304" parent="289" name="xut_user_id">
+    <column id="305" parent="289" name="xut_user_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="305" parent="289" name="xut_room_type_id">
+    <column id="306" parent="289" name="xut_room_type_id">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="306" parent="289" name="xut_status">
+    <column id="307" parent="289" name="xut_status">
       <Position>5</Position>
       <Comment>订单状态0--已取消 1--已完成 2--交易中</Comment>
       <DataType>int(2)|0s</DataType>
@@ -1221,240 +1222,284 @@
       <DefaultExpression>&apos;2&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="307" parent="289" name="xut_price">
+    <column id="308" parent="289" name="xut_price">
       <Position>6</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="308" parent="289" name="xut_note">
+    <column id="309" parent="289" name="xut_note">
       <Position>7</Position>
       <DataType>varchar(100)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="309" parent="289" name="xut_room_id">
+    <column id="310" parent="289" name="xut_room_id">
       <Position>8</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="310" parent="289" name="xut_check_in_time">
+    <column id="311" parent="289" name="xut_check_in_time">
       <Position>9</Position>
       <DataType>date|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="311" parent="289" name="xut_check_out_time">
+    <column id="312" parent="289" name="xut_check_out_time">
       <Position>10</Position>
       <DataType>date|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="312" parent="289" name="xut_created_time">
+    <column id="313" parent="289" name="xut_created_time">
       <Position>11</Position>
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="313" parent="289" name="xut_updated_time">
+    <column id="314" parent="289" name="xut_updated_time">
       <Position>12</Position>
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="314" parent="289" name="xut_finished_time">
+    <column id="315" parent="289" name="xut_finished_time">
       <Position>13</Position>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="315" parent="289" name="PRIMARY">
+    <key id="316" parent="289" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>xut_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="316" parent="290" name="xut_id">
+    <column id="317" parent="290" name="xut_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="317" parent="290" name="xut_description">
+    <column id="318" parent="290" name="xut_description">
       <Position>2</Position>
       <DataType>mediumtext|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="318" parent="290" name="xut_user_id">
+    <column id="319" parent="290" name="xut_user_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="319" parent="290" name="xut_comment_id">
+    <column id="320" parent="290" name="xut_comment_id">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="320" parent="290" name="xut_reply_user_name">
+    <column id="321" parent="290" name="xut_reply_user_name">
       <Position>5</Position>
       <DataType>varchar(32)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="321" parent="290" name="xut_created_time">
+    <column id="322" parent="290" name="xut_created_time">
       <Position>6</Position>
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="322" parent="290" name="xut_updated_time">
+    <column id="323" parent="290" name="xut_updated_time">
       <Position>7</Position>
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="323" parent="290" name="reply_user_id">
+    <column id="324" parent="290" name="reply_user_id">
       <Position>8</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="324" parent="290" name="PRIMARY">
+    <key id="325" parent="290" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>xut_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="325" parent="291" name="xut_id">
+    <column id="326" parent="291" name="xut_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="326" parent="291" name="xut_room_number">
+    <column id="327" parent="291" name="xut_room_number">
       <Position>2</Position>
       <DataType>varchar(10)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="327" parent="291" name="xut_type_id">
+    <column id="328" parent="291" name="xut_type_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="328" parent="291" name="xut_floor_num">
+    <column id="329" parent="291" name="xut_floor_num">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="329" parent="291" name="PRIMARY">
+    <key id="330" parent="291" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>xut_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="330" parent="292" name="xut_id">
+    <column id="331" parent="292" name="xut_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="331" parent="292" name="xut_type">
+    <column id="332" parent="292" name="xut_type_id">
+      <Position>2</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="333" parent="292" name="xut_wifi">
+      <Position>3</Position>
+      <DataType>varchar(100)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="334" parent="292" name="xut_food">
+      <Position>4</Position>
+      <DataType>varchar(100)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="335" parent="292" name="xut_air_conditioner">
+      <Position>5</Position>
+      <DataType>varchar(50)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="336" parent="292" name="xut_spoc">
+      <Position>6</Position>
+      <Comment>酒店周边的名胜</Comment>
+      <DataType>varchar(100)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="337" parent="292" name="xut_facilities">
+      <Position>7</Position>
+      <DataType>varchar(200)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="338" parent="292" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>xut_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="339" parent="293" name="xut_id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="340" parent="293" name="xut_type">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="332" parent="292" name="xut_imgs">
+    <column id="341" parent="293" name="xut_imgs">
       <Position>3</Position>
       <DataType>mediumtext|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="333" parent="292" name="xut_price">
+    <column id="342" parent="293" name="xut_price">
       <Position>4</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="334" parent="292" name="xut_max_people">
+    <column id="343" parent="293" name="xut_max_people">
       <Position>5</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;1&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="335" parent="292" name="xut_size">
+    <column id="344" parent="293" name="xut_size">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="336" parent="292" name="xut_hasFood">
+    <column id="345" parent="293" name="xut_hasFood">
       <Position>7</Position>
       <Comment>0:无，1：有</Comment>
       <DataType>int(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="337" parent="292" name="xut_bed">
+    <column id="346" parent="293" name="xut_bed">
       <Position>8</Position>
       <DataType>varchar(100)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="338" parent="292" name="xut_floor">
+    <column id="347" parent="293" name="xut_floor">
       <Position>9</Position>
       <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="339" parent="292" name="xut_hasWindow">
+    <column id="348" parent="293" name="xut_hasWindow">
       <Position>10</Position>
       <DataType>int(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="340" parent="292" name="xut_smoke">
+    <column id="349" parent="293" name="xut_smoke">
       <Position>11</Position>
       <DataType>int(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="341" parent="292" name="xut_room_type_xut_type_uindex">
+    <index id="350" parent="293" name="xut_room_type_xut_type_uindex">
       <ColNames>xut_type</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="342" parent="292" name="PRIMARY">
+    <key id="351" parent="293" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>xut_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="343" parent="292" name="xut_room_type_xut_type_uindex">
+    <key id="352" parent="293" name="xut_room_type_xut_type_uindex">
       <ColNames>xut_type</ColNames>
       <UnderlyingIndexName>xut_room_type_xut_type_uindex</UnderlyingIndexName>
     </key>
-    <column id="344" parent="293" name="xut_id">
+    <column id="353" parent="294" name="xut_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="345" parent="293" name="xut_password">
+    <column id="354" parent="294" name="xut_password">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="346" parent="293" name="xut_identification_id">
+    <column id="355" parent="294" name="xut_identification_id">
       <Position>3</Position>
       <DataType>char(18)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="347" parent="293" name="xut_sex">
+    <column id="356" parent="294" name="xut_sex">
       <Position>4</Position>
       <Comment>0:男，1:女</Comment>
       <DataType>int(1)|0s</DataType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="348" parent="293" name="xut_type">
+    <column id="357" parent="294" name="xut_type">
       <Position>5</Position>
       <Comment>0:管理员，1：用户</Comment>
       <DataType>int(1)|0s</DataType>
@@ -1462,79 +1507,79 @@
       <DefaultExpression>&apos;1&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="349" parent="293" name="xut_user_name">
+    <column id="358" parent="294" name="xut_user_name">
       <Position>6</Position>
       <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="350" parent="293" name="xut_real_name">
+    <column id="359" parent="294" name="xut_real_name">
       <Position>7</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="351" parent="293" name="xut_phone">
+    <column id="360" parent="294" name="xut_phone">
       <Position>8</Position>
       <DataType>char(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="352" parent="293" name="xut_avatar">
+    <column id="361" parent="294" name="xut_avatar">
       <Position>9</Position>
       <DataType>varchar(100)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="353" parent="293" name="xut_introduction">
+    <column id="362" parent="294" name="xut_introduction">
       <Position>10</Position>
       <DataType>varchar(300)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="354" parent="293" name="xut_created_time">
+    <column id="363" parent="294" name="xut_created_time">
       <Position>11</Position>
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="355" parent="293" name="xut_updated_time">
+    <column id="364" parent="294" name="xut_updated_time">
       <Position>12</Position>
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="356" parent="293" name="xut_last_login_time">
+    <column id="365" parent="294" name="xut_last_login_time">
       <Position>13</Position>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="357" parent="293" name="xut_user_xut_identification_id_uindex">
+    <index id="366" parent="294" name="xut_user_xut_identification_id_uindex">
       <ColNames>xut_identification_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="358" parent="293" name="PRIMARY">
+    <key id="367" parent="294" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>xut_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="359" parent="293" name="xut_user_xut_identification_id_uindex">
+    <key id="368" parent="294" name="xut_user_xut_identification_id_uindex">
       <ColNames>xut_identification_id</ColNames>
       <UnderlyingIndexName>xut_user_xut_identification_id_uindex</UnderlyingIndexName>
     </key>
-    <argument id="360" parent="294" name="in_type_id">
+    <argument id="369" parent="295" name="in_type_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
     </argument>
-    <argument id="361" parent="294" name="in_offset">
+    <argument id="370" parent="295" name="in_offset">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
     </argument>
-    <argument id="362" parent="294" name="in_page_size">
+    <argument id="371" parent="295" name="in_page_size">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
     </argument>
-    <argument id="363" parent="294" name="out_total_count">
+    <argument id="372" parent="295" name="out_total_count">
       <Position>4</Position>
       <ArgumentDirection>O</ArgumentDirection>
       <DataType>int(11)|0s</DataType>

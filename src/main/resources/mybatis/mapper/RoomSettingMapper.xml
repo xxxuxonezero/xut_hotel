@@ -4,10 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xut.dao.RoomSettingMapper">
     <select id="getByTypeId" resultMap="setting">
-
+      SELECT * FROM xut_room_setting WHERE xut_type_id = #{typeId}
     </select>
 
-    <resultMap id="setting" type="com.xut.bean.RoomSetting">
+    <delete id="delete">
+        DELETE FROM xut_room_setting
+        WHERE xut_type_id IN
+        <foreach collection="list" separator="," open="(" close=")" item="item">
+            #{item}
+        </foreach>
+    </delete>
 
+    <resultMap id="setting" type="com.xut.bean.RoomSetting">
+        <id property="id" column="xut_id"></id>
+        <result property="typeId" column="xut_type_id"></result>
+        <result property="wifi" column="xut_wifi"></result>
+        <result property="food" column="xut_food"></result>
+        <result property="spot" column="xut_spot"></result>
+        <result property="facilities" column="xut_facilities"></result>
+        <result property="airConditioner" column="xut_air_conditioner"></result>
     </resultMap>
 </mapper>

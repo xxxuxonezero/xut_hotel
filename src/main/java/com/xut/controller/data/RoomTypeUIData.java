@@ -27,6 +27,7 @@ public class RoomTypeUIData {
         if (roomType != null) {
             this.id = roomType.getId();
             this.type = roomType.getType();
+            this.price = roomType.getPrice();
             this.bed = roomType.getBed();
             this.floor = roomType.getFloor();
             this.hasFood = roomType.getHasFood();

@@ -1,5 +1,7 @@
 package com.xut.bean;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Comment {
@@ -7,6 +9,7 @@ public class Comment {
     private Integer typeId;
     private String description;
     private Integer userId;
+    @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm:ss")
     private Date createdTime;
     private Date updatedTime;
 

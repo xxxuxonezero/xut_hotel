@@ -1,9 +1,12 @@
-package com.xut.controller;
+package com.xut.controller.user;
 
+import com.xut.bean.RoomSetting;
 import com.xut.bean.RoomType;
+import com.xut.controller.data.RoomTypeDetail;
 import com.xut.controller.data.RoomTypeUIData;
 import com.xut.model.Code;
 import com.xut.model.Result;
+import com.xut.service.RoomSettingService;
 import com.xut.service.RoomTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,15 +18,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-public class RoomTypeController {
+public class UserRoomTypeController {
     public static final Integer DEFAULT_PAGE_SIZE = 10;
 
     @Autowired
     RoomTypeService roomTypeService;
+    @Autowired
+    RoomSettingService roomSettingService;
 
     @GetMapping("/roomType")
     public String roomType() {
-        return "user/roomTypePreivew";
+        return "user/roomTypePreview";
     }
 
     @GetMapping("/roomTypeList")
@@ -49,9 +54,10 @@ public class RoomTypeController {
         return "user/roomTypeDetail";
     }
 
+    @ResponseBody
     @GetMapping("/roomType/detail")
-    public Result<RoomTypeUIData> detail(@RequestParam("id") Integer id) {
-        Result<RoomTypeUIData> result = new Result<>();
+    public Result<RoomTypeDetail> detail(@RequestParam("id") Integer id) {
+        Result<RoomTypeDetail> result = new Result<>();
         if (id == null) {
             result.setCode(Code.INVALID_PARAM);
             return result;
@@ -61,8 +67,16 @@ public class RoomTypeController {
             result.setCode(roomTypeResult.getCode());
             return result;
         }
+        RoomTypeDetail detail = new RoomTypeDetail();
         RoomTypeUIData room = new RoomTypeUIData(roomTypeResult.getData());
-        result.setData(room);
+        detail.setRoomType(room);
+        Result<RoomSetting> settingResult = roomSettingService.getByTypeId(id);
+        if (settingResult.isNotOK()) {
+            result.setCode(settingResult.getCode());
+            return result;
+        }
+        detail.setSetting(settingResult.getData());
+        result.setData(detail);
         return result;
     }
 }

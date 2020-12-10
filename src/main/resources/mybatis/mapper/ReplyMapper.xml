@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xut.dao.ReplyMapper">
+
+    <select id="getByCommentIds" resultMap="reply">
+        SELECT * FROM xut_reply
+        WHERE xut_comment_id IN
+        <foreach collection="list" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="delete">
+        DELETE FROM xut_reply
+        WHERE xut_id = #{id} OR xut_comment_id = #{commentId}
+    </delete>
+
+    <insert id="create" parameterType="com.xut.bean.Reply" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO xut_reply(xut_description, xut_user_id, xut_comment_id, xut_reply_user_name, reply_user_id)
+        VALUES (#{description}, #{userId}, #{commentId}, #{replyUserName}, #{replyUserId})
+    </insert>
+
+    <resultMap id="reply" type="com.xut.bean.Reply">
+        <id column="xut_id" property="id"></id>
+        <result property="userId" column="xut_user_id"></result>
+        <result property="description" column="xut_description"></result>
+        <result property="createdTime" column="xut_created_time"></result>
+        <result property="commentId" column="xut_comment_id"></result>
+        <result property="replyUserName" column="xut_reply_user_name"></result>
+        <result property="replyUserId" column="xut_reply_user_id"></result>
+    </resultMap>
+</mapper>
