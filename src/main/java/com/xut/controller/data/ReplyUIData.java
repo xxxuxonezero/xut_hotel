@@ -4,8 +4,8 @@ import com.xut.bean.Reply;
 import com.xut.bean.User;
 
 public class ReplyUIData {
-    Reply reply;
-    User author;
+    private Reply reply;
+    private User author;
 
     public ReplyUIData(Reply reply, User author) {
         this.reply = reply;

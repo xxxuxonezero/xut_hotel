@@ -8,6 +8,16 @@ public class RoomData {
     private String type;
     private String bed;
     private Integer status;
+    private Integer maxPeople;
+
+
+    public Integer getMaxPeople() {
+        return maxPeople;
+    }
+
+    public void setMaxPeople(Integer maxPeople) {
+        this.maxPeople = maxPeople;
+    }
 
     public Integer getTypeId() {
         return typeId;
@@ -64,5 +74,18 @@ public class RoomData {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "RoomData{" +
+                "id=" + id +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", floorNum=" + floorNum +
+                ", typeId=" + typeId +
+                ", type='" + type + '\'' +
+                ", bed='" + bed + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

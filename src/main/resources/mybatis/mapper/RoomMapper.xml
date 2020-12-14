@@ -23,11 +23,11 @@
     </update>
 
     <select id="search" resultMap="roomData">
-        SELECT r.xut_id AS xut_id, xut_room_number, xut_floor_num, xut_type, xut_bed, rt.xut_id AS type_id FROM xut_room r
+        SELECT r.xut_id AS xut_id, xut_room_number, xut_floor_num, xut_type, xut_bed, rt.xut_id AS type_id, xut_max_people FROM xut_room r
         INNER JOIN xut_room_type rt ON rt.xut_id = r.xut_type_id
-        WHERE #{typeIds} IS NULL
+        WHERE (#{id} IS NULL OR r.xut_id = #{id})
         <if test="typeIds != null">
-            OR r.xut_type_id IN
+             AND r.xut_type_id IN
             <foreach collection="typeIds" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
@@ -43,6 +43,7 @@
         <result column="xut_type" property="type"></result>
         <result column="xut_bed" property="bed"></result>
         <result column="type_id" property="typeId"></result>
+        <result column="xut_max_people" property="maxPeople"></result>
     </resultMap>
 
 </mapper>

@@ -50,33 +50,34 @@ public class UserCommentController {
         List<Integer> commentIds = comments.stream().map(Comment::getId).collect(Collectors.toList());
         Result<List<Reply>> replysResult = replyService.getReplys(commentIds);
         List<CommentUIData> commentUIDataList = new ArrayList<>();
-        if (replysResult.isValid()) {
-            userIds.addAll(replysResult.getData().stream().map(Reply::getUserId).collect(Collectors.toList()));
-            userIds = userIds.stream().distinct().collect(Collectors.toList());
-            Result<List<User>> usersResult = userService.getByIds(userIds);
-            if (usersResult.isNotValid()) {
-                result.setCode(usersResult.getCode());
-                return result;
+        if (replysResult.isEmpty()) {
+            replysResult.setData(new ArrayList<>());
+        }
+        userIds.addAll(replysResult.getData().stream().map(Reply::getUserId).collect(Collectors.toList()));
+        userIds = userIds.stream().distinct().collect(Collectors.toList());
+        Result<List<User>> usersResult = userService.getByIds(userIds);
+        if (usersResult.isNotValid()) {
+            result.setCode(usersResult.getCode());
+            return result;
+        }
+        Map<Integer, User> userMap = usersResult.getData().stream().collect(Collectors.toMap(User::getId, item -> item));
+        Map<Integer, List<Reply>> replyMap = replysResult.getData().stream().collect(Collectors.groupingBy(Reply::getCommentId));
+        for (Comment comment : comments) {
+            CommentUIData data = new CommentUIData(comment);
+            commentUIDataList.add(data);
+            data.setAuthor(userMap.get(comment.getUserId()));
+            List<Reply> replies = replyMap.get(comment.getId());
+            if (CollectionUtils.isEmpty(replies)) {
+                continue;
             }
-            Map<Integer, User> userMap = usersResult.getData().stream().collect(Collectors.toMap(User::getId, item -> item));
-            Map<Integer, List<Reply>> replyMap = replysResult.getData().stream().collect(Collectors.groupingBy(Reply::getCommentId));
-            for (Comment comment : comments) {
-                CommentUIData data = new CommentUIData(comment);
-                commentUIDataList.add(data);
-                data.setAuthor(userMap.get(comment.getUserId()));
-                List<Reply> replies = replyMap.get(comment.getId());
-                if (CollectionUtils.isEmpty(replies)) {
-                    continue;
-                }
-                List<ReplyUIData> replyUIDatas = replies.stream()
-                        .sorted((o1, o2) -> Long.compare(o1.getCreatedTime().getTime(), o2.getCreatedTime().getTime()))
-                        .collect(Collectors.toList())
-                        .stream()
-                        .map(item -> new ReplyUIData(item, userMap.get(item.getUserId())))
-                        .collect(Collectors.toList());
-                data.setReplys(replyUIDatas);
-                data.setReplyNum(replies.size());
-            }
+            List<ReplyUIData> replyUIDatas = replies.stream()
+                    .sorted((o1, o2) -> Long.compare(o1.getCreatedTime().getTime(), o2.getCreatedTime().getTime()))
+                    .collect(Collectors.toList())
+                    .stream()
+                    .map(item -> new ReplyUIData(item, userMap.get(item.getUserId())))
+                    .collect(Collectors.toList());
+            data.setReplys(replyUIDatas);
+            data.setReplyNum(replies.size());
         }
         Page<CommentUIData> page = new Page<>();
         int count = commentService.geTotalCount(typeId);

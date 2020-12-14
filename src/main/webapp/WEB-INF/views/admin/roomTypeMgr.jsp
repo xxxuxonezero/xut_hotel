@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: lenovo
-  Date: 2020/11/27
-  Time: 21:57
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -23,17 +16,16 @@
 <div class="admin-page flex">
     <div class="left-menu inline-block">
         <ul class="nav nav-pills nav-stacked admin-menu inline-block">
-            <li class="active"><a href="#">房型管理</a></li>
+            <li class="active"><a onclick="window.location.href = 'roomType'">房型管理</a></li>
             <li><a href="#">订单管理</a></li>
-            <li><a href="#">客房信息</a></li>
-            <li><a href="#">用户信息</a></li>
+            <li><a onclick="window.location.href = 'room'">客房信息</a></li>
+            <li><a onclick="window.location.href = 'userInfo'">用户信息</a></li>
             <li><a href="#">退出</a></li>
         </ul>
     </div>
     <div class="right-menu inline-block" style="margin-top: 100px">
         <div class="feature-btn">
             <button type="button" class="btn btn-primary" onclick="batchDelete()">批量删除</button>
-            <button type="button" class="btn btn-primary">查看通用信息</button>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomTypeModal" onclick='$("#updateBtn").attr("onclick", "addRoomType(" + TYPE.ADD + ")");'>添加房型</button>
         </div>
         <div class="modal fade" id="roomTypeModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -350,7 +342,7 @@
         $.ajax({
             url: "deleteRoomType",
             type: "post",
-            contentType: "application/json",
+            contentType: "application/x-www-form-urlencoded",
             dataType: "json",
             data:{ids:ids} ,
             traditional: true,

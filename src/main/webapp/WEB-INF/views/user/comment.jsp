@@ -29,7 +29,8 @@
 </style>
 
 <script id="commentTmpl"  type="text/x-jquery-tmpl">
-{%each comments%}
+{%if comments%}
+    {%each comments%}
         <div class="comment mt16 mb16" comment-id="\${comment.id}">
             <div class="comment-item flex">
                 <div class="user-img mr16">
@@ -41,32 +42,79 @@
                     <div class="create-time">发表于\${comment.createdTime}</div>
                 </div>
                 <div class="operate-items">
-                    <div class="operate-item inline-block">回复</div>
+                    <div class="operate-item inline-block" onclick="showReplyBox(\${comment.id},\${JSON.stringify(author)})">回复</div>
                     <div class="operate-item inline-block" onclick="deleteComment('\${comment.id}')">删除</div>
                 </div>
             </div>
+            <div class="replys">
+            {%each replys%}
+                <div class="reply-item flex" style="margin-left: 65px">
+                    <div class="user-img mr16">
+                        <img src="\${author.avatar}" alt="">
+                    </div>
+                    <div class="comment-detail">
+                        <div class="author mb16">\${author.userName}</div>
+                        <div class="content mb16"><span style="color:blue">@\${reply.replyUserName} </span>\${reply.description}</div>
+                        <div class="create-time">发表于\${reply.createdTime}</div>
+                    </div>
+                    <div class="operate-items">
+                        <div class="operate-item inline-block reply" onclick="showReplyBox(\${comment.id},\${JSON.stringify(author)})">回复</div>
+                        <div class="operate-item inline-block" onclick="deleteReply(\${reply.id})">删除</div>
+                    </div>
+                </div>
+            </div>
+            {%/each%}
         </div>
    {%/each%}
+   <%--{%else%}--%>
+        <%--暂无评论--%>
+   {%/if%}
 </script>
 
 <script>
     var typeId = '${param.id}';
 
-    var template = '<div class="mb16 comment-box mt16" style="margin-left: 65px">\n' +
+    var template = '<div class="mb16 reply-box mt16" style="margin-left: 65px">\n' +
         '            <textarea class="textarea-custom" placeholder="请输入评论..."></textarea>\n' +
         '            <button type="button" class="btn btn-primary" onclick="hideTextArea(this)">评论</button>\n' +
         '        </div>';
 
-    $(".reply").on('click',function (e) {
-        $(template).appendTo(".comment[comment-id='1']");
-    });
-
-    function hideTextArea(e) {
-        $(e).parent().remove();
+    function showReplyBox(id, author) {
+        hideTextArea();
+        $(template).appendTo(".comment[comment-id=" + id + "]");
+        var el = $(".comment[comment-id=" + id + "] .reply-box");
+        el.find(".textarea-custom").prop("placeholder","回复 "+author.userName);
+        el.find("button").attr("onclick", "reply(" + id + "," + JSON.stringify(author) + ")");
     }
 
-    function addComment(e) {
+    function hideTextArea() {
+        $(".reply-box").remove();
+        $("#commentTextArea textarea").val("");
+    }
 
+    function addComment(id, author) {
+        var description = $("#commentTextArea textarea").val();
+        if (!description) {
+            alert("不可为空");
+            return;
+        }
+        var comment = {typeId: typeId, description: description, userId: 1, };
+        $.ajax({
+            url: "/user/comment/create",
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(comment),
+            success: function (r) {
+                if (r.code == 0) {
+                    location.reload();
+                } else {
+                    alert("评论失败");
+                }
+
+            }
+        });
+        hideTextArea();
     }
 
     function initComment() {
@@ -90,13 +138,21 @@
         })
     }
 
-    function reply(e, commentId, replyUserId, replyUserName) {
+    function reply(id, replyUser) {
+        var description = $(".comment[comment-id=" + id + "] .reply-box textarea").val();
+        if (!description) {
+            alert("不要为空");
+            return;
+        }
+        hideTextArea();
+        var reply = {commentId: id, replyUserId: replyUser.id, replyUserName: replyUser.userName,
+            userId: 1, description: description};
         $.ajax({
             url: "/user/reply/create",
-            contentType: "applicaiton/json",
+            type: "post",
+            contentType: "application/json",
             dataType: "json",
-            data: {commentId: commentId, replyUserId: replyUserId, replyUserName: replyUserName,
-                userId: userId, description: "gjo"},
+            data: JSON.stringify(reply),
             success: function (r) {
                 if (r.code == 0) {
                     alert("回复成功");
@@ -111,8 +167,26 @@
     function  deleteComment(id) {
         $.ajax({
             url: "user/comment/delete",
+            type: "post",
             dataType: "json",
-            contentType: "application/json",
+            contentType: "application/x-www-form-urlencoded",
+            data: {id: id},
+            success: function (r) {
+                if (r.code == 0) {
+                    location.reload();
+                } else {
+                    alert("删除失败");
+                }
+            }
+        })
+    }
+
+    function  deleteReply(id) {
+        $.ajax({
+            url: "user/reply/delete",
+            type: "post",
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded",
             data: {id: id},
             success: function (r) {
                 if (r.code == 0) {

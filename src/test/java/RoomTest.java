@@ -28,7 +28,7 @@ public class RoomTest {
 
     @Test
     public void update() {
-        List<RoomData> list = bean.search(null, 1, Integer.MAX_VALUE);
+        List<RoomData> list = bean.search(null, null, 1, Integer.MAX_VALUE);
         RoomData roomData = list.get(0);
         System.out.println(roomData.getTypeId());
         Room room = new Room(roomData);
@@ -39,9 +39,9 @@ public class RoomTest {
     @Test
     public void search() {
         List<Integer> ids = new ArrayList<>();
-        ids.add(2);
-        List<RoomData> list = bean.search( ids, 1, Integer.MAX_VALUE);
-        System.out.println(list.size());
+        ids.add(1);
+        List<RoomData> list = bean.search( ids, null, 1, Integer.MAX_VALUE);
+        System.out.println(list.get(0));
 
     }
 

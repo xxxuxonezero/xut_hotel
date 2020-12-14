@@ -19,6 +19,8 @@ public class RoomSettingService {
     @Autowired
     RoomSettingMapper roomSettingMapper;
 
+    private static final Integer DEFAULT = 0;
+
     public Result<RoomSetting> getByTypeId(Integer typeId) {
         Result<RoomSetting> result = new Result<>();
         if (typeId == null) {
@@ -26,6 +28,9 @@ public class RoomSettingService {
         }
         try {
             RoomSetting roomSetting = roomSettingMapper.getByTypeId(typeId);
+            if (roomSetting == null) {
+                roomSetting = roomSettingMapper.getByTypeId(DEFAULT);
+            }
             result.setData(roomSetting);
         } catch (Exception e) {
             logger.error("RoomSettingService getByTypeId error ", e);

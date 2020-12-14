@@ -49,7 +49,7 @@
             <button type="button" class="btn btn-primary" style="position:absolute;bottom: 20px; right: 20px">预定</button>
         </div>
     </div>
-    <div class="title-bar flex" style="align-items: center">
+    <div class="title-bar flex mb16" style="align-items: center">
         <div class="item-bar inline-center active detail-bar" onclick="toggleDetail(this)">商品详情</div>
         <div class="item-bar inline-center comment-bar" onclick="toggleComment(this)">评论</div>
     </div>
@@ -84,39 +84,6 @@
         <button type="button" class="btn btn-primary" onclick="addComment()">评论</button>
     </div>
     <div id="commentList">
-        <div class="comment" comment-id="1">
-            <div class="comment-item flex">
-                <div class="user-img mr16">
-                    <img src="logo.jpg" alt="">
-                </div>
-                <div class="comment-detail">
-                    <div class="author mb16">onezero</div>
-                    <div class="content mb16">这个房子好漂亮啊</div>
-                    <div class="create-time">发表于2020/12/10 12:20:35</div>
-                </div>
-                <div class="operate-items">
-                    <div class="operate-item inline-block reply">回复</div>
-                    <div class="operate-item inline-block">删除</div>
-                </div>
-            </div>
-            <div class="replys">
-                <div class="reply-item flex" style="margin-left: 65px">
-                    <div class="user-img mr16">
-                        <img src="logo.jpg" alt="">
-                    </div>
-                    <div class="comment-detail">
-                        <div class="author mb16">onezero</div>
-                        <div class="content mb16">这个房子好漂亮啊</div>
-                        <div class="create-time">发表于2020/12/10 12:20:35</div>
-                    </div>
-                    <div class="operate-items">
-                        <div class="operate-item inline-block reply">回复</div>
-                        <div class="operate-item inline-block">删除</div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
     </div>
 </div>
     </div>
@@ -164,6 +131,7 @@
     function toggleComment(e) {
         if (!commentInit) {
             initComment();
+            commentInit = true;
         }
         $(".comment-bar").addClass("active");
         $(".detail-bar").removeClass("active");
