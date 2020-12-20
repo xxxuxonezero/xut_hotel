@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<script src="<c:url value="/resources/js/form.js"/> "></script>
+
 <jsp:include page="common.jsp"></jsp:include>
 <div id="header">
     <img src="<c:url value="/resources/images/logo.jpg"/>" class="logo">
@@ -29,7 +31,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form role="form">
+                <form role="form" id="loginForm">
                     <div class="form-group">
                         <label>用户名</label>
                         <input type="text" class="form-control"
@@ -89,7 +91,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"  class="close">取消</button>
                 <button type="button" class="btn btn-primary">注册</button>
             </div>
         </div>
@@ -116,5 +118,46 @@
                 }
             }
         })
+        $("#loginForm").validate({
+            rules: {
+                identificationId: "required",
+                password: "required"
+            }
+        })
     });
+
+    function login() {
+        var data = formObject($("#loginForm").serializeArray());
+        if (!$("#loginForm").valid()) {
+            return;
+        }
+        $.ajax({
+            url: "login",
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            success: function (r) {
+                if (r == 0) {
+                    // localStorage.setItem("user", )
+                }
+            }
+        });
+    }
+
+    function register() {
+        if (!$("#registerForm").valid()) {
+            return;
+        }
+        $.ajax({
+            url: "register",
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            success: function (r) {
+                if (r.code == 0) {
+                    $("#registerModal .close").click();
+                }
+            }
+        })
+    }
 </script>

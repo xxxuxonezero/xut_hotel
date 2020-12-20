@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xut.dao.ClientMapper">
+    <insert id="create" parameterType="java.util.List">
+        INSERT INTO xut_client(xut_order_id, xut_realname, xut_identification_id, xut_phone)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.orderId}, #{item.realName}, #{item.identificationId}, #{item.phone})
+        </foreach>
+
+    </insert>
+
+    <select id="search" resultMap="client">
+        SELECT * FROM xut_client
+        WHERE xut_order_id IN
+        <foreach collection="list" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <resultMap id="client" type="com.xut.bean.Client">
+        <id column="xut_id" property="id"></id>
+        <result column="xut_realname" property="realName"></result>
+        <result column="xut_identification_id" property="identificationId"></result>
+        <result column="xut_phone" property="phone"></result>
+        <result column="xut_order_id" property="orderId"></result>
+    </resultMap>
+</mapper>

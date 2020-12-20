@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xut.dao.OrderMapper">
+    <insert id="create" parameterType="com.xut.bean.Order" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO xut_order(xut_uuid, xut_user_id, xut_room_type_id, xut_price, xut_note,
+        xut_check_in_time, xut_check_out_time)
+        VALUES(#{uuid}, #{userId}, #{roomTypeId}, #{price}, #{note}, #{checkInTime}, #{checkOutTime})
+    </insert>
+
+
+    <select id="search" resultMap="order">
+      SELECT SQL_CALC_FOUND_ROWS * FROM xut_order
+      WHERE 1 = 1
+          <if test="userId != null">
+              AND xut_user_id = #{userId}
+          </if>
+          <if test="roomTypeId != null">
+              AND xut_room_type_id = #{roomTypeId}
+          </if>
+          <if test="id != null">
+              AND xut_id = #{id}
+          </if>
+        <if test="status != null">
+            AND xut_status = #{status}
+        </if>
+
+        LIMIT ${(offset - 1) * pageSize} , ${pageSize};
+
+    </select>
+
+
+    <select id="searchCount" resultType="int">
+        SELECT COUNT(*) FROM xut_order
+        WHERE 1 = 1
+        <if test="userId != null">
+            AND xut_user_id = #{userId}
+        </if>
+        <if test="roomTypeId != null">
+            AND xut_room_type_id = #{roomTypeId}
+        </if>
+        <if test="id != null">
+            AND xut_id = #{id}
+        </if>
+        <if test="status != null">
+            AND xut_status = #{status}
+        </if>
+
+    </select>
+
+    <delete id="delete">
+        DELETE FROM xut_order WHERE xut_id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE xut_order
+        SET xut_check_in_time = #{checkInTime},
+        xut_check_out_time = #{checkOutTime}
+        WHERE xut_id = #{id}
+    </update>
+
+    <resultMap id="order" type="com.xut.bean.Order">
+        <id property="id" column="xut_id"></id>
+        <result property="uuid" column="xut_uuid"></result>
+        <result property="userId" column="xut_user_id"></result>
+        <result property="roomTypeId" column="xut_room_type_id"></result>
+        <result property="price" column="xut_price"></result>
+        <result property="note" column="xut_note"></result>
+        <result property="status" column="xut_status"></result>
+        <result property="checkInTime" column="xut_check_in_time"></result>
+        <result property="checkOutTime" column="xut_check_out_time"></result>
+    </resultMap>
+
+    <resultMap id="count" type="java.lang.Integer">
+        <result column="total"/>
+    </resultMap>
+</mapper>

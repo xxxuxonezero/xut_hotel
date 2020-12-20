@@ -17,7 +17,7 @@
     <div class="left-menu inline-block">
         <ul class="nav nav-pills nav-stacked admin-menu inline-block">
             <li class="active"><a onclick="window.location.href = 'roomType'">房型管理</a></li>
-            <li><a href="#">订单管理</a></li>
+            <li><a href="order">订单管理</a></li>
             <li><a onclick="window.location.href = 'room'">客房信息</a></li>
             <li><a onclick="window.location.href = 'userInfo'">用户信息</a></li>
             <li><a href="#">退出</a></li>

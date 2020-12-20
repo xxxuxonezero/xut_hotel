@@ -7,4 +7,5 @@ public class Code {
     public static final Integer DATABASE_SELECT_ERROR = 0x10001236;
     public static final Integer DATABASE_DELETE_ERROR = 0x10001237;
     public static final Integer INVALID_PARAM = 0x11002000;
+    public static final Integer LOGIN_ERROR = 0x11002001;
 }

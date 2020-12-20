@@ -18,8 +18,8 @@
         <ul class="nav nav-pills nav-stacked admin-menu inline-block">
             <li><a onclick="window.location.href = 'roomType'">房型管理</a></li>
             <li><a href="order">订单管理</a></li>
-            <li class="active"><a onclick="window.location.href = 'room'">客房信息</a></li>
-            <li><a onclick="window.location.href = 'userInfo'">用户信息</a></li>
+            <li><a onclick="window.location.href = 'room'">客房信息</a></li>
+            <li class="active"><a onclick="window.location.href = 'userInfo'">用户信息</a></li>
             <li><a href="#">退出</a></li>
         </ul>
     </div>
@@ -116,49 +116,6 @@
         $("#roomModal").find("input[type != 'radio']").val("");
         $("#roomModal").find("input[type = 'radio']:checked").prop("checked", false);
         $("#roomModal").find("label.error").remove();
-        $("#imageTable").empty();
-        uploader.splice(0, uploader.files.length);
-        imgItems = [];
-    }
-    function addRoom(type, id) {
-        var data = formObject($("#roomForm").serializeArray());
-        if ($("#roomForm").valid()) {
-            if (type == TYPE.ADD) {
-                $.ajax({
-                    url: "addRoom",
-                    type: "post",
-                    data: JSON.stringify(data),
-                    dataType: "json",
-                    contentType: "application/json",
-                    success: function (r) {
-                        if (r.code == 0) {
-                            location.reload();
-                        }
-                    }
-                });
-            }
-            else if (type == TYPE.EDIT) {
-                data.id = id;
-                $.ajax({
-                    url: "editRoom",
-                    type: "post",
-                    contentType: "application/json",
-                    dataType: "json",
-                    data: JSON.stringify(data),
-                    success: function (r) {
-                        if (r.code == 0) {
-                            location.reload();
-                        } else {
-                            alert("更新失败...")
-                        }
-                    },
-                    error: function (err) {
-                        alert("更新失败...");
-                    }
-                })
-            }
-        }
-
     }
 
     (function () {
@@ -191,21 +148,6 @@
         })
     })();
 
-    function editRoom(id) {
-        $("#updateBtn").attr("onclick", "addRoom(" + TYPE.EDIT + ","+id+")");
-        $.ajax({
-            url: "editRoom",
-            type: "get",
-            contentType: "application/json",
-            dataType: "json",
-            data: {id:id},
-            success: function (r) {
-                if (r.code == 0) {
-                    renderRoom(r.data);
-                }
-            }
-        })
-    }
 
     function renderRoom(data) {
         clearModal();
@@ -226,56 +168,6 @@
             }
             el.val(value);
         }
-    }
-
-    function selectAll(e) {
-        if (e.checked) {
-            $("#roomTable tbody").find("input[type='checkbox']").prop("checked", true);
-        } else {
-            $("#roomTable tbody").find("input[type='checkbox']").prop("checked", false);
-        }
-    }
-
-    function deleteRoom(id) {
-        if (id) {
-            deleteAjax([id]);
-        }
-    }
-
-    function batchDelete() {
-        var els = $("#roomTable tbody").find("input[type='checkbox']");
-        var ids = [];
-        for (var i = 0; i < els.length; i++) {
-            if ($(els[i]).prop("checked")) {
-                var id = $(els[i]).parents("tr").prop("id");
-                ids.push(id);
-            }
-        }
-        if (ids.length > 0) {
-            deleteAjax(ids);
-        }
-    }
-
-    function deleteAjax(ids) {
-        $.ajax({
-            url: "deleteRoom",
-            type: "post",
-            contentType: "application/x-www-form-urlencoded",
-            dataType: "json",
-            data: {ids: ids},
-            traditional: true,
-            success: function (r) {
-                if (r.code == 0) {
-                    alert("删除成功");
-                } else {
-                    alert("删除失败");
-                }
-                location.reload();
-            },
-            error: function (err) {
-                alert("删除失败");
-            }
-        })
     }
 
 </script>
