@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"  language="java" %>
 <html>
 <head>
     <title>Title</title>
@@ -93,11 +93,11 @@
                     }
                     $("#roomTypeItemTmpl").tmpl({data: r.data}).appendTo("#roomTypeList");
                 } else{
-                    alert("加载失败");
+                    Dialog.error("加载失败");
                 }
             },
             error: function (err) {
-                alert("加载失败");
+                Dialog.error("加载失败");
             }
         });
     }

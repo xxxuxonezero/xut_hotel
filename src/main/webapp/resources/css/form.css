@@ -1,0 +1,18 @@
+.info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.xut-input {
+    outline: none;
+    border: 1px solid #7F7F7F;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+.xut-input:focus {
+    border: 1px solid #7ed07e;
+}
+.xut-input.error {
+    border: 1px solid red;
+}

@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"  language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style>
     .author {
         font-size: 16px;
@@ -9,9 +10,12 @@
         color: #7F7F7F;
     }
     .comment-item, .reply-item {
+        display: flex;
+        align-items: center;
         background-color: #F2F6FC;
         border-radius: 4px;
         position: relative;
+        padding: 16px;
     }
     .textarea-custom {
         width: 100%;
@@ -23,8 +27,8 @@
     }
     .operate-items {
         position: absolute;
-        bottom: 0px;
-        right: 0px;
+        bottom: 16px;
+        right: 16px;
     }
 </style>
 
@@ -34,12 +38,12 @@
         <div class="comment mt16 mb16" comment-id="\${comment.id}">
             <div class="comment-item flex">
                 <div class="user-img mr16">
-                    <img src="\${author.avator}" alt="">
+                    <img src="{%if author.avator%}\${author.avator}{%else%}<c:url value="/resources/images/default_avator.png"/>{%/if%}" alt="">
                 </div>
                 <div class="comment-detail">
                     <div class="author mb16">\${author.userName}</div>
                     <div class="content mb16">\${comment.description}</div>
-                    <div class="create-time">发表于\${comment.createdTime}</div>
+                    <div class="create-time">发表于\${DateUtils.getLocalTime(comment.createdTime)}</div>
                 </div>
                 <div class="operate-items">
                     <div class="operate-item inline-block" onclick="showReplyBox(\${comment.id},\${JSON.stringify(author)})">回复</div>
@@ -50,20 +54,20 @@
             {%each replys%}
                 <div class="reply-item flex" style="margin-left: 65px">
                     <div class="user-img mr16">
-                        <img src="\${author.avatar}" alt="">
-                    </div>
+                        <img src="{%if author.avator%}\${author.avator}{%else%}<c:url value="/resources/images/default_avator.png"/>{%/if%}" alt="">
+                     </div>
                     <div class="comment-detail">
                         <div class="author mb16">\${author.userName}</div>
                         <div class="content mb16"><span style="color:blue">@\${reply.replyUserName} </span>\${reply.description}</div>
-                        <div class="create-time">发表于\${reply.createdTime}</div>
+                        <div class="create-time">发表于\${DateUtils.getLocalTime(reply.createdTime)}</div>
                     </div>
                     <div class="operate-items">
                         <div class="operate-item inline-block reply" onclick="showReplyBox(\${comment.id},\${JSON.stringify(author)})">回复</div>
                         <div class="operate-item inline-block" onclick="deleteReply(\${reply.id})">删除</div>
                     </div>
                 </div>
-            </div>
             {%/each%}
+            </div>
         </div>
    {%/each%}
    <%--{%else%}--%>
@@ -95,7 +99,7 @@
     function addComment(id, author) {
         var description = $("#commentTextArea textarea").val();
         if (!description) {
-            alert("不可为空");
+            Dialog.error("不可为空");
             return;
         }
         var comment = {typeId: typeId, description: description, userId: 1, };
@@ -109,7 +113,7 @@
                 if (r.code == 0) {
                     location.reload();
                 } else {
-                    alert("评论失败");
+                    Dialog.error("评论失败");
                 }
 
             }
@@ -197,4 +201,5 @@
             }
         })
     }
+
 </script>

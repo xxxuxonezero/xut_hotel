@@ -29,6 +29,11 @@ public class UserOrderController {
     @Autowired
     RoomTypeService roomTypeService;
 
+    @GetMapping("")
+    public String myOrder() {
+        return "user/myOrder";
+    }
+
     @PostMapping("/create")
     public NoneDataResult create(@RequestBody OrderData orderData) {
         NoneDataResult result = new NoneDataResult();

@@ -31,6 +31,11 @@ public class UserCommentController {
     @Autowired
     UserService userService;
 
+    @GetMapping("/MyComment")
+    public String myComment() {
+        return "user/myComment";
+    }
+
     @GetMapping("/list")
     public Result<Page<CommentUIData>> getCommentList(@RequestParam("typeId") Integer typeId,
                                                       @RequestParam(value = "offset", required = false) Integer offset,

@@ -1,0 +1,21 @@
+#userMenu {
+    position: fixed;
+    top: 176px;
+}
+#userMenu .nav-items{
+    border: 1px solid #797979;
+}
+#userMenu .nav-items > .nav-item:not(:last-child) {
+    border-bottom: 1px solid #797979;
+}
+#userMenu .nav-items > .nav-item {
+    padding: 16px;
+    font-size: 16px;
+    color: black;
+    backgrond: white;
+    width: auto;
+}
+#userMenu .nav-items > .nav-item.active {
+    background: #F59A23;
+    color: white;
+}

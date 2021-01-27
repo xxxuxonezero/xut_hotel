@@ -1,66 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
 </head>
-<style>
-    #roomDetail{
-        width: 1100px;
-        margin: 0 auto;
-    }
-    .product-info {
-        display: flex;
-        justify-content: flex-start;
-        height: 400px;
-        width: 100%;
-        padding: 5px;
-        margin: 16px 0;
-        position: relative;
-    }
-    .setting {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .detail img {
-        max-width: 100%;
-    }
-    .type {
-        font-size: 40px;
-        font-weight: 500;
-        color: #000;
-        padding: 20px 0;
-        display: block;
-    }
-    .field {
-        padding: 5px;
-    }
-    .client-item {
-        margin: 10px 0;
-        position: relative;
-        border: 1px solid #000000;
-        border-radius: 8px;
-    }
-    .client-item .close {
-        position: absolute;
-        font-size: 16px;
-        right: 0;
-        top: 0;
-        display: inline-block;
-    }
-    .add-btn {
-        background: #1b6d85;
-        height: 32px;
-        line-height: 32px;
-        text-align: center;
-        width: 80px;
-        color: white;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-</style>
-<link rel="stylesheet" href="<c:url value="/resources/css/roomType.css"/>">
+<link rel="stylesheet" href="<c:url value="/resources/css/roomType.css?v=1.0.0"/>">
 <link rel="stylesheet" href="<c:url value="/resources/css/icon.css"/> ">
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
@@ -164,9 +108,11 @@
     <div class="client-item">
     <span>入住人\${index}</span>
         <span class="close" onclick="deleteClient(this)">X</span>
-        <div  class="field">名字：<input type="text" class="realname "/></div>
-        <div class="field">身份证：<input type="text" class="identificationId"/></div>
-        <div class="field">手机：<input type="text" class="phone"/></div>
+        <form action="" class="client-form">
+            <div  class="field">名字：<input type="text" class="realname" name="realName"/></div>
+            <div class="field">身份证：<input type="text" class="identificationId" name="identificationId"/></div>
+            <div class="field">手机：<input type="text" class="phone" name="phone"/></div>
+        </form>
     </div>
 </script>
 <script>
@@ -179,40 +125,73 @@
     (function () {
         init();
         initModal();
+
     })();
 
     function initModal() {
-        $("#clientTmpl").tmpl().appendTo("#clientList");
+       var $view = $("#clientTmpl").tmpl().appendTo("#clientList");
+       initValidEvent($view.find(".client-form"))
+    }
+
+    function initValidEvent($form) {
+        $form.validate({
+            rules:{
+                realName:{
+                    required: true,
+                    maxLength: 20
+                },
+                identificationId: {
+                    required: true,
+                    identificationId: true
+                },
+                phone: {
+                    required: true,
+                    phone: true
+                }
+            }
+        })
     }
 
     function addClient() {
         ++index;
         if (index > roomType.maxPeople) {
             index = roomType.maxPeople;
-            alert("人数已满");
+            Dialog.error("人数已满");
             return;
         }
-        $("#clientTmpl").tmpl().appendTo("#clientList");
+        var $view = $("#clientTmpl").tmpl().appendTo("#clientList");
+        initValidEvent($view.find(".client-form"));
         return false;
     }
 
     function deleteClient(e) {
+        if ($(".client-item").length <= 1) {
+            Dialog.error("入住人数至少为1");
+            return false;
+        }
         index--;
         $(e).parent().remove();
     }
 
     function order() {
         var items = document.querySelectorAll("#clientList .client-item");
+        var forms = $("#clientList .client-form");
+        for (var i = 0; i < forms.length; i++) {
+            if (!$(forms[i]).valid()) {
+                Dialog.error("请完善信息");
+                return;
+            }
+        }
         var clients = [];
         for(var i = 0; i < items.length; i++) {
             var client = {};
-            client.realName = $(items[i]).find(".realname").val();
-            client.identificationId = $(items[i]).find(".identificationId").val();
-            client.phone = $(items[i]).find(".phone").val();
+            client.realName = $(items[i]).find(".realname").val().trim();
+            client.identificationId = $(items[i]).find(".identificationId").val().trim();
+            client.phone = $(items[i]).find(".phone").val().trim();
             clients.push(client);
         }
         if (clients.length <= 0) {
-            alert("入住人不能为空");
+            Dialog.error("入住人不能为空");
             return;
         }
         var order = formObject($("#orderForm").serializeArray());
@@ -232,6 +211,37 @@
         })
     }
 
+    // function valid() {
+    //     $(".client-item input").on("blur", function () {
+    //         var val = $(this).val();
+    //         var flag = false;
+    //         var $error = $('<label class="error"></label>');
+    //         $(this).parents(".client-item").find("label.error").remove();
+    //         if ($(this).hasClass("realname")) {
+    //             if (val.length > 20) {
+    //                 flag = true;
+    //                 $error.text("请输入不超过20个字符");
+    //             }
+    //         } else if ($(this).hasClass("identificationId")) {
+    //             if (!/^\d{17}[0-9X]$/.test(val)) {
+    //                 flag = true;
+    //                 $error.text("身份证格式错误");
+    //             }
+    //         } else if ($(this).hasClass("phone")) {
+    //             if (!/^[1][3-9][0-9]{9}$/.test(val)) {
+    //                 flag = true;
+    //                 $error.text("手机格式错误");
+    //             }
+    //         }
+    //         if (flag) {
+    //             $error.appendTo($(this).parents(".client-item"));
+    //         } else {
+    //             $(this).parents(".client-item").find("label.error").remove();
+    //         }
+    //
+    //     });
+    // }
+
     function init() {
         if (id) {
             $.ajax({
@@ -246,7 +256,7 @@
                         setDetail(r.data.roomType);
                         $("#roomTypeDetailTmpl").tmpl(r.data).appendTo("#roomDetail");
                     } else {
-                        alert("加载失败");
+                        Dialog.error("加载失败");
                     }
                 }
             })

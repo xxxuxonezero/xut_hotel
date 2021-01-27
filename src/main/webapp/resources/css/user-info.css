@@ -1,0 +1,10 @@
+#userInfoContainer.container {
+    display: flex;
+    justify-content: space-between;
+}
+#userInfoContainer.container .nav-title {
+    color: black;
+    font-size: 32px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #7F7F7F;
+}

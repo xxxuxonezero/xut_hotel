@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .wrapper {
+        width: 200px;
+        height: 150px;
+        position: relative;
+    }
+    .mask, .absolute, .mask::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .mask::before{
+        content: '';
+        background-image: url("../images/index2.jpeg");
+        background-position: center;
+        background-size: 100% 100%;
+        opacity: 0.8;
+    }
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        z-index: 1;
+    }
+    img {
+        width: 100%;
+        height: 100%;
+    }
+    .name {
+        font-size: 16px;
+        color: white;
+    }
+</style>
+<body>
+    <div class="wrapper">
+        <img src="../images/index1.jpeg" alt="">
+        <div class="mask">
+            <div class="content absolute">
+                <div class="name">onezero</div>
+                <div class="name">onezero</div>
+                <div class="name">onezero</div>
+            </div>
+        </div>
+    </div>
+
+                <div class="user-img">
+                    <img src="logo.jpg" alt="">
+                    <ul class="user-items">
+                        <li class="user-item">个人信息</li>
+                    </ul>
+                </div>
+</body>
+</html>

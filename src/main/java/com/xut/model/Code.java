@@ -8,4 +8,5 @@ public class Code {
     public static final Integer DATABASE_DELETE_ERROR = 0x10001237;
     public static final Integer INVALID_PARAM = 0x11002000;
     public static final Integer LOGIN_ERROR = 0x11002001;
+    public static final Integer NO_AUTH = 0x11002002;
 }

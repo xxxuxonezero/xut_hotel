@@ -16,3 +16,59 @@
     font-size: 12px;
     color: #7F7F7F;
 }
+
+#roomDetail{
+    width: 1100px;
+    margin: 0 auto;
+}
+.product-info {
+    display: flex;
+    justify-content: flex-start;
+    height: 400px;
+    width: 100%;
+    padding: 5px;
+    margin: 16px 0;
+    position: relative;
+}
+.setting {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.detail img {
+    max-width: 100%;
+}
+.type {
+    font-size: 40px;
+    font-weight: 500;
+    color: #000;
+    padding: 20px 0;
+    display: block;
+}
+.field {
+    padding: 5px;
+}
+.client-item {
+    padding: 16px;
+    margin: 10px 0;
+    position: relative;
+    border: 1px solid #000000;
+    border-radius: 8px;
+}
+.client-item .close {
+    position: absolute;
+    font-size: 16px;
+    right: 0;
+    top: 0;
+    display: inline-block;
+}
+.add-btn {
+    background: #1b6d85;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    width: 80px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}

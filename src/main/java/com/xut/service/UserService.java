@@ -52,4 +52,15 @@ public class UserService {
         }
         return result;
     }
+
+    public NoneDataResult update(User user) {
+        NoneDataResult result = new NoneDataResult();
+        try {
+            userMapper.update(user);
+        } catch (Exception e) {
+            logger.error("UserService update error ", e);
+            result.setCode(Code.DATABASE_UPDATE_ERROR);
+        }
+        return result;
+    }
 }

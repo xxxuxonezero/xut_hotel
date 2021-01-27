@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"  language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style>
     .img-show {
@@ -38,17 +38,17 @@
     var imgItems = [];
     var baseUrl = '${pageContext.request.contextPath}';
     var SUFFIX = "xut_";
-    var DOMAIN = "http://qkjs7zxyw.hn-bkt.clouddn.com/";
+    var DOMAIN = "http://xuxuxuonezero.top/";
 
-    function getUploaderConfig() {
+    function getUploaderConfig(button, container, limit) {
         var config = {
             runtimes: 'html5,flash,html4',
-            browse_button: "uploadImage",
+            browse_button: button ? button : "uploadImage",
             max_retries: 0,
-            container: 'fileInputContainer',
-            uptoken_url:  "../getToken",
+            container: container ? container : 'fileInputContainer',
+            uptoken_url:  "${pageContext.request.contextPath}/getToken",
             get_new_uptoken: true,
-            domain: "qkjs7zxyw.hn-bkt.clouddn.com",
+            domain: "xuxuxuonezero.top",
             max_file_size: '1000mb',
             chunk_size: '4mb',
             auto_start: true,
@@ -56,7 +56,7 @@
             multi_selection: true,
             init: {
                 "FilesAdded":function(up, files) {
-                    var limit = 9;
+                    var limit = limit ? 9 : limit;
                     var isCountValid = up.files.length <= limit;
                     if (!isCountValid) {
                         up.splice(up.files.length - files.length, files.length);
@@ -99,7 +99,9 @@
     }
 
     function removeItem(id) {
-        uploader.removeFile(uploader.getFile(id));
+        if (uploader.getFile(id)) {
+            uploader.removeFile(uploader.getFile(id));
+        }
         for (var i = 0; i < imgItems.length; i++) {
             if (imgItems[i].id == id) {
                 imgItems.splice(i, 1);
