@@ -64,4 +64,17 @@ public class AccountController {
         result = userService.update(user);
         return result;
     }
+
+    @PostMapping("/resetPassword")
+    public NoneDataResult resetPassword(HttpServletRequest request,
+                                        @RequestParam("password") String password) {
+        NoneDataResult result = new NoneDataResult();
+        Identity identity = AuthUtil.getIdentity(request);
+        if (identity == null) {
+            result.setCode(Code.NO_AUTH);
+            return result;
+        }
+        result = userService.resetPassword(password, identity.getUserId());
+        return result;
+    }
 }

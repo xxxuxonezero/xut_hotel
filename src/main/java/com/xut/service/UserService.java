@@ -63,4 +63,19 @@ public class UserService {
         }
         return result;
     }
+
+    public NoneDataResult resetPassword(String password, Integer id) {
+        NoneDataResult result = new NoneDataResult();
+        if (password == null || id == null) {
+            result.setCode(Code.INVALID_PARAM);
+            return result;
+        }
+        try {
+            userMapper.resetPassword(password, id);
+        } catch (Exception e) {
+            logger.error("UserService resetPassword error ", e);
+            result.setCode(Code.DATABASE_UPDATE_ERROR);
+        }
+        return result;
+    }
 }
