@@ -64,4 +64,19 @@ public class CommentService {
     public int geTotalCount(int typeId) {
         return commentMapper.getByTypeIdCount(typeId);
     }
+
+    public Result<Comment> getById(Integer id) {
+        Result<Comment> result = new Result<>();
+        if (id == null) {
+            return result;
+        }
+        try {
+            Comment comment = commentMapper.getById(id);
+            result.setData(comment);
+        } catch (Exception e) {
+            logger.error("CommentService getById error", e);
+            result.setCode(Code.DATABASE_SELECT_ERROR);
+        }
+        return result;
+    }
 }

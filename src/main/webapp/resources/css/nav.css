@@ -11,9 +11,14 @@
 #userMenu .nav-items > .nav-item {
     padding: 16px;
     font-size: 16px;
-    color: black;
     backgrond: white;
     width: auto;
+}
+#userMenu .nav-items > .nav-item > a {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    color: #7F7F7F;
 }
 #userMenu .nav-items > .nav-item.active {
     background: #F59A23;

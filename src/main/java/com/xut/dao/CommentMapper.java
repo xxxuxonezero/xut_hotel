@@ -18,4 +18,6 @@ public interface CommentMapper {
 
     void delete(Integer id);
 
+    Comment getById(Integer id);
+
 }

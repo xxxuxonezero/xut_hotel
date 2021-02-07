@@ -1,6 +1,7 @@
 package com.xut.filter;
 
 import com.xut.bean.User;
+import com.xut.controller.auth.AuthUtil;
 import com.xut.model.UserType;
 
 import javax.servlet.*;
@@ -15,20 +16,22 @@ public class UserFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
-        User user = (User) request.getSession().getAttribute("user");
+        Identity user = AuthUtil.getIdentity(request);
+        if (user == null) {
+            return;
+        }
         String path = request.getServletPath();
-        if (path.startsWith("/user")) {
-            if (user != null && user.getType() == UserType.COMMON_USER.id()) {
+        if (path.startsWith("/user") || path.startsWith("account")) {
+            if (user.getType() == UserType.COMMON_USER.id()) {
                 chain.doFilter(req, resp);
             }
         } else if (path.startsWith("/admin")) {
-            if (user != null && user.getType() == UserType.MANAGER.id()) {
+            if (user.getType() == UserType.MANAGER.id()) {
                 chain.doFilter(req, resp);
             }
         } else {
             chain.doFilter(req, resp);
         }
-
     }
 
     public void init(FilterConfig config) throws ServletException {

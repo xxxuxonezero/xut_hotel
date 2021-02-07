@@ -1,8 +1,8 @@
-#userInfoContainer.container {
+.container {
     display: flex;
     justify-content: space-between;
 }
-#userInfoContainer.container .nav-title {
+.container .nav-title {
     color: black;
     font-size: 32px;
     padding-bottom: 8px;

@@ -57,6 +57,7 @@
     (function () {
         getUserInfo();
     })();
+
     function getUserInfo() {
         $.ajax({
             url: '${pageContext.request.contextPath}/account/getUserInfo',
@@ -80,6 +81,25 @@
                 Dialog.error("获取信息失败")
             }
         });
+    }
+
+    function update() {
+        var data = formJson($("form.user-infos").serializeArray());
+        $.ajax({
+            url: "${pageContext.request.contextPath}/account/update",
+            contentType:"application/json",
+            data: data,
+            success: function (r) {
+                if (r.code == 0) {
+                    Dialog.success("更新成功");
+                } else {
+                    Dialog.error("更新失败");
+                }
+            },
+            error: function () {
+                Dialog.error("更新失败");
+            }
+        })
     }
 </script>
 
