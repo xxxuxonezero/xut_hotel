@@ -11,7 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -100,6 +103,16 @@ public class RoomTypeService {
             result.setCode(Code.DATABASE_UPDATE_ERROR);
         }
         return result;
+    }
+
+    public Map<Integer, RoomType> getMapByTypeId() {
+        Map<Integer, RoomType> map = new HashMap<>();
+        Result<List<RoomType>> roomTypeResult = get(0, Integer.MAX_VALUE);
+        if (roomTypeResult.isNotValid()) {
+            return map;
+        }
+        map = roomTypeResult.getData().stream().collect(Collectors.toMap(RoomType::getId, item -> item));
+        return map;
     }
 
 }

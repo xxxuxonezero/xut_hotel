@@ -3,10 +3,12 @@ package com.xut.controller.user;
 import com.qiniu.util.Auth;
 import com.xut.bean.Comment;
 import com.xut.bean.Reply;
+import com.xut.bean.RoomType;
 import com.xut.bean.User;
 import com.xut.controller.BaseController;
 import com.xut.controller.auth.AuthUtil;
 import com.xut.controller.data.CommentUIData;
+import com.xut.controller.data.MyCommentUIData;
 import com.xut.controller.data.ReplyUIData;
 import com.xut.filter.Identity;
 import com.xut.model.Code;
@@ -15,6 +17,7 @@ import com.xut.model.Page;
 import com.xut.model.Result;
 import com.xut.service.CommentService;
 import com.xut.service.ReplyService;
+import com.xut.service.RoomTypeService;
 import com.xut.service.UserService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,8 @@ public class UserCommentController extends BaseController {
     ReplyService replyService;
     @Autowired
     UserService userService;
+    @Autowired
+    RoomTypeService roomTypeService;
 
     @GetMapping("/MyComment")
     public ModelAndView myComment(HttpServletRequest request) {
@@ -108,6 +113,7 @@ public class UserCommentController extends BaseController {
             result.setCode(Code.NO_AUTH);
             return result;
         }
+        comment.setUserId(identity.getUserId());
         result = commentService.create(comment);
         return result;
     }
@@ -139,4 +145,27 @@ public class UserCommentController extends BaseController {
         return result;
     }
 
+    @PostMapping("/getListByUser")
+    public Result<List<MyCommentUIData>> getListByUser(HttpServletRequest request,
+                                                     @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                                     @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset) {
+        Result<List<MyCommentUIData>> result = new Result<>();
+        Identity identity = AuthUtil.getIdentity(request);
+        if (identity == null) {
+            result.setCode(Code.NO_AUTH);
+            return result;
+        }
+        Result<List<Comment>> commentResult = commentService.getByUserId(identity.getUserId(), pageSize, offset);
+        if (commentResult.isNotValid()) {
+            result.setCode(commentResult.getCode());
+            return result;
+        }
+        Map<Integer, RoomType> roomTypeMap = roomTypeService.getMapByTypeId();
+        List<MyCommentUIData> comments = commentResult.getData().stream()
+                .map(item -> new MyCommentUIData(item, roomTypeMap.get(item.getTypeId())))
+                .collect(Collectors.toList());
+
+        result.setData(comments);
+        return result;
+    }
 }

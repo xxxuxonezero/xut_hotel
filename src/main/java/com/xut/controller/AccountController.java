@@ -29,8 +29,17 @@ public class AccountController {
             result.setCode(Code.NO_AUTH);
             return result;
         }
-        user.setId(identity.getUserId());
-        result = userService.update(user);
+        Result<List<User>> userResult = userService.getByIds(Collections.singletonList(identity.getUserId()));
+        if (userResult.isNotValid()) {
+            result.setCode(userResult.getCode());
+            return result;
+        }
+        User originUser = userResult.getData().get(0);
+        originUser.setAvatar(user.getAvatar());
+        originUser.setIntroduction(user.getIntroduction());
+        originUser.setRealName(user.getRealName());
+        originUser.setUserName(user.getUserName());
+        result = userService.update(originUser);
         return result;
     }
 
@@ -49,19 +58,6 @@ public class AccountController {
         }
         User user = userResult.getData().get(0);
         result.setData(user);
-        return result;
-    }
-
-    @PostMapping("/update")
-    public NoneDataResult update(@RequestBody User user, HttpServletRequest request) {
-        NoneDataResult result = new NoneDataResult();
-        Identity identity = AuthUtil.getIdentity(request);
-        if (identity == null) {
-            result.setCode(Code.NO_AUTH);
-            return result;
-        }
-        user.setId(identity.getUserId());
-        result = userService.update(user);
         return result;
     }
 

@@ -34,7 +34,7 @@ public class UserOrderController extends BaseController {
     @Autowired
     RoomTypeService roomTypeService;
 
-    @GetMapping("")
+    @GetMapping("/MyOrder")
     public ModelAndView myOrder(HttpServletRequest request) {
         return new ModelAndView("user/myOrder", getUserModel(request));
     }

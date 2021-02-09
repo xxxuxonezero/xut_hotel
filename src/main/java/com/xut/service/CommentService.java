@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.cert.CertSelector;
 import java.util.List;
 
 @Service
@@ -75,6 +76,21 @@ public class CommentService {
             result.setData(comment);
         } catch (Exception e) {
             logger.error("CommentService getById error", e);
+            result.setCode(Code.DATABASE_SELECT_ERROR);
+        }
+        return result;
+    }
+
+    public Result<List<Comment>> getByUserId(Integer userId, Integer pageSize, Integer offset) {
+        Result<List<Comment>> result = new Result<>();
+        if (userId == null || userId <= 0) {
+            return result;
+        }
+        try {
+            List<Comment> comments = commentMapper.getByUserId(userId, pageSize, offset);
+            result.setData(comments);
+        } catch (Exception e) {
+            logger.error("CommentService getByUserId error", e);
             result.setCode(Code.DATABASE_SELECT_ERROR);
         }
         return result;

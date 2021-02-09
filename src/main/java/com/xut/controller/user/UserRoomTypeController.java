@@ -2,6 +2,7 @@ package com.xut.controller.user;
 
 import com.xut.bean.RoomSetting;
 import com.xut.bean.RoomType;
+import com.xut.controller.BaseController;
 import com.xut.controller.data.RoomTypeDetail;
 import com.xut.controller.data.RoomTypeUIData;
 import com.xut.model.Code;
@@ -13,12 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
-public class UserRoomTypeController {
+public class UserRoomTypeController  extends BaseController {
     public static final Integer DEFAULT_PAGE_SIZE = 10;
 
     @Autowired
@@ -27,8 +31,9 @@ public class UserRoomTypeController {
     RoomSettingService roomSettingService;
 
     @GetMapping("/roomType")
-    public String roomType() {
-        return "user/roomTypePreview";
+    public ModelAndView roomType(HttpServletRequest request) {
+        Map<String, Object> map =  getUserModel(request);
+        return new ModelAndView("user/roomTypePreview", map);
     }
 
     @GetMapping("/roomTypeList")
@@ -50,8 +55,8 @@ public class UserRoomTypeController {
     }
 
     @GetMapping("/roomTypeDetail")
-    public String detailPage() {
-        return "user/roomTypeDetail";
+    public ModelAndView detailPage(HttpServletRequest request) {
+        return new ModelAndView("user/roomTypeDetail", getUserModel(request));
     }
 
     @ResponseBody

@@ -245,7 +245,7 @@
     function init() {
         if (id) {
             $.ajax({
-                url: "/roomType/detail",
+                url: "${pageContext.request.contextPath}/roomType/detail",
                 contentType: "applicaiton/json",
                 dataType: "json",
                 type: "get",

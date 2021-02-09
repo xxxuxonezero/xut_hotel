@@ -38,7 +38,7 @@
         <div class="comment mt16 mb16" comment-id="\${comment.id}">
             <div class="comment-item flex">
                 <div class="user-img mr16">
-                    <img src="{%if author.avator%}\${author.avator}{%else%}<c:url value="/resources/images/default_avator.png"/>{%/if%}" alt="">
+                    <img src="{%if author.avatar%}\${author.avatar}{%else%}<c:url value="/resources/images/default_avatar.png"/>{%/if%}" alt="">
                 </div>
                 <div class="comment-detail">
                     <div class="author mb16">\${author.userName}</div>
@@ -47,14 +47,14 @@
                 </div>
                 <div class="operate-items">
                     <div class="operate-item inline-block" onclick="showReplyBox(\${comment.id},\${JSON.stringify(author)})">回复</div>
-                    <div class="operate-item inline-block" onclick="deleteComment('\${comment.id}')">删除</div>
+                    <div class="operate-item inline-block {%if userId == comment.userId%}none{%/if%}" onclick="deleteComment('\${comment.id}')">删除</div>
                 </div>
             </div>
             <div class="replys">
             {%each replys%}
                 <div class="reply-item flex" style="margin-left: 65px">
                     <div class="user-img mr16">
-                        <img src="{%if author.avator%}\${author.avator}{%else%}<c:url value="/resources/images/default_avator.png"/>{%/if%}" alt="">
+                        <img src="{%if author.avatar%}\${author.avatar}{%else%}<c:url value="/resources/images/default_avatar.png"/>{%/if%}" alt="">
                      </div>
                     <div class="comment-detail">
                         <div class="author mb16">\${author.userName}</div>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="operate-items">
                         <div class="operate-item inline-block reply" onclick="showReplyBox(\${comment.id},\${JSON.stringify(author)})">回复</div>
-                        <div class="operate-item inline-block" onclick="deleteReply(\${reply.id})">删除</div>
+                        <div class="operate-item inline-block {%if userId == reply.userId%}none{%/if%}" onclick="deleteReply(\${reply.id})">删除</div>
                     </div>
                 </div>
             {%/each%}
@@ -77,6 +77,7 @@
 
 <script>
     var typeId = '${param.id}';
+    var userId = '${user.userId}';
 
     var template = '<div class="mb16 reply-box mt16" style="margin-left: 65px">\n' +
         '            <textarea class="textarea-custom" placeholder="请输入评论..."></textarea>\n' +
@@ -102,9 +103,9 @@
             Dialog.error("不可为空");
             return;
         }
-        var comment = {typeId: typeId, description: description, userId: 1, };
+        var comment = {typeId: typeId, description: description};
         $.ajax({
-            url: "/user/comment/create",
+            url: "${pageContext.request.contextPath}/user/comment/create",
             type: "post",
             dataType: "json",
             contentType: "application/json",
@@ -123,7 +124,7 @@
 
     function initComment() {
         $.ajax({
-            url: "user/comment/list",
+            url: "${pageContext.request.contextPath}/user/comment/list",
             dataType: "json",
             contentType: "application/json",
             data:{typeId: typeId, offset: 1},
@@ -170,7 +171,7 @@
 
     function  deleteComment(id) {
         $.ajax({
-            url: "user/comment/delete",
+            url: "${pageContext.request.contextPath}/user/comment/delete",
             type: "post",
             dataType: "json",
             contentType: "application/x-www-form-urlencoded",
@@ -187,7 +188,7 @@
 
     function  deleteReply(id) {
         $.ajax({
-            url: "user/reply/delete",
+            url: "${pageContext.request.contextPath}/user/reply/delete",
             type: "post",
             dataType: "json",
             contentType: "application/x-www-form-urlencoded",

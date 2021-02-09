@@ -7,8 +7,8 @@
 <div id="header">
     <img src="<c:url value="/resources/images/logo.jpg"/>" class="logo">
     <div class="items">
-        <div class="header-item inline-block" onclick="window.location.href=''">首页</div>
-        <div class="header-item inline-block" onclick="window.location.href='roomType'">房间订购</div>
+        <div class="header-item inline-block" onclick="window.location.href='${pageContext.request.contextPath}'">首页</div>
+        <div class="header-item inline-block" onclick="window.location.href='${pageContext.request.contextPath}/roomType'">房间订购</div>
     </div>
     <div class="login-item">
         <c:if test="${user == null}">
@@ -17,7 +17,7 @@
         </c:if>
         <c:if test="${user != null}">
             <div class="user-img">
-                <img src="<c:url value="/resources/images/default_avator.png"/>" alt="">
+                <img src="<c:url value="/resources/images/default_avatar.png"/>" alt="">
                 <ul class="user-items">
                     <li class="user-item">
                         <a href="${pageContext.request.contextPath}/user/MyInfo" class="inline-block">个人信息</a>

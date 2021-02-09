@@ -20,4 +20,8 @@ public interface CommentMapper {
 
     Comment getById(Integer id);
 
+    List<Comment> getByUserId(@Param("userId") int userId,
+                              @Param("offset") int offset,
+                              @Param("pageSize") int pageSize);
+
 }

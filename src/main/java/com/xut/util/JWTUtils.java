@@ -30,6 +30,9 @@ public class JWTUtils {
     }
 
     public static Object getObject(String jwt, Class c) {
+        if (StringUtils.isEmpty(jwt)) {
+            return null;
+        }
         boolean flag = isTrueJwt(jwt);
         if (!flag) {
             return null;

@@ -13,6 +13,7 @@
 <script src="<c:url value="/resources/js/form.js"/> "></script>
 <script src="<c:url value="/resources/js/utils/DateUtils.js"/> "></script>
 <script src="<c:url value="/resources/js/Dialog.js"/>"></script>
+<script src="<c:url value="/resources/js/ajax/API.js?v=1.0.0"/>"></script>
 
 <link rel="stylesheet" href="<c:url value="/resources/css/dialog.css"/> ">
 <link rel="stylesheet" href="<c:url value="/resources/css/form.css"/> ">

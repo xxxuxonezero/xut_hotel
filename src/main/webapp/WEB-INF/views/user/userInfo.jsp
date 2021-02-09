@@ -38,7 +38,7 @@
                     <textarea name="" id="" cols="30" rows="10" name="introduction"></textarea>
                 </div>
                 <div class="info-item">
-                    <label class="mr8">身 份 证</label>
+                    <label class="mr8">身&nbsp;&nbsp;份&nbsp;&nbsp;证</label>
                     <input type="text" class="xut-input" disabled name="identificationId">
                 </div>
                 <div class="info-item">
@@ -47,8 +47,9 @@
                 </div>
                 <input type="hidden" name="avatar">
             </form>
-            <div id="uploadImage"></div>
+            <label class="mr8">我的头像</label><div class="inline-block" id="uploadImage"><img src="" alt=""></div>
             <div id="fileInputContainer"></div>
+            <button class="btn btn-primary mt16">更新</button>
         </div>
     </div>
 </div>
@@ -73,6 +74,7 @@
                     $("textarea[name='introducaiton']").val(data.introduction);
                     $("input[name='phone']").val(data.phone);
                     $("input[name='identificationId']").val(data.identificationId);
+                    $("#uploadImage img").prop("src", data.avatar);
                 } else {
                     Dialog.error("获取信息失败")
                 }
@@ -104,4 +106,29 @@
 </script>
 
 <jsp:include page="/WEB-INF/common/uploadImage.jsp"/>
+
+
+<script>
+    var $avatar = $("#uploadImage img");
+    var config = getUploaderConfig(null, null, 1);
+    config.multi_selection = false;
+    config.init["FilesAdded"] = function(up, files) {
+        var limit = 1;
+        up.splice(0, up.files.length);
+        var isCountValid = up.files.length <= limit;
+        if (!isCountValid) {
+            up.splice(up.files.length - files.length, files.length);
+            return;
+        }
+    };
+    config.init["FileUploaded"] = function (up, file, info) {
+        info = JSON.parse(info);
+        var item = {
+            url: DOMAIN + info.key,
+            id: file.id
+        };
+        imgItems.push(item);
+        $avatar.prop("src", item.url);
+    };
+</script>
 

@@ -25,4 +25,9 @@ public class UserController extends BaseController {
     public ModelAndView myInfo(HttpServletRequest request) {
         return new ModelAndView("user/userInfo", getUserModel(request));
     }
+
+    @GetMapping("/ResetPwd")
+    public ModelAndView resetPwd(HttpServletRequest request) {
+        return new ModelAndView("user/resetPassword", getUserModel(request));
+    }
 }

@@ -13,6 +13,9 @@ public class AuthUtil {
 
     public static Identity getIdentity(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            return null;
+        }
         for (Cookie cookie : cookies) {
             String name = cookie.getName();
             if (Constant.IDENTITY.equals(name)) {
