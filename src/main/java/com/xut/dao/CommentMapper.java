@@ -24,4 +24,6 @@ public interface CommentMapper {
                               @Param("offset") int offset,
                               @Param("pageSize") int pageSize);
 
+    void update(Comment comment);
+
 }

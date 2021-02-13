@@ -43,6 +43,21 @@ public class ReplyService {
         return result;
     }
 
+    public Result<Reply> getById(Integer id) {
+        Result<Reply> result = new Result<>();
+        if (id == null) {
+            return result;
+        }
+        try {
+            Reply reply = replyMapper.getById(id);
+            result.setData(reply);
+        } catch (Exception e) {
+            logger.error("ReplyService getById error", e);
+            result.setCode(Code.DATABASE_SELECT_ERROR);
+        }
+        return result;
+    }
+
     public Result<Map<Integer, List<Reply>>> getReplysMap(List<Integer> commentIds) {
         Result<Map<Integer, List<Reply>>> result = new Result<>();
         Result<List<Reply>> replysResult = getReplys(commentIds);

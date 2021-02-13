@@ -12,4 +12,6 @@ public interface ReplyMapper {
     void create(Reply reply);
 
     void delete(@Param("id") Integer id, @Param("commentId") Integer commentId);
+
+    Reply getById(Integer id);
 }

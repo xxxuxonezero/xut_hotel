@@ -95,4 +95,18 @@ public class CommentService {
         }
         return result;
     }
+
+    public NoneDataResult update(Comment comment) {
+        NoneDataResult result = new NoneDataResult();
+        if (comment == null) {
+            return result;
+        }
+        try {
+            commentMapper.update(comment);
+        } catch (Exception e) {
+            logger.error("update", e);
+            result.setCode(Code.DATABASE_UPDATE_ERROR);
+        }
+        return result;
+    }
 }

@@ -30,12 +30,12 @@
                 </div>
                 <div class="info-item">
                     <label class="mr8">我的性别</label>
-                    <input type="radio" name="sex" value="0" checked>男
+                    <input type="radio" name="sex" value="0">男
                     <input type="radio" name="sex" value="1">女
                 </div>
                 <div class="info-item">
                     <label class="mr8">我的简介</label>
-                    <textarea name="" id="" cols="30" rows="10" name="introduction"></textarea>
+                    <textarea cols="30" rows="10" name="introduction"></textarea>
                 </div>
                 <div class="info-item">
                     <label class="mr8">身&nbsp;&nbsp;份&nbsp;&nbsp;证</label>
@@ -49,7 +49,7 @@
             </form>
             <label class="mr8">我的头像</label><div class="inline-block" id="uploadImage"><img src="" alt=""></div>
             <div id="fileInputContainer"></div>
-            <button class="btn btn-primary mt16">更新</button>
+            <button class="btn btn-primary mt16" onclick="update()">更新</button>
         </div>
     </div>
 </div>
@@ -70,8 +70,8 @@
                     var data = r.data;
                     $("input[name='userName']").val(data.userName);
                     $("input[name='realName']").val(data.realName);
-                    $("input[name='sex']").val(data.sex);
-                    $("textarea[name='introducaiton']").val(data.introduction);
+                    $("input[name='sex'][value=" + data.sex + "]").prop("checked", true);
+                    $("textarea[name='introduction']").val(data.introduction);
                     $("input[name='phone']").val(data.phone);
                     $("input[name='identificationId']").val(data.identificationId);
                     $("#uploadImage img").prop("src", data.avatar);
@@ -86,11 +86,13 @@
     }
 
     function update() {
-        var data = formJson($("form.user-infos").serializeArray());
+        var data = formObject($("form.user-infos").serializeArray());
         $.ajax({
             url: "${pageContext.request.contextPath}/account/update",
             contentType:"application/json",
-            data: data,
+            dataType: "json",
+            data: JSON.stringify(data),
+            type: 'POST',
             success: function (r) {
                 if (r.code == 0) {
                     Dialog.success("更新成功");
@@ -105,30 +107,30 @@
     }
 </script>
 
-<jsp:include page="/WEB-INF/common/uploadImage.jsp"/>
+<%--<jsp:include page="/WEB-INF/common/uploadImage.jsp"/>--%>
 
 
-<script>
-    var $avatar = $("#uploadImage img");
-    var config = getUploaderConfig(null, null, 1);
-    config.multi_selection = false;
-    config.init["FilesAdded"] = function(up, files) {
-        var limit = 1;
-        up.splice(0, up.files.length);
-        var isCountValid = up.files.length <= limit;
-        if (!isCountValid) {
-            up.splice(up.files.length - files.length, files.length);
-            return;
-        }
-    };
-    config.init["FileUploaded"] = function (up, file, info) {
-        info = JSON.parse(info);
-        var item = {
-            url: DOMAIN + info.key,
-            id: file.id
-        };
-        imgItems.push(item);
-        $avatar.prop("src", item.url);
-    };
-</script>
+<%--<script>--%>
+<%--    var $avatar = $("#uploadImage img");--%>
+<%--    var config = getUploaderConfig(null, null, 1);--%>
+<%--    config.multi_selection = false;--%>
+<%--    config.init["FilesAdded"] = function(up, files) {--%>
+<%--        var limit = 1;--%>
+<%--        up.splice(0, up.files.length);--%>
+<%--        var isCountValid = up.files.length <= limit;--%>
+<%--        if (!isCountValid) {--%>
+<%--            up.splice(up.files.length - files.length, files.length);--%>
+<%--            return;--%>
+<%--        }--%>
+<%--    };--%>
+<%--    config.init["FileUploaded"] = function (up, file, info) {--%>
+<%--        info = JSON.parse(info);--%>
+<%--        var item = {--%>
+<%--            url: DOMAIN + info.key,--%>
+<%--            id: file.id--%>
+<%--        };--%>
+<%--        imgItems.push(item);--%>
+<%--        $avatar.prop("src", item.url);--%>
+<%--    };--%>
+<%--</script>--%>
 

@@ -4,6 +4,9 @@
     vertical-align: center;
     box-sizing: border-box;
 }
+html,body {
+    height: 100%;
+}
 a {
     text-decoration: none;
     color: #2f2d2d;
@@ -76,18 +79,12 @@ ul {
     font-size: 32px;
     font-weight: 600;
 }
-footer {
-    height: 40px;
-}
 #footer {
     height: 20px;
     color: aliceblue;
     background: #7F7F7F;
     text-align: center;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    margin-top: -20px;
 }
 
 /*user menu*/
@@ -160,12 +157,13 @@ label.error {
 .container {
     width: 1184px;
     margin: auto;
+    min-height: 100%;
 }
 
 
 /*button*/
 .btn {
-    padding: 16px 13px;
+    padding: 8px 16px;
     font-size: 16px;
     border-radius: 24px;
 }
@@ -181,4 +179,9 @@ label.error {
     margin-top: 5px;
     color: red;
     padding-left: 10px;
+}
+.empty-tip {
+    font-size: 24px;
+    text-align: center;
+    color: #5e5e5e;
 }

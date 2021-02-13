@@ -35,6 +35,7 @@ public class AccountController {
             return result;
         }
         User originUser = userResult.getData().get(0);
+        originUser.setSex(user.getSex());
         originUser.setAvatar(user.getAvatar());
         originUser.setIntroduction(user.getIntroduction());
         originUser.setRealName(user.getRealName());

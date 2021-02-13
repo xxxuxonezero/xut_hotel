@@ -191,17 +191,17 @@
                             if (r.code == 0) {
                                 location.reload();
                             } else {
-                                alert("更新失败...")
+                                Dialog.error("更新失败...")
                             }
                         },
                         error: function (err) {
-                            alert("更新失败...");
+                            Dialog.error("更新失败...");
                         }
                     })
                 }
 
             } else {
-                alert("房型不可重复");
+                Dialog.error("房型不可重复");
             }
         }
 
@@ -348,14 +348,14 @@
             traditional: true,
             success: function (r) {
                 if (r.code == 0) {
-                    alert("删除成功");
+                    Dialog.success("删除成功");
                 } else {
-                    alert("删除失败");
+                    Dialog.error("删除失败");
                 }
                 location.reload();
             },
             error: function (err) {
-                alert("删除失败");
+                Dialog.error("删除失败");
             }
         })
     }

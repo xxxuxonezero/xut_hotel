@@ -211,42 +211,11 @@
         })
     }
 
-    // function valid() {
-    //     $(".client-item input").on("blur", function () {
-    //         var val = $(this).val();
-    //         var flag = false;
-    //         var $error = $('<label class="error"></label>');
-    //         $(this).parents(".client-item").find("label.error").remove();
-    //         if ($(this).hasClass("realname")) {
-    //             if (val.length > 20) {
-    //                 flag = true;
-    //                 $error.text("请输入不超过20个字符");
-    //             }
-    //         } else if ($(this).hasClass("identificationId")) {
-    //             if (!/^\d{17}[0-9X]$/.test(val)) {
-    //                 flag = true;
-    //                 $error.text("身份证格式错误");
-    //             }
-    //         } else if ($(this).hasClass("phone")) {
-    //             if (!/^[1][3-9][0-9]{9}$/.test(val)) {
-    //                 flag = true;
-    //                 $error.text("手机格式错误");
-    //             }
-    //         }
-    //         if (flag) {
-    //             $error.appendTo($(this).parents(".client-item"));
-    //         } else {
-    //             $(this).parents(".client-item").find("label.error").remove();
-    //         }
-    //
-    //     });
-    // }
-
     function init() {
         if (id) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/roomType/detail",
-                contentType: "applicaiton/json",
+                contentType: "application/json",
                 dataType: "json",
                 type: "get",
                 data: {id: id},

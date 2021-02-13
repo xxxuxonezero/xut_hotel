@@ -36,7 +36,6 @@
 <script type="text/javascript">
     var uploader = Qiniu.uploader(getUploaderConfig());
     var imgItems = [];
-    var baseUrl = '${pageContext.request.contextPath}';
     var SUFFIX = "xut_";
     var DOMAIN = "http://xuxuxuonezero.top/";
 
@@ -46,7 +45,7 @@
             browse_button: button ? button : "uploadImage",
             max_retries: 0,
             container: container ? container : 'fileInputContainer',
-            uptoken_url:  "${pageContext.request.contextPath}/getToken",
+            uptoken_url: "${pageContext.request.contextPath}/getToken",
             get_new_uptoken: true,
             domain: "xuxuxuonezero.top",
             max_file_size: '1000mb',
@@ -74,7 +73,11 @@
                 'BeforeUpload' : function(up, file) {
                 },
                 'UploadProgress' : function(up, file) {
-
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#" + file.id + " img").attr("src", e.target.result);
+                    };
+                    reader.readAsDataURL(file.getNative());
                 },
                 'UploadComplete' : function() {
                 },

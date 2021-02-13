@@ -47,7 +47,7 @@
                 </div>
                 <div class="operate-items">
                     <div class="operate-item inline-block" onclick="showReplyBox(\${comment.id},\${JSON.stringify(author)})">回复</div>
-                    <div class="operate-item inline-block {%if userId == comment.userId%}none{%/if%}" onclick="deleteComment('\${comment.id}')">删除</div>
+                    <div class="operate-item inline-block {%if userId != comment.userId%}none{%/if%}" onclick="deleteComment('\${comment.id}')">删除</div>
                 </div>
             </div>
             <div class="replys">
@@ -63,7 +63,7 @@
                     </div>
                     <div class="operate-items">
                         <div class="operate-item inline-block reply" onclick="showReplyBox(\${comment.id},\${JSON.stringify(author)})">回复</div>
-                        <div class="operate-item inline-block {%if userId == reply.userId%}none{%/if%}" onclick="deleteReply(\${reply.id})">删除</div>
+                        <div class="operate-item inline-block {%if userId != reply.userId%}none{%/if%}" onclick="deleteReply(\${reply.id})">删除</div>
                     </div>
                 </div>
             {%/each%}
@@ -137,7 +137,7 @@
                         $("#commentTmpl").tmpl({comments: comments}).appendTo("#commentList");
                     }
                 } else {
-                    alert("加载失败...")
+                    Dialog.error("加载失败...")
                 }
             }
         })
@@ -146,12 +146,11 @@
     function reply(id, replyUser) {
         var description = $(".comment[comment-id=" + id + "] .reply-box textarea").val();
         if (!description) {
-            alert("不要为空");
+            Dialog.error("不要为空");
             return;
         }
         hideTextArea();
-        var reply = {commentId: id, replyUserId: replyUser.id, replyUserName: replyUser.userName,
-            userId: 1, description: description};
+        var reply = {commentId: id, replyUserId: replyUser.id, replyUserName: replyUser.userName, description: description};
         $.ajax({
             url: "/user/reply/create",
             type: "post",
@@ -160,10 +159,10 @@
             data: JSON.stringify(reply),
             success: function (r) {
                 if (r.code == 0) {
-                    alert("回复成功");
+                    Dialog.success("回复成功");
                     location.reload();
                 } else {
-                    alert("回复失败");
+                    Dialog.error("回复失败");
                 }
             }
         })
@@ -180,7 +179,7 @@
                 if (r.code == 0) {
                     location.reload();
                 } else {
-                    alert("删除失败");
+                    Dialog.error("删除失败");
                 }
             }
         })
@@ -197,7 +196,7 @@
                 if (r.code == 0) {
                     location.reload();
                 } else {
-                    alert("删除失败");
+                    Dialog.error("删除失败");
                 }
             }
         })

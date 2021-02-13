@@ -7,7 +7,7 @@
 <div id="header">
     <img src="<c:url value="/resources/images/logo.jpg"/>" class="logo">
     <div class="items">
-        <div class="header-item inline-block" onclick="window.location.href='${pageContext.request.contextPath}'">首页</div>
+        <div class="header-item inline-block" onclick="window.location.href='${pageContext.request.contextPath}/'">首页</div>
         <div class="header-item inline-block" onclick="window.location.href='${pageContext.request.contextPath}/roomType'">房间订购</div>
     </div>
     <div class="login-item">

@@ -22,6 +22,10 @@
         VALUES (#{description}, #{userId}, #{commentId}, #{replyUserName}, #{replyUserId})
     </insert>
 
+    <select id="getById" resultMap="reply">
+        SELECT * FROM xut_reply WHERE xut_id = #{id}
+    </select>
+
     <resultMap id="reply" type="com.xut.bean.Reply">
         <id column="xut_id" property="id"></id>
         <result property="userId" column="xut_user_id"></result>

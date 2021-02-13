@@ -5,12 +5,12 @@ import com.xut.bean.RoomType;
 
 public class MyCommentUIData {
     private Comment comment;
-    private RoomType roomType;
+    private RoomTypeUIData roomType;
 
     public MyCommentUIData() {
     }
 
-    public MyCommentUIData(Comment comment, RoomType roomType) {
+    public MyCommentUIData(Comment comment, RoomTypeUIData roomType) {
         this.comment = comment;
         this.roomType = roomType;
     }
@@ -23,11 +23,11 @@ public class MyCommentUIData {
         this.comment = comment;
     }
 
-    public RoomType getRoomType() {
+    public RoomTypeUIData getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(RoomType roomType) {
+    public void setRoomType(RoomTypeUIData roomType) {
         this.roomType = roomType;
     }
 }

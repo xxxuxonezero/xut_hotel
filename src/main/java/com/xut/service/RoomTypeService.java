@@ -107,7 +107,7 @@ public class RoomTypeService {
 
     public Map<Integer, RoomType> getMapByTypeId() {
         Map<Integer, RoomType> map = new HashMap<>();
-        Result<List<RoomType>> roomTypeResult = get(0, Integer.MAX_VALUE);
+        Result<List<RoomType>> roomTypeResult = get(1, Integer.MAX_VALUE);
         if (roomTypeResult.isNotValid()) {
             return map;
         }

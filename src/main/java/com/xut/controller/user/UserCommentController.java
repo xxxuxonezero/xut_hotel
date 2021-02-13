@@ -10,6 +10,7 @@ import com.xut.controller.auth.AuthUtil;
 import com.xut.controller.data.CommentUIData;
 import com.xut.controller.data.MyCommentUIData;
 import com.xut.controller.data.ReplyUIData;
+import com.xut.controller.data.RoomTypeUIData;
 import com.xut.filter.Identity;
 import com.xut.model.Code;
 import com.xut.model.NoneDataResult;
@@ -145,10 +146,10 @@ public class UserCommentController extends BaseController {
         return result;
     }
 
-    @PostMapping("/getListByUser")
+    @GetMapping("/getListByUser")
     public Result<List<MyCommentUIData>> getListByUser(HttpServletRequest request,
-                                                     @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                                                     @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset) {
+                                                       @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                                       @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset) {
         Result<List<MyCommentUIData>> result = new Result<>();
         Identity identity = AuthUtil.getIdentity(request);
         if (identity == null) {
@@ -162,10 +163,31 @@ public class UserCommentController extends BaseController {
         }
         Map<Integer, RoomType> roomTypeMap = roomTypeService.getMapByTypeId();
         List<MyCommentUIData> comments = commentResult.getData().stream()
-                .map(item -> new MyCommentUIData(item, roomTypeMap.get(item.getTypeId())))
+                .map(item -> new MyCommentUIData(item, new RoomTypeUIData(roomTypeMap.get(item.getTypeId()))))
                 .collect(Collectors.toList());
 
         result.setData(comments);
+        return result;
+    }
+
+    @PostMapping("/editComment")
+    public NoneDataResult editComment(@RequestParam("content")String content,
+                                      @RequestParam("id") Integer id,
+                                      HttpServletRequest request) {
+        NoneDataResult result = new NoneDataResult();
+        Identity identity = AuthUtil.getIdentity(request);
+        Result<Comment> commentResult = commentService.getById(id);
+        if (commentResult.isNotValid()) {
+            result.setCode(commentResult.getCode());
+            return result;
+        }
+        if (identity == null || !commentResult.getData().getUserId().equals(identity.getUserId())) {
+            result.setCode(Code.NO_AUTH);
+            return result;
+        }
+        Comment comment = commentResult.getData();
+        comment.setDescription(content);
+        result = commentService.update(comment);
         return result;
     }
 }
