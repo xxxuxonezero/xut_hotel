@@ -1,0 +1,101 @@
+#myCommentDiv .my-comment-item, #myOrderDiv .my-order-item {
+    margin: 8px 0;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: auto;
+    position: relative;
+    border: 1px solid #797979;
+    border-radius: 8px;
+}
+
+#myCommentDiv .my-comment-item .operate-items {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+#myCommentDiv .my-comment-item .edit-box {
+    display: flex;
+    flex-direction: column;
+}
+#myCommentDiv .my-comment-item .edit-box button {
+    margin-top: 8px;
+}
+
+#myCommentDiv .my-comment-item .operate-items .operate-item {
+    display: inline-block;
+    color: orange;
+    padding: 0 16px;
+}
+
+#myCommentDiv .my-comment-item .operate-items .operate-item:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+#myCommentDiv .my-comment-item .publish-time-div, #myOrderDiv .my-order-item .order-info-div{
+    border-bottom: 1px solid #797979;
+    padding-bottom: 16px;
+}
+#myCommentDiv .my-comment-item .publish-time-div .publish-time {
+    color: #5e5e5e;
+    font-size: 12px;
+}
+#myCommentDiv .my-comment-item .comment-description #myOrderDiv .my-order-item .order-info-div .order-number{
+    color: #000000;
+    font-size: 14px;
+    padding: 8px 0;
+}
+#myOrderDiv .my-order-item .order-info-div .order-status {
+    color: orange;
+}
+
+/*room type container*/
+#myCommentDiv .my-comment-item .room-type-container,
+#myOrderDiv .my-order-item .room-type-container {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+}
+
+#myCommentDiv .my-comment-item .room-type-container .cover,
+#myOrderDiv .my-order-item .room-type-container .cover{
+    max-height: 80px;
+    border-radius: 4px;
+    margin-right: 32px;
+}
+#myCommentDiv .my-comment-item .room-type-container .info,
+#myOrderDiv .my-order-item .room-type-container .cover{
+    font-size: 9px;
+    color: #5e5e5e;
+}
+#myCommentDiv .my-comment-item .room-type-container .info span,
+#myOrderDiv .my-order-item .room-type-container .info span{
+    margin-bottom: 16px;
+}
+#myCommentDiv .my-comment-item .room-type-container .info .type,
+#myOrderDiv .my-order-item .room-type-container .info .type{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+
+/*my order*/
+#myOrderDiv .my-order-item .order-info-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#myOrderDiv .my-order-item .room-type-container .detail-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#myOrderDiv .my-order-item .room-type-container .detail-info .price {
+    font-weight: 550;
+    font-size: 16px;
+    color: orange;
+}

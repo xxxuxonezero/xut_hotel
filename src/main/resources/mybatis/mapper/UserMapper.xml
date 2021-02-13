@@ -9,6 +9,12 @@
       FROM xut_user WHERE xut_identification_id = #{identificationId} AND xut_password = #{password}
     </select>
 
+    <select id="getAll" resultMap="user">
+        SELECT xut_id, xut_identification_id, xut_sex, xut_type, xut_user_name,
+        xut_real_name, xut_phone, xut_avatar, xut_introduction
+        FROM xut_user
+    </select>
+
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO xut_user(xut_password, xut_identification_id, xut_sex, xut_user_name, xut_real_name, xut_phone, xut_avatar, xut_introduction, xut_type)
         VALUES(#{password}, #{identificationId}, #{sex}, #{userName}, #{realName}, #{phone}, #{avatar}, #{introduction},

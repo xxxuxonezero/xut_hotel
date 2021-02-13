@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"  language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="nav" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>用户管理</title>
     <jsp:include page="../common.jsp"></jsp:include>
-    <link rel="stylesheet" href="<c:url value="/resources/css/admin.css"/>">
 </head>
 <style>
     #imageTable {
@@ -14,19 +14,11 @@
 </style>
 <body>
 <div class="admin-page flex">
-    <div class="left-menu inline-block">
-        <ul class="nav nav-pills nav-stacked admin-menu inline-block">
-            <li><a onclick="window.location.href = 'roomType'">房型管理</a></li>
-            <li><a href="order">订单管理</a></li>
-            <li><a onclick="window.location.href = 'room'">客房信息</a></li>
-            <li class="active"><a onclick="window.location.href = 'userInfo'">用户信息</a></li>
-            <li><a href="#">退出</a></li>
-        </ul>
-    </div>
+    <nav:adminNav currentMenu="用户信息"></nav:adminNav>
     <div class="right-menu inline-block" style="margin-top: 100px">
         <div class="feature-btn">
             <button type="button" class="btn btn-primary" onclick="batchDelete()">批量删除</button>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomModal" onclick='$("#updateBtn").attr("onclick", "addRoom(" + TYPE.ADD + ")");'>添加客房</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomModal" onclick='$("#updateBtn").attr("onclick", "addRoom(" + TYPE.ADD + ")");'>添加用户</button>
         </div>
         <div class="modal fade" id="roomModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
@@ -120,7 +112,7 @@
 
     (function () {
         $.ajax({
-            url: "roomList",
+            url: "${pageContext.request.contextPath}/admin/user/list",
             type: "get",
             data: {offset:1},
             dataType: "json",

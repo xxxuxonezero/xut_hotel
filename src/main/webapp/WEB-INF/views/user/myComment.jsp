@@ -2,7 +2,7 @@
 <%@ taglib prefix="nav" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/user-info.css"/>"/>
-<link rel="stylesheet" href="<c:url value="/resources/css/my-comment.css?v=1.0.0"/>"/>
+<link rel="stylesheet" href="<c:url value="/resources/css/my-comment-order.css?v=1.0.0"/>"/>
 
 <jsp:include page="../header.jsp"></jsp:include>
 <div class="container" id="commentInfoContainer">

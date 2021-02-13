@@ -1,5 +1,9 @@
 .mr4{margin-right: 4px;}
 .mr8{margin-right: 8px;}
 .mr16{margin-right: 16px;}
+.mr24{margin-right: 24px}
 .mt16px{margin-top: 16px;}
 .mb8{margin-bottom: 8px;}
+
+
+.min-h100 {min-height: 100%}

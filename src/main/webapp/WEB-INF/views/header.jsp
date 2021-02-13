@@ -17,7 +17,7 @@
         </c:if>
         <c:if test="${user != null}">
             <div class="user-img">
-                <img src="<c:url value="/resources/images/default_avatar.png"/>" alt="">
+                <img src="${empty user.avatar ? "http://xuxuxuonezero.top/default_avatar.png" : user.avatar}" alt="">
                 <ul class="user-items">
                     <li class="user-item">
                         <a href="${pageContext.request.contextPath}/user/MyInfo" class="inline-block">个人信息</a>

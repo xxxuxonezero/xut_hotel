@@ -16,4 +16,6 @@ public interface UserMapper {
 
     void resetPassword(@Param("password") String password, @Param("id") Integer id);
 
+    List<User> getAll();
+
 }

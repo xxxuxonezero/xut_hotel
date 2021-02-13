@@ -44,6 +44,7 @@ public class HomeController extends BaseController {
         identity.setUserId(user.getId());
         identity.setUserName(user.getUserName());
         identity.setType(user.getType());
+        identity.setAvatar(user.getAvatar());
         String s = JWTUtils.generateJwt(identity);
         response.addCookie(new Cookie(Constant.IDENTITY, s));
         return result;

@@ -46,16 +46,17 @@
             max_retries: 0,
             container: container ? container : 'fileInputContainer',
             uptoken_url: "${pageContext.request.contextPath}/getToken",
-            get_new_uptoken: true,
+            get_new_uptoken: false,
             domain: "xuxuxuonezero.top",
             max_file_size: '1000mb',
             chunk_size: '4mb',
             auto_start: true,
             disable_statistics_report: true,
             multi_selection: true,
+            withCredentials: true,
             init: {
                 "FilesAdded":function(up, files) {
-                    var limit = limit ? 9 : limit;
+                    var limit = limit ? limit : 9;
                     var isCountValid = up.files.length <= limit;
                     if (!isCountValid) {
                         up.splice(up.files.length - files.length, files.length);
@@ -63,21 +64,20 @@
                     }
                     plupload.each(files, function(file) {
                         // file.isRendered = isCountValid ? false : true;
-                        var item = {
-                            id: file.id,
-                            url: ""
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            var item = {
+                                id: file.id,
+                                url: e.target.result
+                            };
+                            $("#imgItemTmpl").tmpl(item).appendTo("#imageTable");
                         };
-                        $("#imgItemTmpl").tmpl(item).appendTo("#imageTable");
+                        reader.readAsDataURL(file.getNative());
                     });
                 },
                 'BeforeUpload' : function(up, file) {
                 },
                 'UploadProgress' : function(up, file) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $("#" + file.id + " img").attr("src", e.target.result);
-                    };
-                    reader.readAsDataURL(file.getNative());
                 },
                 'UploadComplete' : function() {
                 },

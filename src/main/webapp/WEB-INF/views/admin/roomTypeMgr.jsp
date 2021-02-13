@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="nav" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
     <title>Title</title>
@@ -14,15 +15,7 @@
 </style>
 <body>
 <div class="admin-page flex">
-    <div class="left-menu inline-block">
-        <ul class="nav nav-pills nav-stacked admin-menu inline-block">
-            <li class="active"><a onclick="window.location.href = 'roomType'">房型管理</a></li>
-            <li><a href="order">订单管理</a></li>
-            <li><a onclick="window.location.href = 'room'">客房信息</a></li>
-            <li><a onclick="window.location.href = 'userInfo'">用户信息</a></li>
-            <li><a href="#">退出</a></li>
-        </ul>
-    </div>
+    <nav:adminNav currentMenu="房型管理"></nav:adminNav>
     <div class="right-menu inline-block" style="margin-top: 100px">
         <div class="feature-btn">
             <button type="button" class="btn btn-primary" onclick="batchDelete()">批量删除</button>

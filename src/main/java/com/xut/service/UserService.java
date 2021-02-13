@@ -30,6 +30,18 @@ public class UserService {
         return result;
     }
 
+    public Result<List<User>> getAll() {
+        Result<List<User>> result = new Result<>();
+        try {
+            List<User> users = userMapper.getAll();
+            result.setData(users);
+        } catch (Exception e) {
+            logger.error("UserService getAll error ", e);
+            result.setCode(Code.DATABASE_SELECT_ERROR);
+        }
+        return result;
+    }
+
     public Result<User> getByIdentificationIdAndPwd(String identificationId, String pwd) {
         Result<User> result = new Result<>();
         try {

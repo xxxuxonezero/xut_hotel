@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/icon.css"/> ">
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
-<div id="roomDetail">
+<div id="roomDetail" class="min-h100">
 </div>
 <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -138,7 +138,7 @@
             rules:{
                 realName:{
                     required: true,
-                    maxLength: 20
+                    maxlength: 20
                 },
                 identificationId: {
                     required: true,
@@ -159,7 +159,8 @@
             Dialog.error("人数已满");
             return;
         }
-        var $view = $("#clientTmpl").tmpl().appendTo("#clientList");
+        var $view = $("#clientTmpl").tmpl();
+        $view.appendTo("#clientList");
         initValidEvent($view.find(".client-form"));
         return false;
     }
@@ -198,11 +199,11 @@
         order.roomTypeId = id;
         order.price = roomType.price;
         $.ajax({
-            url: "/order/create",
+            url: "${pageContext.request.contextPath}/user/order/create",
             type: "post",
             dataType: "json",
             contentType: "application/json",
-            data: {order: order, clients: clients},
+            data: JSON.stringify({order: order, clients: clients}),
             success: function (r) {
                 if (r.code == 0) {
                     location.reload();

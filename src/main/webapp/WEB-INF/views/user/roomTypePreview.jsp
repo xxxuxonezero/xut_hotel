@@ -41,7 +41,7 @@
 </style>
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
-<div class="main-container">
+<div class="main-container min-h100">
     <div class="information-title-bar">
         <div class="line-icon inline-block"></div>
         <span class="information-title">房型选择</span>

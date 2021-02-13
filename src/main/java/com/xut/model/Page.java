@@ -6,6 +6,14 @@ public class Page<T> {
     int totalCount;
     List<T> list;
 
+    public Page() {
+    }
+
+    public Page(int totalCount, List<T> list) {
+        this.totalCount = totalCount;
+        this.list = list;
+    }
+
     public int getTotalCount() {
         return totalCount;
     }

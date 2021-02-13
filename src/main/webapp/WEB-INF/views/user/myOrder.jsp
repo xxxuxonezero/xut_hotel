@@ -2,6 +2,7 @@
 <%@ taglib prefix="nav" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/user-info.css"/>"/>
+<link rel="stylesheet" href="<c:url value="/resources/css/my-comment-order.css"/>"/>
 
 <jsp:include page="../header.jsp"></jsp:include>
 <div class="container" id="orderInfoContainer">
@@ -25,16 +26,16 @@
                     <div>
                         <span class="type inline-block">\${roomType.type}</span>
                     </div>
-                    <div>
-                        <span class="detail inline-block">\${roomType.detail}</span>
-                        <span class="inline-block price">\${roomType.price}</span>
+                    <div class="detail-info">
+                        <span class="detail inline-block mr24">\${roomType.detail}</span>
+                        <span class="inline-block price">￥\${roomType.price}</span>
                     </div>
                     <div class="operate-btns">
                         {%if order.status == 1%}
-                            <button class="btn btn-primary operate-btn">评价</button>
+                            <button class="btn btn-primary operate-btn" onclick="comment(\${roomType.id})">评价</button>
                         {%elif order.status == 2%}
-                             <button class="btn btn-primary operate-btn">修改信息</button>
-                             <button class="btn btn-primary operate-btn">取消预定</button>
+                             <button class="btn btn-primary operate-btn" onclick="updateInfo(\${order.id})">修改信息</button>
+                             <button class="btn btn-primary operate-btn" onclick="cancelOrder(\${order.id})">取消预定</button>
                         {%/if%}
                     </div>
                 </div>
