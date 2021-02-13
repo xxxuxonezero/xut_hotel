@@ -185,3 +185,11 @@ label.error {
     text-align: center;
     color: #5e5e5e;
 }
+
+/*textarea*/
+.xut-textarea {
+    padding: 8px;
+    height: 100px;
+    width: auto;
+    resize: none;
+}

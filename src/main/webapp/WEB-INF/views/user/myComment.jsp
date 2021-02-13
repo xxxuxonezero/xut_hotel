@@ -17,15 +17,13 @@
 <script id="myCommentTmpl" type="text/x-jquery-tmpl">
     <div class="my-comment-item" comment-id="\${comment.id}">
         <div class="operate-items">
-            <a class="operate-item" onclick="update(\${comment.id})">编辑</a>
+            <a class="operate-item" onclick="update(\${comment.id}, '\${comment.description}')">编辑</a>
             <a class="operate-item" onclick="deleteComment(\${comment.id})">删除</a>
         </div>
         <div class="publish-time-div">
             <span class="publish-time">发表于\${DateUtils.getLocalTime(comment.createdTime)}</span>
         </div>
-        <div class="comment-description">
-            {%html comment.description%}
-        </div>
+        <div class="comment-description">\${comment.description}</div>
         {%if roomType%}
             <div class="room-type-container" onclick="window.location.href='${pageContext.request.contextPath}/roomTypeDetail?id=\${roomType.id}'">
                 <img src="{%if roomType.cover%}\${roomType.cover}{%else%}<c:url value='/resources/images/index1.jpeg'/>{%/if%}" class="cover">
@@ -79,10 +77,45 @@
 
     function update(id) {
         var $item = $(".my-comment-item[comment-id=" + id + "]");
-        var content = $item.find(".comment-description").html();
-        var $input = $('<textarea class="edit-description" cols="30" rows="10"></textarea>');
-        $input.html(content);
-        $item.append($input);
+        var content = $item.find(".comment-description").text();
+        var $input = $('<textarea class="edit-description xut-textarea" rows="10"></textarea>');
+        var $btn = $('<button class="btn btn-primary" onclick="updateDescription(this, ' + id + ')">编辑</button>');
+        var $addComponent = $('<div class="edit-box"></div>');
+        $addComponent.append($input).append($btn);
+        $input.val(content);
+        $item.append($addComponent);
+    }
+
+    function updateDescription(self, id) {
+        var $item = $(self).parent()
+        var $input = $item.find("textarea");
+        var content = $input.val();
+
+        var $cur = $item.parents(".my-comment-item");
+        if (!content) {
+            Dialog.error("不能为空！！");
+            return;
+        }
+        var api = new API({
+            url: "${pageContext.request.contextPath}/user/comment/editComment",
+            method: 'POST',
+            data: {content: content, id: id},
+            callback: function (r) {
+                if (r.code === 0) {
+                    Dialog.success("更新成功~");
+                    $item.remove();
+                    $cur.find(".comment-description").text(content);
+                    $cur.find(".comment-description").attr("onclick", )
+                    return;
+                }
+                Dialog.error("更新失败~");
+            },
+            errorCallback: function () {
+                Dialog.error("更新失败~");
+            }
+        });
+
+        api.sendFormData();
     }
 
     function deleteComment(id) {

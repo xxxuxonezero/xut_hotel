@@ -7,6 +7,7 @@ import com.xut.controller.BaseController;
 import com.xut.controller.auth.AuthUtil;
 import com.xut.controller.data.OrderData;
 import com.xut.filter.Identity;
+import com.xut.model.Code;
 import com.xut.model.NoneDataResult;
 import com.xut.model.Page;
 import com.xut.model.Result;
@@ -59,11 +60,15 @@ public class UserOrderController extends BaseController {
         return result;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/getOrdersByUser")
     public Result<List<OrderData>> getList(HttpServletRequest request) {
-        Identity identity = AuthUtil.getIdentity(request);
-        Integer userId = identity.getUserId();
         Result<List<OrderData>> result = new Result<>();
+        Identity identity = AuthUtil.getIdentity(request);
+        if (identity == null) {
+            result.setCode(Code.NO_AUTH);
+            return result;
+        }
+        Integer userId = identity.getUserId();
         Result<Page<Order>> ordersResult = orderService.search(userId, null, null, null, 1, Integer.MAX_VALUE);
         if (ordersResult.isNotValid()) {
             result.setCode(ordersResult.getCode());

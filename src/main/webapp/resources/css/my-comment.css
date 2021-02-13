@@ -16,6 +16,14 @@
     right: 16px;
 }
 
+#myCommentDiv .my-comment-item .edit-box {
+    display: flex;
+    flex-direction: column;
+}
+#myCommentDiv .my-comment-item .edit-box button {
+    margin-top: 8px;
+}
+
 #myCommentDiv .my-comment-item .operate-items .operate-item {
     display: inline-block;
     color: orange;

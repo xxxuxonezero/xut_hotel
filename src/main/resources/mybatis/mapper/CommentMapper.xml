@@ -15,7 +15,6 @@
 
     <select id="getById" resultMap="comment">
         SELECT * FROM xut_comment WHERE xut_id = #{id}
-        LIMIT ${(offset - 1) * pageSize}, #{pageSize};
     </select>
 
     <select id="getByUserId" resultMap="comment">
