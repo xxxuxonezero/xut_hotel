@@ -10,6 +10,7 @@ import com.xut.model.Result;
 import com.xut.service.UserService;
 import com.xut.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,6 +46,9 @@ public class HomeController extends BaseController {
         identity.setUserName(user.getUserName());
         identity.setType(user.getType());
         identity.setAvatar(user.getAvatar());
+        identity.setIdentificationId(user.getIdentificationId());
+        identity.setPhone(user.getPhone());
+        identity.setRealName(user.getRealName());
         String s = JWTUtils.generateJwt(identity);
         response.addCookie(new Cookie(Constant.IDENTITY, s));
         return result;
@@ -63,7 +67,7 @@ public class HomeController extends BaseController {
     @RequestMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         AuthUtil.clearIdentity(response);
-        response.sendRedirect(request.getContextPath());
+        response.sendRedirect(request.getHeader("REFERER"));
         return;
     }
 }

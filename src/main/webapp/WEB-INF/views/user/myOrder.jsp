@@ -13,14 +13,17 @@
     </div>
 </div>
 <jsp:include page="../footer.jsp"></jsp:include>
+<jsp:include page="tmpl/editOrder.jsp"/>
+
 <script id="myOrderTmpl" type="text/x-jquery-tmpl">
-    <div class="my-order-item" order-id="\${order.id}">
+    <div class="my-order-item" order-id="\${order.id}" style="width:700px">
         <div class="order-info-div">
             <span class="order-number">订单号\${order.uuid}</span>
+            <span class="order-time">\${DateUtils.getDateStr(order.checkInTime)}~\${DateUtils.getDateStr(order.checkOutTime)}</span>
             <span class="order-status">\${ORDER_MAP[order.status]}</span>
         </div>
         {%if roomType%}
-            <div class="room-type-container" onclick="window.location.href='${pageContext.request.contextPath}/roomTypeDetail?id=\${roomType.id}'">
+            <div class="room-type-container">
                 <img src="{%if roomType.cover%}\${roomType.cover}{%else%}<c:url value='/resources/images/index1.jpeg'/>{%/if%}" class="cover">
                 <div class="info">
                     <div>
@@ -34,7 +37,7 @@
                         {%if order.status == 1%}
                             <button class="btn btn-primary operate-btn" onclick="comment(\${roomType.id})">评价</button>
                         {%elif order.status == 2%}
-                             <button class="btn btn-primary operate-btn" onclick="updateInfo(\${order.id})">修改信息</button>
+                             <button class="btn btn-primary operate-btn" onclick="updateInfo(\${JSON.stringify(order)}, \${JSON.stringify(clients)}, \${JSON.stringify(roomType)})">修改信息</button>
                              <button class="btn btn-primary operate-btn" onclick="cancelOrder(\${order.id})">取消预定</button>
                         {%/if%}
                     </div>
@@ -84,6 +87,27 @@
             }
         });
         api.sendFormData();
+    }
+
+    function cancelOrder(id) {
+        var api = new API({
+            url: "${pageContext.request.contextPath}/user/order/cancelOrder",
+            method: "POST",
+            data: {id: id},
+            callback: function (r) {
+                if (r.code === 0) {
+                    location.reload();
+                    return;
+                }
+                Dialog.error("取消失败");
+            }
+        });
+        api.sendFormData();
+    }
+
+    function updateInfo(order, clients, roomType) {
+        renderModal(order, clients, roomType);
+        $modal.modal();
     }
 </script>
 

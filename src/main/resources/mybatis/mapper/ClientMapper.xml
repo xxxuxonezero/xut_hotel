@@ -20,6 +20,11 @@
         </foreach>
     </select>
 
+    <delete id="delete">
+        DELETE FROM xut_client
+        WHERE xut_order_id = #{orderId}
+    </delete>
+
     <resultMap id="client" type="com.xut.bean.Client">
         <id column="xut_id" property="id"></id>
         <result column="xut_realname" property="realName"></result>

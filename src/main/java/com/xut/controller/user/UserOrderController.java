@@ -7,10 +7,7 @@ import com.xut.controller.BaseController;
 import com.xut.controller.auth.AuthUtil;
 import com.xut.controller.data.OrderData;
 import com.xut.filter.Identity;
-import com.xut.model.Code;
-import com.xut.model.NoneDataResult;
-import com.xut.model.Page;
-import com.xut.model.Result;
+import com.xut.model.*;
 import com.xut.service.ClientService;
 import com.xut.service.OrderService;
 import com.xut.service.RoomTypeService;
@@ -106,7 +103,56 @@ public class UserOrderController extends BaseController {
 
     @PostMapping("/delete")
     public NoneDataResult delete(@RequestParam("id") Integer id) {
-        NoneDataResult result = orderService.delete(id);
+        NoneDataResult result = new NoneDataResult();
+        Result<Page<Order>> orderResult = orderService.search(null, null, id, null, 1, 1);
+        if (orderResult.isNotValid()) {
+            result.setCode(orderResult.getCode());
+            return result;
+        }
+        Order order = orderResult.getData().getList().get(0);
+        if (order.getStatus() == OrderStatus.CANCELED.id()) {
+            result = orderService.delete(id);
+        }
+        return result;
+    }
+
+    @PostMapping("/cancelOrder")
+    public NoneDataResult cancelOrder(@RequestParam("id") Integer id) {
+        NoneDataResult result = new NoneDataResult();
+        Result<Page<Order>> orderResult = orderService.search(null, null, id, null, 1, 1);
+        if (orderResult.isNotValid()) {
+            result.setCode(orderResult.getCode());
+            return result;
+        }
+        Order order = orderResult.getData().getList().get(0);
+        order.setStatus(OrderStatus.CANCELED.id());
+        result = orderService.update(order);
+        return result;
+    }
+
+    @PostMapping("/updateOrder")
+    public NoneDataResult updateOrder(@RequestBody OrderData orderData, HttpServletRequest request) {
+        NoneDataResult result = new NoneDataResult();
+        Identity identity = AuthUtil.getIdentity(request);
+        Order order = orderData.getOrder();
+        result = orderService.update(order);
+        if (result.isNotOK()) {
+            return result;
+        }
+        List<Client> clients = orderData.getClients();
+        if (CollectionUtils.isEmpty(clients)) {
+            result.setCode(Code.INVALID_PARAM);
+            return result;
+        }
+        result = clientService.delete(order.getId());
+        if (result.isNotOK()) {
+            return result;
+        }
+        clients = clients.stream().map(item -> {
+            item.setOrderId(order.getId());
+            return item;
+        }).collect(Collectors.toList());
+        result = clientService.create(clients);
         return result;
     }
 

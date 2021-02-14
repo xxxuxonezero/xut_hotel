@@ -7,10 +7,12 @@ public enum OrderStatus {
     private String desc;
 
     OrderStatus(Integer id, String desc) {
+        this.id = id;
+        this.desc = desc;
     }
 
     public Integer id() {
-        return id;
+        return this.id;
     }
     public String desc() {
         return desc;

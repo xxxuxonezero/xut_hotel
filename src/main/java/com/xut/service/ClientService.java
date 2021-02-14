@@ -56,4 +56,19 @@ public class ClientService {
         result.setData(map);
         return result;
     }
+
+
+    public NoneDataResult delete(Integer orderId) {
+        NoneDataResult result = new NoneDataResult();
+        if (orderId == null) {
+            result.setCode(Code.INVALID_PARAM);
+            return result;
+        }
+        try {
+            clientMapper.delete(orderId);
+        } catch (Exception e) {
+            logger.error("delete error", e);
+        }
+        return result;
+    }
 }

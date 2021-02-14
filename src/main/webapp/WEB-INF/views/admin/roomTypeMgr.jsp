@@ -14,6 +14,7 @@
     }
 </style>
 <body>
+<jsp:include page="/WEB-INF/views/header.jsp"/>
 <div class="admin-page flex">
     <nav:adminNav currentMenu="房型管理"></nav:adminNav>
     <div class="right-menu inline-block" style="margin-top: 100px">

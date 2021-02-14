@@ -13,6 +13,7 @@
     }
 </style>
 <body>
+<jsp:include page="/WEB-INF/views/header.jsp"/>
 <div class="admin-page flex">
     <nav:adminNav currentMenu="用户信息"></nav:adminNav>
     <div class="right-menu inline-block" style="margin-top: 100px">
@@ -62,12 +63,12 @@
             <thead>
             <tr>
                 <th><input type="checkbox" onclick="selectAll(this)"></th>
-                <th>客房号</th>
-                <th>房型</th>
-                <th>床</th>
-                <th>可住人数</th>
-                <th>楼层</th>
-                <th>状态</th>
+                <th>真名</th>
+                <th>用户名</th>
+                <th>身份证</th>
+                <th>性别</th>
+                <th>手机号</th>
+                <th>简介</th>
                 <th>操作</th>
             </tr>
             </thead>

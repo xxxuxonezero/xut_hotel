@@ -9,6 +9,10 @@
     <div class="items">
         <div class="header-item inline-block" onclick="window.location.href='${pageContext.request.contextPath}/'">首页</div>
         <div class="header-item inline-block" onclick="window.location.href='${pageContext.request.contextPath}/roomType'">房间订购</div>
+        <c:if test="${user != null && user.type == 0}">
+            <div class="header-item inline-block" onclick="window.location.href='${pageContext.request.contextPath}/admin/roomType'">酒店管理</div>
+        </c:if>
+
     </div>
     <div class="login-item">
         <c:if test="${user == null}">
@@ -155,7 +159,7 @@
             contentType: "application/x-www-form-urlencoded",
             success: function (r) {
                 if (r.code == 0) {
-                    Dialog.success("登录成功");
+                    window.location.href = "${pageContext.request.contextPath}/";
                 } else {
                     Dialog.error("登录失败...")
                 }

@@ -56,7 +56,9 @@
     <update id="update">
         UPDATE xut_order
         SET xut_check_in_time = #{checkInTime},
-        xut_check_out_time = #{checkOutTime}
+        xut_check_out_time = #{checkOutTime},
+        xut_note = #{note},
+        xut_status = #{status}
         WHERE xut_id = #{id}
     </update>
 

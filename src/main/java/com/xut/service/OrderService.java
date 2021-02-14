@@ -61,6 +61,10 @@ public class OrderService {
 
     public NoneDataResult update(Order order) {
         NoneDataResult result = new NoneDataResult();
+        if (order == null) {
+            result.setCode(Code.INVALID_PARAM);
+            return result;
+        }
         try {
             orderMapper.update(order);
         } catch (Exception e) {
