@@ -89,12 +89,12 @@
                     <div class="form-group">
                         <label>昵称</label>
                         <input type="text" class="form-control"
-                               placeholder="请输入昵称" name="username">
+                               placeholder="请输入昵称" name="userName">
                     </div>
                     <div class="form-group">
                         <label>真名</label>
                         <input type="text" class="form-control"
-                               placeholder="请输入真名" name="realname">
+                               placeholder="请输入真名" name="realName">
                     </div>
                     <div class="form-group">
                         <label>身份证</label>
@@ -103,7 +103,7 @@
                     </div>
                     <div class="form-group">
                         <label>密码</label>
-                        <input type="text" class="form-control"
+                        <input type="password" class="form-control"
                                placeholder="请输入密码" name="password">
                     </div>
                     <div class="form-group">
@@ -115,7 +115,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"  class="close">取消</button>
-                <button type="button" class="btn btn-primary">注册</button>
+                <button type="button" class="btn btn-primary" onclick="register()">注册</button>
             </div>
         </div>
     </div>
@@ -133,8 +133,8 @@
                     required: true,
                     rangelength: [8,12]
                 },
-                username: "required",
-                realname: "required",
+                userName: "required",
+                realName: "required",
                 phone: {
                     required: true,
                     phone: true
@@ -182,10 +182,14 @@
             type: "post",
             dataType: "json",
             contentType: "application/json",
+            data: JSON.stringify(formObject($("#registerForm").serializeArray())),
             success: function (r) {
                 if (r.code == 0) {
                     $("#registerModal .close").click();
+                    Dialog.success("注册成功~");
+                    return ;
                 }
+                Dialog.error("注册失败~")
             }
         })
     }

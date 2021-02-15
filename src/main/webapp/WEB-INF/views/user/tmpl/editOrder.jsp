@@ -92,6 +92,17 @@
         $modal.find(".order-btn").attr("onclick", "order("+ JSON.stringify(order) + "," + JSON.stringify(roomType) +")");
     }
 
+    $("#orderForm").validate({
+        rules: {
+            checkInTime:{
+                required: true
+            },
+            checkOutTime: {
+                required: true
+            }
+        }
+    });
+
     function initValidEvent($form) {
         $form.validate({
             rules:{
@@ -135,18 +146,20 @@
     }
 
     function order(order, roomType) {
-        if (!$("#orderModal").find(".error-tip").hasClass("none")) {
+        if (!$("#orderModal").find(".error-tip").hasClass("none") || !$("#orderForm").valid()) {
             Dialog.error("请完善信息");
             return;
         }
+        var flag = order ? true : false;
         if (!order) {
             order = {};
             order.roomTypeId = id;
-            order.price = roomType.price;
+            order.price = window.roomType.price;
         }
         var order = Object.assign(order, formObject($("#orderForm").serializeArray()));
+        console.log("${pageContext.request.contextPath}/user/order/" + (flag ? "updateOrder" : "create"))
         $.ajax({
-            url: "${pageContext.request.contextPath}/user/order/" + order ? "updateOrder" : "create",
+            url: "${pageContext.request.contextPath}/user/order/" + (flag ? "updateOrder" : "create"),
             type: "post",
             dataType: "json",
             contentType: "application/json",
