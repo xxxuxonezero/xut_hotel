@@ -36,6 +36,8 @@ public class UserMgrController extends BaseController {
 
     @GetMapping("/userInfo")
     public ModelAndView userInfo(HttpServletRequest request) {
-        return new ModelAndView("/admin/userInfo");
+        return new ModelAndView("/admin/userInfo", getUserModel(request));
     }
+
+
 }

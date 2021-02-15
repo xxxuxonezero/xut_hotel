@@ -16,9 +16,12 @@
           <if test="userId != null">
               AND xut_user_id = #{userId}
           </if>
-          <if test="roomTypeId != null">
-              AND xut_room_type_id = #{roomTypeId}
-          </if>
+        <if test="roomTypeIds != null">
+            AND xut_room_type_id IN
+            <foreach collection="roomTypeIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
           <if test="id != null">
               AND xut_id = #{id}
           </if>
@@ -37,8 +40,11 @@
         <if test="userId != null">
             AND xut_user_id = #{userId}
         </if>
-        <if test="roomTypeId != null">
-            AND xut_room_type_id = #{roomTypeId}
+        <if test="roomTypeIds != null">
+            AND xut_room_type_id IN
+            <foreach collection="roomTypeIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
         </if>
         <if test="id != null">
             AND xut_id = #{id}

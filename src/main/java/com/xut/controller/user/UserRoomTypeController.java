@@ -6,6 +6,7 @@ import com.xut.controller.BaseController;
 import com.xut.controller.data.RoomTypeDetail;
 import com.xut.controller.data.RoomTypeUIData;
 import com.xut.model.Code;
+import com.xut.model.Page;
 import com.xut.model.Result;
 import com.xut.service.RoomSettingService;
 import com.xut.service.RoomTypeService;
@@ -38,19 +39,20 @@ public class UserRoomTypeController  extends BaseController {
 
     @GetMapping("/roomTypeList")
     @ResponseBody
-    public Result<List<RoomTypeUIData>> getRoomTypeList(@RequestParam(value = "offset", required = false)Integer offset,
+    public Result<Page<RoomTypeUIData>> getRoomTypeList(@RequestParam(value = "offset", required = false)Integer offset,
                                                         @RequestParam(value = "pageSize", required = false)Integer pageSize) {
 
         offset = offset == null || offset < 1 ? 1 : offset;
         pageSize = pageSize == null ? DEFAULT_PAGE_SIZE : pageSize;
-        Result<List<RoomType>> roomTypesResult = roomTypeService.get(offset, pageSize);
-        Result<List<RoomTypeUIData>> result = new Result<>();
+        Result<Page<RoomType>> roomTypesResult = roomTypeService.get(offset, pageSize);
+        Result<Page<RoomTypeUIData>> result = new Result<>();
         if (roomTypesResult.isNotValid()) {
             result.setCode(roomTypesResult.getCode());
             return result;
         }
-        List<RoomTypeUIData> list = roomTypesResult.getData().stream().map(RoomTypeUIData::new).collect(Collectors.toList());
-        result.setData(list);
+        List<RoomTypeUIData> list = roomTypesResult.getData().getList().stream().map(RoomTypeUIData::new).collect(Collectors.toList());
+        Page<RoomTypeUIData> page = new Page<>(roomTypesResult.getData().getTotalCount(), list);
+        result.setData(page);
         return result;
     }
 

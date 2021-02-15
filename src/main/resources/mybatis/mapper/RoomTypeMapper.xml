@@ -10,23 +10,35 @@
     </insert>
 
     <select id="getById" parameterType="int" resultMap="roomType">
-        select * from xut_room_type where xut_id = #{id}
+        select * from xut_room_type where xut_id = #{id} AND xut_status = 1
     </select>
 
-    <select id="get" resultMap="roomType">
-        select * from xut_room_type
+    <select id="get" resultMap="roomType, totalCount">
+        SELECT SQL_CALC_FOUND_ROWS * FROM xut_room_type
+        WHERE xut_status = 1
         <if test="type != null">
-            WHERE xut_type = #{type}
+            AND xut_type = #{type}
         </if>
-        limit ${(offset-1)*pageSize}, #{pageSize}
+        limit ${(offset-1)*pageSize}, #{pageSize};
+
+        SELECT FOUND_ROWS() as totalCount;
     </select>
 
-    <delete id="delete">
-      DELETE FROM xut_room_type WHERE xut_id IN
-      <foreach collection="list" index="index" item="item" open = "(" separator = "," close=")">
-          #{item}
-      </foreach>
-    </delete>
+    <update id="delete">
+        UPDATE xut_room_type
+        SET xut_status = 0
+        WHERE xut_id IN
+        <foreach collection="list" index="index" item="item" open = "(" separator = "," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+<!--    <delete id="delete">-->
+<!--      DELETE FROM xut_room_type WHERE xut_id IN-->
+<!--      <foreach collection="list" index="index" item="item" open = "(" separator = "," close=")">-->
+<!--          #{item}-->
+<!--      </foreach>-->
+<!--    </delete>-->
 
     <update id="update" parameterType="com.xut.bean.RoomType">
         UPDATE xut_room_type
@@ -49,5 +61,10 @@
         <result column="xut_floor" property="floor"></result>
         <result column="xut_hasWindow" property="hasWindow"></result>
         <result column="xut_smoke" property="smoke"></result>
+        <result column="xut_status" property="status"></result>
+    </resultMap>
+
+    <resultMap id="totalCount" type="java.lang.Integer">
+        <result column="totalCount"/>
     </resultMap>
 </mapper>

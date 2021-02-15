@@ -1,6 +1,8 @@
 package com.xut.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Page<T> {
     int totalCount;
@@ -11,7 +13,17 @@ public class Page<T> {
 
     public Page(int totalCount, List<T> list) {
         this.totalCount = totalCount;
-        this.list = list;
+        this.list = list == null ? new ArrayList<>() : list;
+    }
+
+    public boolean isEmpty() {
+        return list == null
+                || list instanceof List && ((List<?>) list).size() == 0
+                || list instanceof Map && ((Map<?, ?>) list).size() == 0;
+    }
+
+    public boolean isNotEmpty() {
+        return !isEmpty();
     }
 
     public int getTotalCount() {

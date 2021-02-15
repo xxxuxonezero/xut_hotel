@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,11 +44,11 @@ public class OrderService {
         return result;
     }
 
-    public Result<Page<Order>> search(Integer userId, Integer roomTypeId, Integer id, Integer status, int offset, int pageSize) {
+    public Result<Page<Order>> search(Integer userId, List<Integer> roomTypeIds, Integer id, Integer status, int offset, int pageSize) {
         Result<Page<Order>> result = new Result<>();
         try {
-            List<Order> orders = orderMapper.search(userId, roomTypeId, id, offset, status, pageSize);
-            int count = orderMapper.searchCount(userId, roomTypeId, id, offset, status, pageSize);
+            List<Order> orders = orderMapper.search(userId, roomTypeIds, id, offset, status, pageSize);
+            int count = orderMapper.searchCount(userId, roomTypeIds, id, offset, status, pageSize);
             Page<Order> page = new Page<>();
             page.setList(orders);
             page.setTotalCount(count);

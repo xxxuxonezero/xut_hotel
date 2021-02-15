@@ -14,7 +14,7 @@ public interface RoomTypeMapper {
 
     RoomType getById(@Param("id") Integer id);
 
-    List<RoomType> get(@Param("type") String type, @Param("offset") int offset, @Param("pageSize") int pageSize);
+    List<List<?>> get(@Param("type") String type, @Param("offset") int offset, @Param("pageSize") int pageSize);
 
     void delete(List<Integer> ids);
 

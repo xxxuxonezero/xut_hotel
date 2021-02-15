@@ -83,13 +83,13 @@ public class UserOrderController extends BaseController {
             return result;
         }
         List<Integer> orderIds = orders.stream().map(Order::getRoomTypeId).collect(Collectors.toList());
-        Result<List<RoomType>> roomTypeResult = roomTypeService.get(1, Integer.MAX_VALUE);
+        Result<Page<RoomType>> roomTypeResult = roomTypeService.get(1, Integer.MAX_VALUE);
         if (roomTypeResult.isNotValid()) {
             result.setCode(roomTypeResult.getCode());
             return result;
         }
         Map<Integer, RoomType> roomTypeMap =
-                roomTypeResult.getData().stream().collect(Collectors.toMap(RoomType::getId, item -> item));
+                roomTypeResult.getData().getList().stream().collect(Collectors.toMap(RoomType::getId, item -> item));
         List<OrderData> list = new ArrayList<>();
         for (Order order : orders) {
             list.add(new OrderData(roomTypeMap.get(order.getRoomTypeId()), order,

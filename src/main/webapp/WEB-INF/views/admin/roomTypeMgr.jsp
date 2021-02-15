@@ -12,6 +12,10 @@
         display: flex;
         align-items: center;
     }
+
+    #roomTypeTable td {
+        vertical-align: middle;
+    }
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/header.jsp"/>
@@ -110,6 +114,8 @@
                 </tr>
             </tbody>
         </table>
+
+        <div id="paginationContainer"></div>
     </div>
 </div>
 </body>
@@ -117,7 +123,7 @@
 <script id="roomTypeList" type="text/x-jquery-tmpl">
         {%each data%}
             <tr id="\${id}">
-                <td><input type="checkbox"></td>
+                <td><input type="checkbox" {%if status == 3%}disabled{%/if%}></td>
                 <td>\${type}</td>
                 <td>\${price}</td>
                 <td>\${maxPeople}</td>
@@ -128,8 +134,8 @@
                 <td>{%if hasWindow == 0%}否{%elif hasWindow == 1%}是{%/if%}</td>
                 <td>{%if smoke == 0%}禁烟{%elif smoke == 1%}不禁烟{%/if%}</td>
                 <td>
-                    <a onclick="editRoomType(\${id})" data-toggle="modal" data-target="#roomTypeModal">编辑</a>
-                    <a onclick="deleteRoomType(\${id})">删除</a>
+                    <button class="btn btn-primary" onclick="editRoomType(\${id})" data-toggle="modal" data-target="#roomTypeModal" {%if status == 3%}disabled{%/if%}>编辑</a>
+                    <button class="btn btn-secondary" onclick="deleteRoomType(\${id})" {%if status == 3%}disabled{%/if%}>删除</a>
                 </td>
             </tr>
         {%/each%}
@@ -140,6 +146,9 @@
         ADD: 1,
         EDIT: 2
     };
+
+    var offset = '${param.offset}' ? '${param.offset}' : 1;
+
     function clearModal() {
         $("#roomTypeModal").find("input[type != 'radio']").val("");
         $("#roomTypeModal").find("input[type = 'radio']:checked").prop("checked", false);
@@ -203,17 +212,22 @@
 
     (function () {
         $.ajax({
-            url: "roomTypeList",
+            url: "roomTypeList?offset=" + offset,
             type: "get",
-            data: {offset:1},
             dataType: "json",
             contentType: "application/json",
             success: function (r) {
                 if (r.code == 0) {
                     $("#roomTypeTable tbody").remove();
                     var data = [];
-                    data = r.data;
+                    data = r.data.list;
                     $("#roomTypeList").tmpl({data: data}).appendTo("#roomTypeTable");
+                    var pagination = new Pagination({
+                        total: r.data.totalCount,
+                        url: '${pageContext.request.contextPath}/admin/roomType',
+                        offset: offset,
+                        container: "#paginationContainer"
+                    });
                 }
             }
         });
@@ -234,7 +248,8 @@
                     digits: true
                 }
             }
-        })
+        });
+
     })();
 
     function checkTypeName(type) {
@@ -309,6 +324,7 @@
         } else {
             $("#roomTypeTable tbody").find("input[type='checkbox']").prop("checked", false);
         }
+        $("#roomTypeTable tbody").find("input[type='checkbox']:disabled").prop("checked", false);
     }
 
     function deleteRoomType(id) {

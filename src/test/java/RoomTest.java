@@ -40,8 +40,8 @@ public class RoomTest {
     public void search() {
         List<Integer> ids = new ArrayList<>();
         ids.add(1);
-        List<RoomData> list = bean.search( ids, null, 1, Integer.MAX_VALUE);
-        System.out.println(list.get(0));
+        List<RoomData> list = bean.search( null, null, 1, Integer.MAX_VALUE);
+        System.out.println(list.size());
 
     }
 

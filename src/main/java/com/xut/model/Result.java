@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Result<T> {
-    int code;
-    T data;
+    private int code;
+    private String msg;
+    private T data;
 
     public Result() {
         this.code = Code.SUCCESS;

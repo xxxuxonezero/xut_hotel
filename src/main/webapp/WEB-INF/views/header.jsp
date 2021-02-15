@@ -21,8 +21,8 @@
         </c:if>
         <c:if test="${user != null}">
             <div class="user-img">
-                <img src="${empty user.avatar ? "http://xuxuxuonezero.top/default_avatar.png" : user.avatar}" alt="">
-                <ul class="user-items">
+                <img id="avatarDiv" src="${empty user.avatar ? "http://xuxuxuonezero.top/default_avatar.png" : user.avatar}" alt="">
+                <ul class="user-items none">
                     <li class="user-item">
                         <a href="${pageContext.request.contextPath}/user/MyInfo" class="inline-block">个人信息</a>
                     </li>
@@ -31,6 +31,9 @@
                     </li>
                     <li class="user-item">
                         <a href="${pageContext.request.contextPath}/user/comment/MyComment" class="inline-block">我的评论</a>
+                    </li>
+                    <li class="user-item">
+                        <a href="${pageContext.request.contextPath}/user/ResetPwd" class="inline-block">修改密码</a>
                     </li>
                     <li class="user-item">
                         <a href="${pageContext.request.contextPath}/logout" class="inline-block">登出</a>
@@ -186,4 +189,13 @@
             }
         })
     }
+
+    $(".user-img").on("mouseenter", function () {
+        $(".user-items").show();
+    });
+
+    $(".user-img").on("mouseleave", function () {
+        $(".user-items").hide();
+    });
+
 </script>

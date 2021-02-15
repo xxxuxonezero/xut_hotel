@@ -3,7 +3,9 @@ package com.xut.controller.admin;
 import com.xut.bean.Room;
 import com.xut.bean.RoomData;
 import com.xut.bean.RoomType;
+import com.xut.controller.BaseController;
 import com.xut.model.NoneDataResult;
+import com.xut.model.Page;
 import com.xut.model.Result;
 import com.xut.service.RoomService;
 import com.xut.service.RoomTypeService;
@@ -12,12 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
-public class RoomController {
+public class RoomController extends BaseController {
     public static final Integer DEFAULT_PAGE_SIZE = 10;
 
     @Autowired
@@ -26,11 +29,11 @@ public class RoomController {
     RoomTypeService roomTypeService;
 
     @GetMapping("/room")
-    public ModelAndView roomView() {
-        Map<String, Object> map = new HashMap<>();
-        Result<List<RoomType>> listResult = roomTypeService.get(1, Integer.MAX_VALUE);
+    public ModelAndView roomView(HttpServletRequest request) {
+        Map<String, Object> map = getUserModel(request);
+        Result<Page<RoomType>> listResult = roomTypeService.get(1, Integer.MAX_VALUE);
         if (listResult.isValid()) {
-            map.put("types", listResult.getData());
+            map.put("types", listResult.getData().getList());
         }
         return new ModelAndView("admin/roomMgr", map);
     }

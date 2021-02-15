@@ -17,6 +17,10 @@
         height: 30px;
         padding: 5px;
     }
+
+    td {
+        vertical-align: middle !important;
+    }
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/header.jsp"/>
@@ -84,11 +88,11 @@
                 <td>\${roomType.type}</td>
                 <td>\${order.price}</td>
                 <td>{%if clients%}\${clients.length}{%else%}0{%/if%}</td>
-                <td>\${order.checkInTime}</td>
-                <td>\${order.checkOutTime}</td>
-                <td>\${STATUS[order.status]}</td>
+                <td>\${DateUtils.getDateStr(order.checkInTime, "-")}</td>
+                <td>\${DateUtils.getDateStr(order.checkOutTime, "-")}</td>
+                <td style="color:orange">\${STATUS[order.status]}</td>
                 <td>
-                    <a onclick="render(\${JSON.stringify(item)})" data-toggle="modal" data-target="#orderModal">查看</a>
+                    <button class="btn btn-primary" onclick="render(\${JSON.stringify(item)})" data-toggle="modal" data-target="#orderModal">查看</a>
                 </td>
             </tr>
         {%/each%}
@@ -118,11 +122,11 @@
     {%/each%}
    <div class="detail-field">
         <span>入住时间：</span>
-        <span>\${order.checkInTime}</span>
+        <span>\${DateUtils.getDateStr(order.checkInTime, "-")}</span>
     </div>
     <div class="detail-field">
         <span>离店时间：</span>
-        <span>\${order.checkOutTime}</span>
+        <span>\${DateUtils.getDateStr(order.checkOutTime, "-")}</span>
     </div>
     <div class="detail-field">
         <span>状态：</span>
@@ -144,6 +148,8 @@
 
     function render(data) {
         clearModal();
+        $("#orderModal .modal-body").empty();
+
         $("#orderDetailTmpl").tmpl(data).appendTo("#orderModal .modal-body");
     }
 

@@ -2,38 +2,66 @@ package com.xut.controller.admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xut.bean.Order;
+import com.xut.bean.Room;
 import com.xut.bean.RoomType;
+import com.xut.controller.BaseController;
 import com.xut.model.NoneDataResult;
+import com.xut.model.Page;
 import com.xut.model.Result;
+import com.xut.service.OrderService;
 import com.xut.service.RoomTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping("/admin")
 @Controller
-public class RoomTypeController {
-    public static final Integer DEFAULT_PAGE_SIZE = 10;
-
+public class RoomTypeController extends BaseController {
     @Autowired
     RoomTypeService roomTypeService;
+    @Autowired
+    OrderService orderService;
+
+    private static final int USING = 3;
 
     @GetMapping("/roomType")
-    public String roomType() {
-        return "admin/roomTypeMgr";
+    public ModelAndView roomType(HttpServletRequest request) {
+        return new ModelAndView("admin/roomTypeMgr", getUserModel(request));
     }
 
     @ResponseBody
     @GetMapping("/roomTypeList")
-    public Result<List<RoomType>> getRoomTypeList(@RequestParam(value = "offset", required = false)Integer offset,
-                                          @RequestParam(value = "pageSize", required = false)Integer pageSize) {
-
-        offset = offset == null || offset < 1 ? 1 : offset;
-        pageSize = pageSize == null ? DEFAULT_PAGE_SIZE : pageSize;
-        return roomTypeService.get(offset, pageSize);
+    public Result<Page<RoomType>> getRoomTypeList(@RequestParam(value = "offset", required = false, defaultValue = "1")Integer offset,
+                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10")Integer pageSize) {
+        Result<Page<RoomType>> result = roomTypeService.get(offset, pageSize);
+        if (result.isNotValid()) {
+            return result;
+        }
+        List<RoomType> roomTypes = result.getData().getList();
+        List<Integer> typeIds = roomTypes.stream().map(RoomType::getId).collect(Collectors.toList());
+        /**
+         * 若是该房型目前有交易中的订单，则该房型不可删除
+         */
+        Result<Page<Order>> orderResult =
+                orderService.search(null, typeIds, null, 2, 1, Integer.MAX_VALUE);
+        if (orderResult.isValid()) {
+            List<Order> orders = orderResult.getData().getList();
+            Map<Integer, List<Order>> map = orders.stream().collect(Collectors.groupingBy(Order::getRoomTypeId));
+            for (RoomType roomType : roomTypes) {
+                if (map.get(roomType.getId()) != null) {
+                    roomType.setStatus(USING);
+                }
+            }
+        }
+        return result;
     }
 
     @ResponseBody

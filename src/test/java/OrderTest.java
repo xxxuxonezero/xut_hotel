@@ -1,12 +1,14 @@
 import com.xut.bean.Order;
 import com.xut.dao.CommentMapper;
 import com.xut.dao.OrderMapper;
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,7 +37,7 @@ public class OrderTest {
     @Test
     public void search() {
         List<Order> search =
-                bean.search(null, 1, null, 1,2, MAX_VALUE);
+                bean.search(null, Collections.singletonList(1), null, 1,2, MAX_VALUE);
         System.out.println(search.size());
     }
 }

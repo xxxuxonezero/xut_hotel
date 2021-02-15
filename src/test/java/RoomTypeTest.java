@@ -36,9 +36,9 @@ public class RoomTypeTest {
     @Test
     public void get() {
         RoomTypeMapper roomTypeMapper = ac.getBean(RoomTypeMapper.class);
-        List<RoomType> roomTypes =
-                roomTypeMapper.get("情趣房",1, 10);
-        System.out.println(roomTypes.size());
+        List<List<?>> roomTypes =
+                roomTypeMapper.get(null,1, 10);
+        System.out.println(roomTypes.get(1).get(0));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class RoomTypeTest {
     @Test
     public void delete () {
         RoomTypeMapper bean = ac.getBean(RoomTypeMapper.class);
-        bean.delete(Collections.singletonList(2));
+        bean.delete(Collections.singletonList(14));
         RoomType byId = bean.getById(2);
         System.out.println(byId);
     }

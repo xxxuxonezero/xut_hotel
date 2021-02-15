@@ -74,4 +74,8 @@ public class RoomService {
         result.setData(search.getData().get(0));
         return result;
     }
+
+    public Result<List<RoomData>> getAll() {
+        return search(null, null, 1, Integer.MAX_VALUE);
+    }
 }

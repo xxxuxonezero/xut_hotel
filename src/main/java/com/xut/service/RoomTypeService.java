@@ -4,6 +4,7 @@ import com.xut.bean.RoomType;
 import com.xut.dao.RoomTypeMapper;
 import com.xut.model.Code;
 import com.xut.model.NoneDataResult;
+import com.xut.model.Page;
 import com.xut.model.Result;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -53,15 +54,26 @@ public class RoomTypeService {
         return result;
     }
 
-    public Result<List<RoomType>> get(int offset, int pageSize) {
-        Result<List<RoomType>> result = new Result<>();
+    public Result<Page<RoomType>> get(int offset, int pageSize) {
+        Result<Page<RoomType>> result = new Result<>();
         try {
-            List<RoomType> roomTypes = roomTypeMapper.get(null, offset, pageSize);
-            result.setData(roomTypes);
+            List<List<?>> roomTypes = roomTypeMapper.get(null, offset, pageSize);
+            result.setData(new Page<RoomType>((Integer) roomTypes.get(1).get(0), (List<RoomType>)roomTypes.get(0)));
         } catch (Exception e) {
             logger.error("RoomTypeService get error ", e);
             result.setCode(Code.DATABASE_SELECT_ERROR);
         }
+        return result;
+    }
+
+    public Result<List<RoomType>> getList(int offset, int pageSize) {
+        Result<List<RoomType>> result = new Result<>();
+        Result<Page<RoomType>> pageResult = get(offset, pageSize);
+        if (pageResult.isNotValid()) {
+            result.setCode(pageResult.getCode());
+            return result;
+        }
+        result.setData(pageResult.getData().getList());
         return result;
     }
 
@@ -71,7 +83,8 @@ public class RoomTypeService {
             return result;
         }
         try {
-            List<RoomType> roomType = roomTypeMapper.get(type, 1, 1);
+            List<List<?>> list = roomTypeMapper.get(type, 1, 1);
+            List<RoomType> roomType = (List<RoomType>) list.get(0);
             if (CollectionUtils.isNotEmpty(roomType)) {
                 result.setData(roomType.get(0));
             }
@@ -107,11 +120,15 @@ public class RoomTypeService {
 
     public Map<Integer, RoomType> getMapByTypeId() {
         Map<Integer, RoomType> map = new HashMap<>();
-        Result<List<RoomType>> roomTypeResult = get(1, Integer.MAX_VALUE);
+        Result<Page<RoomType>> roomTypeResult = get(1, Integer.MAX_VALUE);
         if (roomTypeResult.isNotValid()) {
             return map;
         }
-        map = roomTypeResult.getData().stream().collect(Collectors.toMap(RoomType::getId, item -> item));
+        List<RoomType> roomTypes = roomTypeResult.getData().getList();
+        if (CollectionUtils.isEmpty(roomTypes)) {
+            return map;
+        }
+        map = roomTypes.stream().collect(Collectors.toMap(RoomType::getId, item -> item));
         return map;
     }
 

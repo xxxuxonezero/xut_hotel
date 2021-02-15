@@ -25,7 +25,7 @@
     <select id="search" resultMap="roomData">
         SELECT r.xut_id AS xut_id, xut_room_number, xut_floor_num, xut_type, xut_bed, rt.xut_id AS type_id, xut_max_people FROM xut_room r
         INNER JOIN xut_room_type rt ON rt.xut_id = r.xut_type_id
-        WHERE (#{id} IS NULL OR r.xut_id = #{id})
+        WHERE (#{id} IS NULL OR r.xut_id = #{id}) AND rt.xut_status = 1
         <if test="typeIds != null">
              AND r.xut_type_id IN
             <foreach collection="typeIds" index="index" item="item" open="(" separator="," close=")">
@@ -38,7 +38,6 @@
     <resultMap id="roomData" type="com.xut.bean.RoomData">
         <id column="xut_id" property="id"></id>
         <result column="xut_room_number" property="roomNumber"></result>
-        <!--<result column="xut_tpe_id" property="typeId"></result>-->
         <result column="xut_floor_num" property="floorNum"></result>
         <result column="xut_type" property="type"></result>
         <result column="xut_bed" property="bed"></result>
