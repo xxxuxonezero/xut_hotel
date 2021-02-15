@@ -48,6 +48,7 @@
     </div>
     <div id="roomTypeList">
     </div>
+    <div id="paginationContainer"></div>
 
 </div>
 <jsp:include page="../footer.jsp"></jsp:include>
@@ -67,19 +68,21 @@
    {%/each%}
 </script>
 <script>
+    var offset = '${param.offset}' ? '${param.offset}' : 1;
+
     (function () {
         initData();
     })();
 
     function initData() {
         $.ajax({
-            url: "roomTypeList",
+            url: "roomTypeList?offset="+ offset,
             type:"get",
             contentType: "application/json",
             dataType: "json",
             success: function (r) {
                 if (r.code == 0) {
-                    var data = r.data;
+                    var data = r.data.list;
                     if (data) {
                         data.forEach(function (item) {
                             item.detail = "";
@@ -91,7 +94,13 @@
                             item.detail = item.size ? item.detail + item.size+"平方米 " : item.detail;
                         })
                     }
-                    $("#roomTypeItemTmpl").tmpl({data: r.data}).appendTo("#roomTypeList");
+                    $("#roomTypeItemTmpl").tmpl({data: data}).appendTo("#roomTypeList");
+                    var pagination = new Pagination({
+                        total: r.data.totalCount,
+                        url: '${pageContext.request.contextPath}/roomType',
+                        offset: offset,
+                        container: "#paginationContainer"
+                    });
                 } else{
                     Dialog.error("加载失败");
                 }

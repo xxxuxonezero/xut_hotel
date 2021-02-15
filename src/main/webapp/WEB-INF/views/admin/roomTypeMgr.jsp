@@ -162,10 +162,10 @@
         if ($("#roomTypeForm").valid()) {
             if (checkTypeName(data.type) || type == TYPE.EDIT) {
                 data.imgList = [];
-                imgItems.forEach(function (item) {
-                    data.imgList.push(item.url);
-                });
                 if (type == TYPE.ADD) {
+                    imgItems.forEach(function (item) {
+                        data.imgList.push(item.url);
+                    });
                     $.ajax({
                         url: "addRoomType",
                         type: "post",
@@ -183,6 +183,10 @@
                     });
                 }
                 else if (type == TYPE.EDIT) {
+                    var imgs = $("#imageTable img");
+                    for (var i = 0; i < imgs.length; i++) {
+                        data.imgList.push($(imgs[i]).prop("src"));
+                    }
                     data.id = id;
                     $.ajax({
                         url: "editRoomType",
