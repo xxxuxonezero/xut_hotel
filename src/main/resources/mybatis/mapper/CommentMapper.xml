@@ -43,6 +43,4 @@
         <result property="createdTime" column="xut_created_time"></result>
     </resultMap>
 
-
-
 </mapper>

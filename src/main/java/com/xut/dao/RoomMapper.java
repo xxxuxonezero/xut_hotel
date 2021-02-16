@@ -13,7 +13,7 @@ public interface RoomMapper {
 
     void update(Room room);
 
-    List<RoomData> search(@Param("typeIds") List<Integer> typeIds,
+    List<List<?>> search(@Param("typeIds") List<Integer> typeIds,
                           @Param("id") Integer id,
                           @Param("offset") int offset, @Param("pageSize")int pageSize);
 

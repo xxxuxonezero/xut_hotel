@@ -28,20 +28,20 @@ public class RoomTest {
 
     @Test
     public void update() {
-        List<RoomData> list = bean.search(null, null, 1, Integer.MAX_VALUE);
-        RoomData roomData = list.get(0);
-        System.out.println(roomData.getTypeId());
-        Room room = new Room(roomData);
-        room.setTypeId(3);
-        bean.update(room);
+//        List<RoomData> list = bean.search(null, null, 1, Integer.MAX_VALUE);
+//        RoomData roomData = list.get(0);
+//        System.out.println(roomData.getTypeId());
+//        Room room = new Room(roomData);
+//        room.setTypeId(3);
+//        bean.update(room);
     }
 
     @Test
     public void search() {
-        List<Integer> ids = new ArrayList<>();
-        ids.add(1);
-        List<RoomData> list = bean.search( null, null, 1, Integer.MAX_VALUE);
-        System.out.println(list.size());
+//        List<Integer> ids = new ArrayList<>();
+//        ids.add(1);
+//        List<RoomData> list = bean.search( null, null, 1, Integer.MAX_VALUE);
+//        System.out.println(list.size());
 
     }
 

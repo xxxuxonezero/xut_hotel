@@ -36,7 +36,7 @@ public class OrderTest {
 
     @Test
     public void search() {
-        List<Order> search =
+        List<List<?>> search =
                 bean.search(null, Collections.singletonList(1), null, 1,2, MAX_VALUE);
         System.out.println(search.size());
     }

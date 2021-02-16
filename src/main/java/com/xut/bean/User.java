@@ -16,6 +16,15 @@ public class User {
     private Date createdTime;
     private Date updatedTime;
     private Date lastLoginTime;
+    private boolean whetherOld;
+
+    public boolean isWhetherOld() {
+        return whetherOld;
+    }
+
+    public void setWhetherOld(boolean whetherOld) {
+        this.whetherOld = whetherOld;
+    }
 
     public Integer getId() {
         return id;

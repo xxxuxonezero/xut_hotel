@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.List;
+
 public class UserTest {
     ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:spring.xml");
     UserMapper bean = ac.getBean(UserMapper.class);
@@ -30,5 +32,15 @@ public class UserTest {
         User user = bean.getUserByIdAndPwd("320211199908263256", "123456");
         user.setUserName("admin1");
         bean.update(user);
+    }
+
+    @Test
+    public void search() {
+        /**
+         * old: 0--新用户， 1--老用户
+         */
+        List<List<?>> search =
+                bean.search(null, 0, 1, Integer.MAX_VALUE);
+        System.out.println(search);
     }
 }

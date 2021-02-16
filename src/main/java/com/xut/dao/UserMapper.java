@@ -18,4 +18,11 @@ public interface UserMapper {
 
     List<User> getAll();
 
+    List<List<?>> search(@Param("type") Integer type,
+                         @Param("old") Integer old,
+                         @Param("offset") int offset,
+                         @Param("pageSize") int pageSize);
+
+    void delete(List<Integer> ids);
+
 }

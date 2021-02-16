@@ -5,6 +5,7 @@ import com.xut.bean.RoomData;
 import com.xut.dao.RoomMapper;
 import com.xut.model.Code;
 import com.xut.model.NoneDataResult;
+import com.xut.model.Page;
 import com.xut.model.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,11 +42,11 @@ public class RoomService {
         return result;
     }
 
-    public Result<List<RoomData>> search(List<Integer> typeIds, Integer id, int offset, int pageSize) {
-        Result<List<RoomData>> result = new Result<>();
+    public Result<Page<RoomData>> search(List<Integer> typeIds, Integer id, int offset, int pageSize) {
+        Result<Page<RoomData>> result = new Result<>();
         try {
-            List<RoomData> roomData = roomMapper.search(typeIds, id, offset, pageSize);
-            result.setData(roomData);
+            List<List<?>> data = roomMapper.search(typeIds, id, offset, pageSize);
+            result.setData(new Page<RoomData>((Integer) data.get(1).get(0), (List<RoomData>) data.get(0)));
         } catch (Exception e) {
             logger.error("RoomService search error");
             result.setCode(Code.DATABASE_SELECT_ERROR);
@@ -66,16 +67,16 @@ public class RoomService {
 
     public Result<RoomData> getById(Integer id) {
         Result<RoomData> result = new Result<>();
-        Result<List<RoomData>> search = search(null, id, 1, 1);
+        Result<Page<RoomData>> search = search(null, id, 1, 1);
         if (search.isNotValid()) {
             result.setCode(search.getCode());
             return result;
         }
-        result.setData(search.getData().get(0));
+        result.setData(search.getData().getList().get(0));
         return result;
     }
 
-    public Result<List<RoomData>> getAll() {
+    public Result<Page<RoomData>> getAll() {
         return search(null, null, 1, Integer.MAX_VALUE);
     }
 }

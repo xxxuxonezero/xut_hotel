@@ -11,16 +11,6 @@
     .detail-field {
         padding: 10px;
     }
-
-    .select {
-        width: 150px;
-        height: 30px;
-        padding: 5px;
-    }
-
-    td {
-        vertical-align: middle !important;
-    }
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/header.jsp"/>
@@ -78,11 +68,12 @@
             </tr>
             </tbody>
         </table>
+        <div id="paginationContainer"></div>
     </div>
 </div>
 </body>
 <script id="orderList" type="text/x-jquery-tmpl">
-        {%each(index, item) data.list%}
+        {%each(index, item) data%}
             <tr id="\${order.id}">
                 <td>\${order.uuid}</td>
                 <td>\${roomType.type}</td>
@@ -140,6 +131,8 @@
         1: "已完成",
         2: "交易中"
     };
+
+    var offset = '${param.offset}' ? '${param.offset}' : 1;
     function clearModal() {
         $("#orderModal").find("input[type != 'radio']").val("");
         $("#orderModal").find("input[type = 'radio']:checked").prop("checked", false);
@@ -165,17 +158,23 @@
         var typeId = $("select[name=typeId]").val();
         var status = $("select[name=status]").val();
         $.ajax({
-            url: "orderList",
+            url: "orderList?offset=" + offset,
             type: "get",
-            data: {offset:1, status: status, typeId: typeId},
+            data: {offset: offset, status: status, typeId: typeId},
             dataType: "json",
             contentType: "application/json",
             success: function (r) {
                 if (r.code == 0) {
                     $("#orderTable tbody").remove();
                     var data = [];
-                    data = r.data;
+                    data = r.data.list;
                     $("#orderList").tmpl({data: data}).appendTo("#orderTable");
+                    var pagination = new Pagination({
+                        total: r.data.totalCount,
+                        url: '${pageContext.request.contextPath}/admin/order',
+                        offset: offset,
+                        container: "#paginationContainer"
+                    });
                 }
             }
         });

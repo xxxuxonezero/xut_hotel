@@ -4,6 +4,7 @@ import com.xut.bean.User;
 import com.xut.dao.UserMapper;
 import com.xut.model.Code;
 import com.xut.model.NoneDataResult;
+import com.xut.model.Page;
 import com.xut.model.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,22 @@ public class UserService {
             result.setCode(Code.DATABASE_SELECT_ERROR);
         }
         return result;
+    }
+
+    public Result<Page<User>> search(Integer type, Integer old,int offset, int pageSize) {
+        Result<Page<User>> result = new Result<>();
+        try {
+            List<List<?>> search = userMapper.search(type, old, offset, pageSize);
+            result.setData(new Page<User>((Integer) search.get(1).get(0), (List<User>)search.get(0)));
+        }catch (Exception e) {
+            logger.error("UserService search error ", e);
+            result.setCode(Code.DATABASE_SELECT_ERROR);
+        }
+        return result;
+    }
+
+    public Result<Page<User>> search(Integer type, int offset, int pageSize) {
+        return search(type, offset, pageSize);
     }
 
     public Result<User> getByIdentificationIdAndPwd(String identificationId, String pwd) {
@@ -87,6 +104,17 @@ public class UserService {
         } catch (Exception e) {
             logger.error("UserService resetPassword error ", e);
             result.setCode(Code.DATABASE_UPDATE_ERROR);
+        }
+        return result;
+    }
+
+    public NoneDataResult delete(List<Integer> ids) {
+        NoneDataResult result = new NoneDataResult();
+        try {
+            userMapper.delete(ids);
+        } catch (Exception e) {
+            logger.error("UserService delete error ", e);
+            result.setCode(Code.DATABASE_DELETE_ERROR);
         }
         return result;
     }

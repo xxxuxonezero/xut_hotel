@@ -19,6 +19,7 @@
         init: function (options) {
             var page = Math.ceil(this.total / this.pageSize);
             this.$view = $(WRAPPER);
+            $(this.container).empty();
             $(this.container).append(this.$view);
             for (var i = 1; i <= page; i++) {
                 var $item = $(ITEM);

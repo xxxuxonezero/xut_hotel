@@ -28,8 +28,8 @@
         </div>
     </div>
     <div class="title-bar flex mb16" style="align-items: center">
-        <div class="item-bar inline-center active detail-bar" onclick="toggleDetail(this)">商品详情</div>
-        <div class="item-bar inline-center comment-bar" onclick="toggleComment(this)">评论</div>
+        <div class="item-bar inline-center active detail-bar" onclick="window.location.href='roomTypeDetail?id=\${id}&type=0'">商品详情</div>
+        <div class="item-bar inline-center comment-bar" onclick="window.location.href='roomTypeDetail?id=\${id}&type=1'">评论</div>
     </div>
     <div id="contentContainer">
         <div class="detail">
@@ -70,6 +70,7 @@
     var id = '${param.id}';
     var commentInit = false;
     var roomType;
+    var type = '${param.type}' ? '${param.type}' : 0;
 
     id = parseInt(id);
     (function () {
@@ -86,6 +87,7 @@
                 contentType: "application/json",
                 dataType: "json",
                 type: "get",
+                async: false,
                 data: {id: id},
                 success: function (r) {
                     if (r.code == 0) {
@@ -96,8 +98,13 @@
                         Dialog.error("加载失败");
                     }
                 }
-            })
+            });
+        }
 
+        if (type == 0) {
+            toggleDetail();
+        } else {
+            toggleComment();
         }
     }
 
@@ -111,7 +118,7 @@
         item.detail = item.size ? item.detail + item.size+"平方米 " : item.detail;
     }
 
-    function toggleComment(e) {
+    function toggleComment() {
         if (!commentInit) {
             initComment();
             commentInit = true;
@@ -122,7 +129,7 @@
         $("#contentContainer .detail").addClass("none");
     }
 
-    function toggleDetail(e) {
+    function toggleDetail() {
         $(".comment-bar").removeClass("active");
         $(".detail-bar").addClass("active");
         $(".comment-container").addClass("none");

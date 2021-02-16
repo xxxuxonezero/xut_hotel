@@ -9,7 +9,7 @@
     z-index: 9999;
 }
 
-.ui-dialog-error {
+.ui-dialog-success {
     background: rgba(0, 255, 0, .5);
     color: black;
 

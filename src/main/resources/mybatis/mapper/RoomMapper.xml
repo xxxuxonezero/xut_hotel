@@ -22,8 +22,8 @@
         WHERE xut_id = #{id}
     </update>
 
-    <select id="search" resultMap="roomData">
-        SELECT r.xut_id AS xut_id, xut_room_number, xut_floor_num, xut_type, xut_bed, rt.xut_id AS type_id, xut_max_people FROM xut_room r
+    <select id="search" resultMap="roomData, totalCount">
+        SELECT SQL_CALC_FOUND_ROWS r.xut_id AS xut_id, xut_room_number, xut_floor_num, xut_type, xut_bed, rt.xut_id AS type_id, xut_max_people FROM xut_room r
         INNER JOIN xut_room_type rt ON rt.xut_id = r.xut_type_id
         WHERE (#{id} IS NULL OR r.xut_id = #{id}) AND rt.xut_status = 1
         <if test="typeIds != null">
@@ -32,7 +32,9 @@
                 #{item}
             </foreach>
         </if>
-        LIMIT ${(offset - 1) * pageSize}, #{pageSize}
+        LIMIT ${(offset - 1) * pageSize}, #{pageSize};
+
+        SELECT FOUND_ROWS() as totalCount;
     </select>
 
     <resultMap id="roomData" type="com.xut.bean.RoomData">

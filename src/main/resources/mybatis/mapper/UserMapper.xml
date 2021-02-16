@@ -32,6 +32,9 @@
         UPDATE xut_user
         SET xut_sex = #{sex}, xut_user_name = #{userName},
         xut_real_name = #{realName}, xut_phone = #{phone}, xut_avatar = #{avatar}, xut_introduction = #{introduction}
+        <if test="#{type} != null">
+            , xut_type = #{type}
+        </if>
         WHERE xut_id = #{id}
     </update>
 
@@ -51,6 +54,25 @@
         </foreach>
     </select>
 
+    <select id="search" resultMap="user, totalCount">
+        SELECT SQL_CALC_FOUND_ROWS u.xut_id, xut_identification_id, xut_sex, xut_type, xut_user_name,
+        xut_real_name, xut_phone, xut_avatar, xut_introduction
+        FROM xut_user u
+        LEFT JOIN (SELECT o.xut_user_id, COUNT(1) AS count FROM xut_order o GROUP BY xut_user_id) o ON u.xut_id = o.xut_user_id
+        WHERE (#{type} IS NULL OR #{type} = xut_type)
+        AND (#{old} IS NULL OR IF(#{old}=0, o.count IS NULL OR o.count = 0, o.count > 0))
+        LIMIT ${(offset - 1) * pageSize},#{pageSize};
+
+        SELECT FOUND_ROWS() as totalCount;
+    </select>
+
+    <delete id="delete">
+        DELETE FROM xut_user WHERE xut_id IN
+        <foreach collection="list" index="index" item="item" open = "(" separator = "," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
     <resultMap id="user" type="com.xut.bean.User">
         <id column="xut_id" property="id"></id>
         <result column="xut_password" property="password"></result>
@@ -66,4 +88,5 @@
         <result column="xut_updated_time" property="updatedTime"></result>
         <result column="xut_last_login_time" property="lastLoginTime"></result>
     </resultMap>
+
 </mapper>

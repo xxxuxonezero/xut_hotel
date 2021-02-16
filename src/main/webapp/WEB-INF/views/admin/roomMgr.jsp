@@ -79,6 +79,7 @@
             </tr>
             </tbody>
         </table>
+        <div id="paginationContainer"></div>
     </div>
 </div>
 </body>
@@ -94,8 +95,8 @@
                 <td>\${floorNum}</td>
                 <td>\${size}</td>
                 <td>
-                    <a onclick="editRoom(\${id})" data-toggle="modal" data-target="#roomModal">编辑</a>
-                    <a onclick="deleteRoom(\${id})">删除</a>
+                    <button class="btn btn-primary" onclick="editRoom(\${id})" data-toggle="modal" data-target="#roomModal">编辑</button>
+                    <button class="btn btn-secondary" onclick="deleteRoom(\${id})">删除</button>
                 </td>
             </tr>
         {%/each%}
@@ -106,6 +107,9 @@
         ADD: 1,
         EDIT: 2
     };
+
+    var offset = '${param.offset}' ? '${param.offset}' : 1;
+
     function clearModal() {
         $("#roomModal").find("input[type != 'radio']").val("");
         $("#roomModal").find("input[type = 'radio']:checked").prop("checked", false);
@@ -157,7 +161,7 @@
 
     (function () {
         $.ajax({
-            url: "roomList",
+            url: "roomList?offset=" + offset,
             type: "get",
             data: {offset:1},
             dataType: "json",
@@ -166,8 +170,14 @@
                 if (r.code == 0) {
                     $("#roomTable tbody").remove();
                     var data = [];
-                    data = r.data;
+                    data = r.data.list;
                     $("#roomList").tmpl({data: data}).appendTo("#roomTable");
+                    var pagination = new Pagination({
+                        total: r.data.totalCount,
+                        url: '${pageContext.request.contextPath}/admin/room',
+                        offset: offset,
+                        container: "#paginationContainer"
+                    });
                 }
             }
         });

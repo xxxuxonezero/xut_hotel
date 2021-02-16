@@ -196,3 +196,15 @@ label.error {
     width: auto;
     resize: none;
 }
+
+/*table*/
+td {
+    vertical-align: middle !important;
+}
+
+/*select*/
+.select {
+    width: 150px;
+    height: 30px;
+    padding: 5px;
+}

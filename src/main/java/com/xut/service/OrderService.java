@@ -6,6 +6,7 @@ import com.xut.model.Code;
 import com.xut.model.NoneDataResult;
 import com.xut.model.Page;
 import com.xut.model.Result;
+import org.aspectj.weaver.ast.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,15 +45,11 @@ public class OrderService {
         return result;
     }
 
-    public Result<Page<Order>> search(Integer userId, List<Integer> roomTypeIds, Integer id, Integer status, int offset, int pageSize) {
+    public Result<Page<Order>> search(List<Integer> userIds, List<Integer> roomTypeIds, Integer id, Integer status, int offset, int pageSize) {
         Result<Page<Order>> result = new Result<>();
         try {
-            List<Order> orders = orderMapper.search(userId, roomTypeIds, id, offset, status, pageSize);
-            int count = orderMapper.searchCount(userId, roomTypeIds, id, offset, status, pageSize);
-            Page<Order> page = new Page<>();
-            page.setList(orders);
-            page.setTotalCount(count);
-            result.setData(page);
+            List<List<?>> orders = orderMapper.search(userIds, roomTypeIds, id, offset, status, pageSize);
+            result.setData(new Page<Order>((Integer) orders.get(1).get(0), (List<Order>) orders.get(0)));
         } catch (Exception e) {
             logger.error("OrderService search error");
             result.setCode(Code.DATABASE_SELECT_ERROR);

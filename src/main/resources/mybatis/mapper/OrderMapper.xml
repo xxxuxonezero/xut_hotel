@@ -10,11 +10,14 @@
     </insert>
 
 
-    <select id="search" resultMap="order">
+    <select id="search" resultMap="order, totalCount">
       SELECT SQL_CALC_FOUND_ROWS * FROM xut_order
       WHERE 1 = 1
-          <if test="userId != null">
-              AND xut_user_id = #{userId}
+          <if test="userIds != null">
+              AND xut_user_id IN
+              <foreach collection="userIds" index="index" item="item" open="(" separator="," close=")">
+                  #{item}
+              </foreach>
           </if>
         <if test="roomTypeIds != null">
             AND xut_room_type_id IN
@@ -31,29 +34,11 @@
 
         LIMIT ${(offset - 1) * pageSize} , ${pageSize};
 
-    </select>
 
-
-    <select id="searchCount" resultType="int">
-        SELECT COUNT(*) FROM xut_order
-        WHERE 1 = 1
-        <if test="userId != null">
-            AND xut_user_id = #{userId}
-        </if>
-        <if test="roomTypeIds != null">
-            AND xut_room_type_id IN
-            <foreach collection="roomTypeIds" index="index" item="item" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-        <if test="id != null">
-            AND xut_id = #{id}
-        </if>
-        <if test="status != null">
-            AND xut_status = #{status}
-        </if>
+        SELECT FOUND_ROWS() AS totalCount;
 
     </select>
+
 
     <delete id="delete">
         DELETE FROM xut_order WHERE xut_id = #{id}
@@ -78,9 +63,5 @@
         <result property="status" column="xut_status"></result>
         <result property="checkInTime" column="xut_check_in_time"></result>
         <result property="checkOutTime" column="xut_check_out_time"></result>
-    </resultMap>
-
-    <resultMap id="count" type="java.lang.Integer">
-        <result column="total"/>
     </resultMap>
 </mapper>
