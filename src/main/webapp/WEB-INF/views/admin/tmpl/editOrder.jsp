@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/roomType.css?v=1.0.0"/>">
-<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="editOrderModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,6 +12,14 @@
             </div>
             <div class="modal-body">
                 <form role="form" id="orderForm" method="post">
+                    <div class="form-group">
+                        <label>房型</label>
+                        <select class="form-control" name="typeId" id="typeSel">
+                            <c:forEach items="${types}" var="item">
+                                <option value="${item.id}" data-maxPeople="${item.maxPeople}">${item.type}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
                     <div id="clientList">
 
                     </div>
@@ -43,6 +51,63 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="editOrderStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">变更状态</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>状态</label>
+                        <select id="statusSel" class="form-control">
+                            <option value="0">已取消</option>
+                            <option value="1">已关闭</option>
+                            <option value="3">已入住</option>
+                        </select>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-secondary order-btn" onclick="updateStatus()">更新</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="allocateModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">分配房间</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>分配房间</label>
+                    <select class="form-control" name="roomId" id="roomSel">
+                    </select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-secondary order-btn" onclick="checkIn()" id="allocateBtn">分配房间</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script id="clientTmpl" type="text/x-jquery-tmpl">
     <div class="client-item">
     <span>入住人\${index}</span>
@@ -59,11 +124,6 @@
     var ADD = 1;
     var UPDATE = 2;
 
-    var user = {
-        realName: '${user.realName}',
-        identificationId: '${user.identificationId}',
-        phone: '${user.phone}'
-    };
     var ITEM = {
         realName: "",
         identificationId: "",
@@ -72,12 +132,21 @@
 
     var $modal = $("#orderModal");
     var index = 1;
+    var roomType;
 
     function initModal() {
-        var $view = $("#clientTmpl").tmpl([user]).appendTo("#clientList");
+        var $view = $("#clientTmpl").tmpl([ITEM]).appendTo("#clientList");
 
         initValidEvent($view.find(".client-form"))
     }
+
+    $("#typeSel").on("change", function (e) {
+        var maxPeople = $("#editOrderModal select[name='typeId'] option:selected").data("maxpeople");
+        var num = $("#clientList .client-item").length;
+        if (num > maxPeople) {
+            $("#clientList .client-item:nth-child(" + maxPeople + ")").nextAll().remove();
+        }
+    });
 
     function renderModal(order, clients, roomType) {
         $("#clientList").empty();
@@ -122,9 +191,9 @@
         })
     }
 
-    function addClient(maxPeople) {
+    function addClient() {
         ++index;
-        maxPeople = maxPeople ? maxPeople : roomType.maxPeople;
+        maxPeople = $("#editOrderModal select[name='typeId'] option:selected").data("maxpeople");
         if (index > maxPeople) {
             index = maxPeople;
             Dialog.error("人数已满");
@@ -146,20 +215,18 @@
     }
 
     function order(order, roomType) {
-        if (!$("#orderModal").find(".error-tip").hasClass("none") || !$("#orderForm").valid()) {
+        if (!$("#editOrderModal").find(".error-tip").hasClass("none") || !$("#orderForm").valid()) {
             Dialog.error("请完善信息");
             return;
         }
         var flag = order ? true : false;
         if (!order) {
             order = {};
-            order.roomTypeId = id;
-            order.price = window.roomType.price;
+            order.roomTypeId =  $("#editOrderModal select[name='typeId'] option:selected").val();
         }
         var order = Object.assign(order, formObject($("#orderForm").serializeArray()));
-        console.log("${pageContext.request.contextPath}/user/order/" + (flag ? "updateOrder" : "create"))
         $.ajax({
-            url: "${pageContext.request.contextPath}/user/order/" + (flag ? "updateOrder" : "create"),
+            url: "${pageContext.request.contextPath}/admin/order/" + (flag ? "updateOrder" : "create"),
             type: "post",
             dataType: "json",
             contentType: "application/json",
@@ -174,6 +241,7 @@
                 } else{
                     Dialog.error("更新失败~")
                 }
+
             }
         })
     }
@@ -225,4 +293,37 @@
             $err.addClass("none");
         }
     });
+
+    function checkIn() {
+        var roomId = $("#roomSel option:selected").val()
+        var orderId = $("#allocateModal").data("orderId")
+        var api = new API({
+            url: '${pageContext.request.contextPath}/admin/allocateRoom',
+            method: 'POST',
+            data: JSON.stringify({roomId: roomId, orderId: orderId}),
+            callback: function (r) {
+                if (r.code === 0) {
+                    location.reload();
+                }
+            }
+        });
+        api.sendJSONData();
+    }
+
+    function updateStatus() {
+        var status = $("#statusSel option:selected").val()
+        var orderId = $("#editOrderStatusModal").data("orderId")
+        var api = new API({
+            url: '${pageContext.request.contextPath}/admin/order/updateStatus',
+            method: 'POST',
+            data: {status: status, id: orderId},
+            callback: function (r) {
+                if (r.code === 0) {
+                    location.reload();
+                }
+            }
+        });
+        api.sendFormData();
+    }
+
 </script>

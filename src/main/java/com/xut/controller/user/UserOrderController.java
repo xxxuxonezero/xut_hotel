@@ -1,26 +1,21 @@
 package com.xut.controller.user;
 
-import com.xut.bean.Client;
-import com.xut.bean.Order;
-import com.xut.bean.RoomType;
+import com.xut.bean.*;
 import com.xut.controller.BaseController;
 import com.xut.controller.auth.AuthUtil;
 import com.xut.controller.data.OrderData;
 import com.xut.filter.Identity;
 import com.xut.model.*;
-import com.xut.service.ClientService;
-import com.xut.service.OrderService;
-import com.xut.service.RoomTypeService;
+import com.xut.service.*;
+import com.xut.util.TimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,6 +27,10 @@ public class UserOrderController extends BaseController {
     ClientService clientService;
     @Autowired
     RoomTypeService roomTypeService;
+    @Autowired
+    RoomService roomService;
+    @Autowired
+    RoomOrderService roomOrderService;
 
     @GetMapping("/MyOrder")
     public ModelAndView myOrder(HttpServletRequest request) {
@@ -43,18 +42,32 @@ public class UserOrderController extends BaseController {
         NoneDataResult result = new NoneDataResult();
         Identity identity = AuthUtil.getIdentity(request);
         Order order = orderData.getOrder();
-        order.setUserId(identity.getUserId());
-        result = orderService.create(order);
-        if (result.isNotOK()) {
-            return result;
-        }
+        if (order.valid()) {
+            boolean canUpdate = checkIfExistsRoom(order.getRoomTypeId(), order.getCheckInTime(), order.getCheckOutTime());
+            if (!canUpdate) {
+                result.setCode(Code.NO_ROOM_TO_ORDER);
+                result.setMsg("房间已满");
+                return result;
+            }
+            order.setUserId(identity.getUserId());
+            Result<RoomType> roomTypeResult = roomTypeService.getById(order.getRoomTypeId());
+            if (roomTypeResult.isValid()) {
+                Double price = roomTypeResult.getData().getPrice();
+                int betweenDays = TimeUtils.getBetweenDays(order.getCheckInTime(), order.getCheckOutTime());
+                order.setPrice(price * betweenDays);
+            }
+            result = orderService.create(order);
+            if (result.isNotOK()) {
+                return result;
+            }
 
-        List<Client> clients = orderData.getClients();
-        clients = clients.stream().map(item -> {
-            item.setOrderId(order.getId());
-            return item;
-        }).collect(Collectors.toList());
-        result = clientService.create(clients);
+            List<Client> clients = orderData.getClients();
+            clients = clients.stream().map(item -> {
+                item.setOrderId(order.getId());
+                return item;
+            }).collect(Collectors.toList());
+            result = clientService.create(clients);
+        }
         return result;
     }
 
@@ -136,6 +149,12 @@ public class UserOrderController extends BaseController {
         NoneDataResult result = new NoneDataResult();
         Identity identity = AuthUtil.getIdentity(request);
         Order order = orderData.getOrder();
+        boolean canUpdate = checkIfExistsRoom(order.getRoomTypeId(), order.getCheckInTime(), order.getCheckOutTime());
+        if (!canUpdate) {
+            result.setCode(Code.NO_ROOM_TO_ORDER);
+            result.setMsg("房间已满");
+            return result;
+        }
         result = orderService.update(order);
         if (result.isNotOK()) {
             return result;
@@ -155,6 +174,33 @@ public class UserOrderController extends BaseController {
         }).collect(Collectors.toList());
         result = clientService.create(clients);
         return result;
+    }
+
+
+    private boolean checkIfExistsRoom(Integer roomTypeId, Date checkInDate, Date checkOutDate) {
+        if (roomTypeId == null || checkInDate == null || checkOutDate == null) {
+            return false;
+        }
+        /**
+         * 获取已入住和交易中的订单
+         */
+        List<Order> orders = orderService.search(roomTypeId, Arrays.asList(OrderStatus.IN_PROGRESS.id(), OrderStatus.HAS_CHECKED_IN.id()));
+        Result<Page<RoomData>> roomResult = roomService.search(Collections.singletonList(roomTypeId), null, 1, Integer.MAX_VALUE);
+        if (roomResult.isNotValid()) {
+            return false;
+        }
+        List<RoomData> rooms = roomResult.getData().getList();
+        /**
+         * 获取当前时间段已下单的订单数
+         */
+        long count = orders.stream().filter((item) -> {
+            return (item.getCheckInTime().getTime() >= checkInDate.getTime() && item.getCheckInTime().getTime() <= checkOutDate.getTime())
+                    || (item.getCheckOutTime().getTime() >= checkInDate.getTime() && item.getCheckOutTime().getTime() <= checkOutDate.getTime());
+        }).count();
+        if (count < rooms.size()) {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xut.dao.RoomOrderMapper">
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `xut_room_order`(xut_room_id, xut_order_id)
+        VALUES (#{roomId}, #{orderId})
+    </insert>
+
+    <update id="update">
+        UPDATE `xut_room_order`
+        SET xut_room_id = #{roomId}
+        WHERE id = #{id}
+    </update>
+
+    <select id="search" resultMap="roomOrder">
+        SELECT * FROM `xut_room_order`
+        WHERE xut_order_id IN
+        <foreach collection="list" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <resultMap id="roomOrder" type="com.xut.bean.RoomOrder">
+        <id column="id" property="id"></id>
+        <result column="xut_room_id" property="roomId"/>
+        <result column="xut_order_id" property="orderId"/>
+    </resultMap>
+</mapper>

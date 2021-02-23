@@ -6,12 +6,14 @@ import com.xut.model.Code;
 import com.xut.model.NoneDataResult;
 import com.xut.model.Page;
 import com.xut.model.Result;
+import org.apache.commons.collections4.CollectionUtils;
 import org.aspectj.weaver.ast.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -55,6 +57,17 @@ public class OrderService {
             result.setCode(Code.DATABASE_SELECT_ERROR);
         }
         return result;
+    }
+
+    public List<Order> search(Integer roomTypeId, List<Integer> statuses) {
+        List<Order> orders = new ArrayList<>();
+        for (Integer status : statuses) {
+            Result<Page<Order>> pageResult = search(null, roomTypeId == null ? null : Collections.singletonList(roomTypeId), null, status, 1, Integer.MAX_VALUE);
+            if (pageResult.isOK()) {
+                orders.addAll(pageResult.getData().getList());
+            }
+        }
+        return orders;
     }
 
     public NoneDataResult update(Order order) {

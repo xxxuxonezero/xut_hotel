@@ -1,6 +1,5 @@
 package com.xut.filter;
 
-import com.xut.bean.User;
 import com.xut.controller.auth.AuthUtil;
 import com.xut.model.UserType;
 

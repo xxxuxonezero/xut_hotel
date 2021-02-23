@@ -17,6 +17,7 @@
 <div class="admin-page flex">
     <nav:adminNav currentMenu="订单管理"></nav:adminNav>
     <div class="right-menu inline-block" style="margin-top: 100px">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#editOrderModal">添加订单</button>
         <div class="feature-btn">
             <select class="select" name="typeId" onchange="init()">
                 <option value="" checked>按房型过滤</option>
@@ -29,6 +30,7 @@
                 <option value="0">已取消</option>
                 <option value="1">已完成</option>
                 <option value="2">交易中</option>
+                <option value="3">已入住</option>
             </select>
         </div>
         <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -58,6 +60,7 @@
                 <th>入住人数</th>
                 <th>入住时间</th>
                 <th>离店时间</th>
+                <th>入住房间</th>
                 <th>状态</th>
                 <th>操作</th>
             </tr>
@@ -81,9 +84,16 @@
                 <td>{%if clients%}\${clients.length}{%else%}0{%/if%}</td>
                 <td>\${DateUtils.getDateStr(order.checkInTime, "-")}</td>
                 <td>\${DateUtils.getDateStr(order.checkOutTime, "-")}</td>
+                <td>{%if roomData%}\${roomData.roomNumber}{%/if%}</td>
                 <td style="color:orange">\${STATUS[order.status]}</td>
                 <td>
-                    <button class="btn btn-primary" onclick="render(\${JSON.stringify(item)})" data-toggle="modal" data-target="#orderModal">查看</a>
+                    <button class="btn btn-primary" onclick="render(\${JSON.stringify(item)})" data-toggle="modal" data-target="#orderModal">查看</button>
+                    {%if !(order.status == 0 || order.status == 1)%}
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#editOrderStatusModal" onclick="changeStatus(\${order.id})">变更状态</button>
+                        {%if !roomData%}
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#allocateModal" onclick="allocateRoom(\${order.id}, '\${DateUtils.getDateStr(order.checkInTime, "-")}', '\${DateUtils.getDateStr(order.checkOutTime, "-")}', \${order.roomTypeId})">分配房间</button>
+                        {%/if%}
+                    {%/if%}
                 </td>
             </tr>
         {%/each%}
@@ -125,11 +135,14 @@
     </div>
 </script>
 
+<jsp:include page="tmpl/editOrder.jsp"/>
+
 <script>
     var STATUS = {
         0: "已取消",
         1: "已完成",
-        2: "交易中"
+        2: "交易中",
+        3: "已入住"
     };
 
     var offset = '${param.offset}' ? '${param.offset}' : 1;
@@ -152,6 +165,8 @@
         $('body').on('hidden.bs.modal', '.modal', function () {
             clearModal();
         });
+
+        initModal();
     })();
     
     function init() {
@@ -178,6 +193,41 @@
                 }
             }
         });
+    }
+
+    function allocateRoom(id, checkInTime, checkOutTime, roomTypeId) {
+        $("#allocateModal").data("orderId", id);
+        $("#allocateBtn").prop("disabled", false);
+        var data = {
+            checkInTime: checkInTime,
+            checkOutTime: checkOutTime,
+            roomTypeId: roomTypeId
+        };
+
+        var api = new API({
+            url: "${pageContext.request.contextPath}/admin/order/getRooms",
+            data: JSON.stringify(data),
+            method: 'POST',
+            callback: function (r) {
+                var $sel = $("#roomSel");
+                $sel.empty();
+                if (r.code === 0 && r.data && r.data.length > 0) {
+                    for (var i = 0; i < r.data.length; i++) {
+                        var $option = $('<option></option>');
+                        $option.prop("value", r.data[i].id);
+                        $option.text(r.data[i].roomNumber);
+                        $sel.append($option);
+                    }
+                } else {
+                    $("#allocateBtn").prop("disabled", true);
+                }
+            }
+        });
+        api.sendJSONData();
+    }
+
+    function changeStatus(id) {
+        $("#editOrderStatusModal").data("orderId", id)
     }
 
 

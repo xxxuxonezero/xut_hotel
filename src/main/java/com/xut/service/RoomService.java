@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RoomService {
@@ -78,5 +80,25 @@ public class RoomService {
 
     public Result<Page<RoomData>> getAll() {
         return search(null, null, 1, Integer.MAX_VALUE);
+    }
+
+    public Result<List<RoomData>> getByIds(List<Integer> ids) {
+        Result<List<RoomData>> result = new Result<>();
+        Result<Page<RoomData>> roomDataResult = getAll();
+        List<RoomData> roomDatas = new ArrayList<>();
+        if (roomDataResult.isNotValid()) {
+            result.setCode(roomDataResult.getCode());
+            return result;
+        }
+
+        List<RoomData> list = roomDataResult.getData().getList();
+        for (RoomData roomData : list) {
+            if (ids.contains(roomData.getId())) {
+                roomDatas.add(roomData);
+            }
+        }
+        result.setData(roomDatas);
+
+        return result;
     }
 }

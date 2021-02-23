@@ -1,5 +1,7 @@
 package com.xut.bean;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.Date;
 
 public class Order {
@@ -119,5 +121,9 @@ public class Order {
 
     public void setFinishedTime(Date finishedTime) {
         this.finishedTime = finishedTime;
+    }
+
+    public boolean valid() {
+        return checkInTime != null && checkOutTime != null;
     }
 }
