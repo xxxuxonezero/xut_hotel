@@ -7,6 +7,18 @@
 html,body {
     height: 100%;
 }
+.xut-bg {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-image: url("../images/xut_bg.jpg");
+    background-size: 100vh 100vw;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -9;
+}
 a {
     text-decoration: none;
     color: #2f2d2d;

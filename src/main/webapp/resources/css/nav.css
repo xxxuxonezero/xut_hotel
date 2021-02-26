@@ -1,6 +1,7 @@
 #userMenu {
     position: fixed;
-    top: 176px;
+    top: 80px;
+    left: 0;
 }
 #userMenu .nav-items{
     border: 1px solid #797979;
@@ -10,7 +11,7 @@
 }
 #userMenu .nav-items > .nav-item {
     padding: 16px;
-    font-size: 16px;
+    font-size: 32px;
     backgrond: white;
     width: auto;
 }

@@ -4,6 +4,7 @@
 <script src="<c:url value="/resources/js/form.js"/> "></script>
 
 <jsp:include page="common.jsp"></jsp:include>
+<div class="xut-bg"></div>
 <div id="header">
     <img src="<c:url value="/resources/images/logo.jpg"/>" class="logo">
     <div class="items">

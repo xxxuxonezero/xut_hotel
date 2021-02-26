@@ -17,7 +17,7 @@
 <div class="admin-page container flex">
     <nav:adminNav currentMenu="订单管理"></nav:adminNav>
     <div class="right-menu inline-block">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#editOrderModal">添加订单</button>
+        <button class="btn btn-primary mb16" data-toggle="modal" data-target="#editOrderModal">添加订单</button>
         <div class="feature-btn">
             <select class="select" name="typeId" onchange="init()">
                 <option value="" checked>按房型过滤</option>

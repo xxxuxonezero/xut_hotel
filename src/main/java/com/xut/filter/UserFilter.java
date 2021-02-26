@@ -20,12 +20,12 @@ public class UserFilter implements Filter {
         Identity user = AuthUtil.getIdentity(request);
 
         String path = request.getServletPath();
-        if (path.contains("/user") || path.contains("/account")) {
-            if (user != null && user.getType() == UserType.COMMON_USER.id()) {
+        if (path.contains("/user/") || path.contains("/account/")) {
+            if (user != null) {
                 chain.doFilter(req, resp);
                 return;
             }
-        } else if (path.contains("/admin")) {
+        } else if (path.contains("/admin/")) {
             if (user != null && user.getType() == UserType.MANAGER.id()) {
                 chain.doFilter(req, resp);
                 return;

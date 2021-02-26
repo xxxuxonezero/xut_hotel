@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/swiper-bundle.min.css"/>">
 <script src="<c:url value="/resources/js/swiper-bundle.min.js"/> "> </script>
 <script src="<c:url value="/resources/js/jquery.tmpl1.js"/>"></script>
-<link rel="stylesheet" href="<c:url value="/resources/css/common.css?v=1.0.1"/>">
+<link rel="stylesheet" href="<c:url value="/resources/css/common.css?v=1.0.2"/>">
 <script src="<c:url value="/resources/js/validate.js?t=11"/> "></script>
 <script src="<c:url value="/resources/js/form.js"/> "></script>
 <script src="<c:url value="/resources/js/utils/DateUtils.js"/> "></script>
