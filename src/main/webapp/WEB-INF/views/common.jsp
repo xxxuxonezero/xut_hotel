@@ -19,3 +19,8 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/dialog.css"/> ">
 <link rel="stylesheet" href="<c:url value="/resources/css/form.css"/> ">
 <link rel="stylesheet" href="<c:url value="/resources/css/mian.css"/> ">
+
+<script src="<c:url value="/resources/js/plupload.full.min.js"/> "></script>
+<script src="<c:url value="/resources/js/qiniu.min.js"/> "></script>
+<script src="<c:url value="/resources/js/moxie.js"/> "></script>
+<script src="<c:url value="/resources/js/plupload.dev.js"/> "></script>

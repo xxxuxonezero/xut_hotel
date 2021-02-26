@@ -52,7 +52,7 @@
                 <input type="hidden" name="avatar">
             </form>
             <label class="mr8">我的头像</label><div class="inline-block" id="uploadImage"><img src="" alt=""></div>
-            <div id="fileInputContainer"></div>
+            <div id="fileInputContainer" class="none"></div>
             <button class="btn btn-primary mt16" onclick="update()">更新</button>
         </div>
     </div>
@@ -110,11 +110,6 @@
         })
     }
 </script>
-
-<script src="<c:url value="/resources/js/plupload.full.min.js"/> "></script>
-<script src="<c:url value="/resources/js/qiniu.min.js"/> "></script>
-<script src="<c:url value="/resources/js/moxie.js"/> "></script>
-<script src="<c:url value="/resources/js/plupload.dev.js"/> "></script>
 
 <script>
     var uploader = Qiniu.uploader(getUploaderConfig(null, null, 1));
