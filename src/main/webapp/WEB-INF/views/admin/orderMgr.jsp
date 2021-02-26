@@ -14,9 +14,9 @@
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/header.jsp"/>
-<div class="admin-page flex">
+<div class="admin-page container flex">
     <nav:adminNav currentMenu="订单管理"></nav:adminNav>
-    <div class="right-menu inline-block" style="margin-top: 100px">
+    <div class="right-menu inline-block">
         <button class="btn btn-primary" data-toggle="modal" data-target="#editOrderModal">添加订单</button>
         <div class="feature-btn">
             <select class="select" name="typeId" onchange="init()">

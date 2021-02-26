@@ -9,5 +9,8 @@
     flex: 0 0 25%;
 }
 .right-menu {
-    flex: 0 0 60%;
+    flex: 0 0 75%;
+    margin-top: 36px;
+    overflow-y: auto;
+    margin-bottom: auto;
 }

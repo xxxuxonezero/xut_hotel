@@ -24,3 +24,7 @@
     background: #F59A23;
     color: white;
 }
+.container.flex {
+    display: flex;
+    justify-content: space-between;
+}

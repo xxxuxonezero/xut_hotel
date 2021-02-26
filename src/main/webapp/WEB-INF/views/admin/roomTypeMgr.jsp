@@ -19,9 +19,9 @@
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/header.jsp"/>
-<div class="admin-page flex">
+<div class="admin-page container flex">
     <nav:adminNav currentMenu="房型管理"></nav:adminNav>
-    <div class="right-menu inline-block" style="margin-top: 100px">
+    <div class="right-menu inline-block">
         <div class="feature-btn">
             <button type="button" class="btn btn-primary" onclick="batchDelete()">批量删除</button>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomTypeModal" onclick='$("#updateBtn").attr("onclick", "addRoomType(" + TYPE.ADD + ")");'>添加房型</button>

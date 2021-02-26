@@ -94,19 +94,19 @@
             a.extend(a.validator.defaults, b)
         },
         messages: {
-            required: "必填",
+            required: "required",
             remote: "Please fix this field.",
             email: "Please enter a valid email address.",
             url: "Please enter a valid URL.",
             date: "Please enter a valid date.",
             dateISO: "Please enter a valid date ( ISO ).",
             number: "Please enter a valid number.",
-            digits: "请输入数字",
+            digits: "please enter digits",
             creditcard: "Please enter a valid credit card number.",
             equalTo: "Please enter the same value again.",
             maxlength: a.validator.format("Please enter no more than {0} characters."),
             minlength: a.validator.format("Please enter at least {0} characters."),
-            rangelength: a.validator.format("请输入 {0} 到 {1} 个字符"),
+            rangelength: a.validator.format("please enter {0} to {1} characters"),
             range: a.validator.format("Please enter a value between {0} and {1}."),
             max: a.validator.format("Please enter a value less than or equal to {0}."),
             min: a.validator.format("Please enter a value greater than or equal to {0}.")
@@ -441,11 +441,11 @@
 
     jQuery.validator.addMethod("phone", function (value, element) {
         return this.optional(element) || /^[1][3-9][0-9]{9}$/.test(value);
-    }, "手机号格式错误");
+    }, "phone format error");
     jQuery.validator.addMethod("identificationId", function (value, element) {
         return this.optional(element) || /^\d{17}[0-9X]$/.test(value);
-    }, "身份证格式错误");
+    }, "identificationId format error");
     jQuery.validator.addMethod("price", function (value, element) {
         return this.optional(element) || /^([0]|[1-9][0-9]*)(\.[0-9]+){0,1}$/.test(value);
-    }, "价格格式错误");
+    }, "price format error");
 });
