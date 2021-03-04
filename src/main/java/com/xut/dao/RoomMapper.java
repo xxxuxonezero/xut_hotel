@@ -17,4 +17,6 @@ public interface RoomMapper {
                           @Param("id") Integer id,
                           @Param("offset") int offset, @Param("pageSize")int pageSize);
 
+    void deleteByTypeIds(@Param("typeIds") List<Integer> typeIds);
+
 }

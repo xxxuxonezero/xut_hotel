@@ -43,7 +43,16 @@ public class RoomService {
         }
         return result;
     }
-
+    public NoneDataResult deleteByTypeIds(List<Integer> typeIds) {
+        NoneDataResult result = new NoneDataResult();
+        try {
+            roomMapper.deleteByTypeIds(typeIds);
+        } catch (Exception e) {
+            logger.error("RoomService delete error ", e);
+            result.setCode(Code.DATABASE_DELETE_ERROR);
+        }
+        return result;
+    }
     public Result<Page<RoomData>> search(List<Integer> typeIds, Integer id, int offset, int pageSize) {
         Result<Page<RoomData>> result = new Result<>();
         try {

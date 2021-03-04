@@ -16,6 +16,13 @@
         </foreach>
     </delete>
 
+    <delete id="deleteByTypeIds">
+        DELETE FROM xut_room WHERE xut_type_id IN
+        <foreach collection="list" index="index" item="item" open = "(" separator = "," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
     <update id="update" parameterType="com.xut.bean.Room">
         UPDATE xut_room
         SET xut_room_number = #{roomNumber}, xut_type_id = #{typeId}, xut_floor_num = #{floorNum}

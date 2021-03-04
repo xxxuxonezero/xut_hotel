@@ -10,6 +10,7 @@ import com.xut.model.NoneDataResult;
 import com.xut.model.Page;
 import com.xut.model.Result;
 import com.xut.service.OrderService;
+import com.xut.service.RoomService;
 import com.xut.service.RoomTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,8 @@ public class RoomTypeController extends BaseController {
     RoomTypeService roomTypeService;
     @Autowired
     OrderService orderService;
+    @Autowired
+    RoomService roomService;
 
     private static final int USING = 3;
 
@@ -94,7 +97,12 @@ public class RoomTypeController extends BaseController {
     @ResponseBody
     @PostMapping("/deleteRoomType")
     public NoneDataResult delete(@RequestParam("ids") List<Integer> ids) {
-        return roomTypeService.delete(ids);
+        NoneDataResult result = roomTypeService.delete(ids);
+        if (result.isNotOK()) {
+            return result;
+        }
+        result = roomService.deleteByTypeIds(ids);
+        return result;
     }
 
 }
