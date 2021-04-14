@@ -113,9 +113,12 @@ public class OrderController extends BaseController {
         NoneDataResult result = roomOrderService.create(roomOrder);
         if (result.isOK()) {
             Result<Page<Order>> pageResult = orderService.search(null, null, roomOrder.getOrderId(), null, 1, 1);
-            if (pageResult.isValid()) {
+            if (pageResult.isValid() && CollectionUtils.isNotEmpty(pageResult.getData().getList())) {
                 Order order = pageResult.getData().getList().get(0);
-                order.setStatus(OrderStatus.HAS_CHECKED_IN.id());
+                if (new Date().getTime() >= Optional.ofNullable(order.getCheckInTime().getTime()).orElse((long) 0)) {
+                    order.setStatus(OrderStatus.HAS_CHECKED_IN.id());
+                }
+                order.setRoomId(roomOrder.getRoomId());
                 orderService.update(order);
             }
         }

@@ -8,6 +8,7 @@
         <li class="nav-item ${currentMenu.equals("房型管理") ? 'active' : ''}"><a href="${pageContext.request.contextPath}/admin/roomType">房型管理</a></li>
         <li class="nav-item ${currentMenu.equals("订单管理") ? 'active' : ''}"><a href="${pageContext.request.contextPath}/admin/order">订单管理</a></li>
         <li class="nav-item ${currentMenu.equals("客房信息") ? 'active' : ''}"><a href="${pageContext.request.contextPath}/admin/room">客房信息</a></li>
+        <li class="nav-item ${currentMenu.equals("酒店卫生") ? 'active' : ''}"><a href="${pageContext.request.contextPath}/admin/health">酒店卫生</a></li>
         <li class="nav-item ${currentMenu.equals("用户信息") ? 'active' : ''}"><a href="${pageContext.request.contextPath}/admin/user/userInfo">用户信息</a></li>
     </ul>
 </div>

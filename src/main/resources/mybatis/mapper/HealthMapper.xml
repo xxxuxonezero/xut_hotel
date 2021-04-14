@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xut.dao.HealthMapper">
+    <insert id="batchCreate" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `xut_health`(xut_order_id, xut_room_id, xut_clean)
+        VALUES
+        <foreach collection="healths" item="health" separator=",">
+            (#{health.orderId}, #{health.roomId}, #{health.clean})
+        </foreach>
+        ON DUPLICATE KEY UPDATE xut_clean = 0
+    </insert>
+
+    <update id="update">
+        UPDATE `xut_health`
+        SET xut_clean = #{clean}
+        WHERE xut_id = #{id}
+    </update>
+
+    <select id="search" resultMap="health">
+        SELECT  * FROM `xut_health`
+        <where>
+            <if test="orderIds != null">
+                AND  xut_order_id IN
+                <foreach collection="orderIds" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <delete id="delete">
+        DELETE FROM xut_health WHERE xut_order_id = #{orderId}
+    </delete>
+
+    <resultMap id="health" type="com.xut.bean.Health">
+        <id column="id" property="id"></id>
+        <result column="xut_order_id" property="orderId"/>
+        <result column="xut_room_id" property="roomId"/>
+        <result column="xut_clean" property="clean"/>
+    </resultMap>
+</mapper>
